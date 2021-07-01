@@ -1,3 +1,5 @@
+@import url(https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css);
+
 .App {
   text-align: center;
 }
@@ -26,7 +28,9 @@
 }
 
 .App-main {
-  min-height: 80vh;
+  background-color: #282c34;
+  min-height: 380vh;
+  height:100%;
   display: flex;
   flex-direction: column;
   /*align-items: center;*/
@@ -49,19 +53,16 @@
 }
 
 button {
-  background: #428BCA;
-  color: #fff;
-  font-family: Sans-serif;
-  font-size: 20px;
   height: 60px;
-  width: 150px;
+  width: auto;
   line-height: 60px;
   margin: 25px 25px;
+  padding: 5px;
   text-align: center;
-  border: 0;
   transition: all 0.3s ease 0s;
+  border: 1px solid white!important;
 }
 
-button:hover {
-background: #CF4647;
-}
+
+
+
