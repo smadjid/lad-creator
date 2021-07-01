@@ -3,24 +3,35 @@
 }
 
 .App-logo {
-  height: 40vmin;
+  height: 20vmin;
+  width: 40vmin;
   pointer-events: none;
 }
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+  /*  animation: App-logo-spin infinite 20s linear;*/
   }
 }
 
 .App-header {
   background-color: #282c34;
-  min-height: 100vh;
+  /*min-height: 100vh;*/
   display: flex;
   flex-direction: column;
-  align-items: center;
+  /*align-items: center;*/
   justify-content: center;
   font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-main {
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  /*align-items: center;*/
+  justify-content: center;
+  font-size: calc(8px + 2vmin);
   color: white;
 }
 
@@ -35,4 +46,22 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+button {
+  background: #428BCA;
+  color: #fff;
+  font-family: Sans-serif;
+  font-size: 20px;
+  height: 60px;
+  width: 150px;
+  line-height: 60px;
+  margin: 25px 25px;
+  text-align: center;
+  border: 0;
+  transition: all 0.3s ease 0s;
+}
+
+button:hover {
+background: #CF4647;
 }
