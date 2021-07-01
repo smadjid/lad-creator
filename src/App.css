@@ -5,8 +5,9 @@
 }
 
 .App-logo {
-  height: 20vmin;
-  width: 40vmin;
+  margin-top: 10px;
+  height: 10vmin;
+  width: 20vmin;
   pointer-events: none;
 }
 
@@ -51,18 +52,4 @@
     transform: rotate(360deg);
   }
 }
-
-button {
-  height: 60px;
-  width: auto;
-  line-height: 60px;
-  margin: 25px 25px;
-  padding: 5px;
-  text-align: center;
-  transition: all 0.3s ease 0s;
-  border: 1px solid white!important;
-}
-
-
-
 
