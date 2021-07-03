@@ -1,6 +1,5 @@
-button {
-    height: 60px;
-    width: auto;
+.button {
+    height: 70px;
     line-height: 60px;
     margin: 15px 15px!important;
     padding:10px 5px;

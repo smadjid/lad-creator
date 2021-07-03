@@ -18,16 +18,16 @@ function MainDash(props) {
   
   const mainCard = () => {
     return <Card >
-    <button type="button" className="btn btn-outline-light btn-lg" onClick={specificationHandler}>
+    <button type="button" className={`${styles.button}  btn btn-outline-light btn-lg` } onClick={specificationHandler}>
       <Icon.ShieldPlus />  &nbsp;&nbsp;|&nbsp;&nbsp; Craft a new LAD Specification
     </button>
-    <button type="button" className="btn btn-outline-light btn-lg">
+    <button type="button" className={`${styles.button}  btn btn-outline-light btn-lg` }>
       <Icon.LayoutWtf />  &nbsp;&nbsp;|&nbsp;&nbsp; Open and edit an existing LAD specification
     </button>
-    <button type="button" className="btn btn-outline-light btn-lg">
+    <button type="button" className={`${styles.button}  btn btn-outline-light btn-lg` }>
       <Icon.Collection />  &nbsp;&nbsp;|&nbsp;&nbsp; Explorer and manage the current Library
     </button>
-    <button type="button" className="btn btn-outline-light btn-lg">
+    <button type="button" className={`${styles.button}  btn btn-outline-light btn-lg` }>
       <Icon.GearWideConnected />  &nbsp;&nbsp;|&nbsp;&nbsp;
       Specify and manage the creation rules
     </button>

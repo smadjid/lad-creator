@@ -13,3 +13,13 @@ code {
     monospace;
 }
 
+button {
+    
+  width: auto;
+  margin: 15px 15px!important;
+  padding:10px 5px;
+  text-align: left!important;
+  transition: all 0.3s ease 0s;
+  border: 1px solid white!important;
+}
+  
