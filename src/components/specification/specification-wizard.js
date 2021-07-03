@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import "./specification-wizard.css";
 import * as Icon from "react-bootstrap-icons";
 
+import "./specification-wizard.css";
+import ContextDescription from "./steps/context-description";
+
 const firstComponent = () => {
-  return <div>First Component</div>;
+  return <ContextDescription />;
 };
 const secondComponent = () => {
   return <div>Second Component</div>;
@@ -19,31 +21,31 @@ function SpecificationWizard(props) {
   const [steps, setSteps] = useState([
     {
       key: "firstStep",
-      label: "Context description",
+      label: "Use context",
       isDone: true,
       component: firstComponent,
     },
     {
       key: "secondStep",
-      label: "The envisioned decision",
+      label: "Triggers and elements of interest",
       isDone: false,
       component: secondComponent,
     },
     {
       key: "thirdStep",
-      label: "Indicators & matrics",
+      label: "Fine-grained situation analysis",
       isDone: false,
       component: thirdComponent,
     },
     {
       key: "forthStep",
-      label: "Visualization and layout",
+      label: "Tuning and complementary analysis",
       isDone: false,
       component: finalComponent,
     },
     {
       key: "finalStep",
-      label: "Usage scenarios",
+      label: "Final configurations",
       isDone: false,
       component: finalComponent,
     },
@@ -108,40 +110,42 @@ function SpecificationWizard(props) {
         </div>
         <div className="step-component">{activeStep.component()}</div>
 
-        <div className="btn-component">
-          <button
-            type="button"
-            className="btn btn-outline-light"
-            onClick={handlClose}
-          >
-            <Icon.XCircle /> &nbsp;&nbsp;Close wizard
-          </button>
-
+        <div className="specification-footer">
           <div className="btn-component">
             <button
               type="button"
               className="btn btn-outline-light"
-              onClick={handleBack}
-              disabled={steps[0].key === activeStep.key}
+              onClick={handlClose}
             >
-              <Icon.SkipBackwardCircle /> &nbsp;&nbsp;Back
+              <Icon.XCircle /> &nbsp;&nbsp;Close wizard
             </button>
-            <button
-              type="button"
-              className="btn btn-outline-light"
-              value={
-                steps[steps.length - 1].key !== activeStep.key
+
+            <div className="btn-component">
+              <button
+                type="button"
+                className="btn btn-outline-light"
+                onClick={handleBack}
+                disabled={steps[0].key === activeStep.key}
+              >
+                <Icon.SkipBackwardCircle /> &nbsp;&nbsp;Back
+              </button>
+              <button
+                type="button"
+                className="btn btn-outline-light"
+                value={
+                  steps[steps.length - 1].key !== activeStep.key
+                    ? "Next"
+                    : "Submit"
+                }
+                onClick={handleNext}
+              >
+                &nbsp;&nbsp;
+                {steps[steps.length - 1].key !== activeStep.key
                   ? "Next"
-                  : "Submit"
-              }
-              onClick={handleNext}
-            >
-              &nbsp;&nbsp;
-              {steps[steps.length - 1].key !== activeStep.key
-                ? "Next"
-                : "Submit"}{" "}
-              <Icon.SkipForwardCircle />
-            </button>
+                  : "Submit"}{" "}
+                <Icon.SkipForwardCircle />
+              </button>
+            </div>
           </div>
         </div>
       </div>

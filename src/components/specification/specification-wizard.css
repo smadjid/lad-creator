@@ -1,96 +1,93 @@
 specification-wizard {
-    margin: 20px;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-      sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-  
-  .box {
-    width: 99%;
-    margin-left: .5%;
-    border: 1px solid #ddd;
+  margin: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
-    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
-    padding: .1rem;
-    background-color:#1e1f26!important;
-    
-  }
-  .box .steps {
-    border-bottom: 1px solid #ddd;
-  }
-  .box .steps ul {
-    overflow: hidden;
-  }
-  .box .steps ul li div {
-    color: #999;
-    padding: 10px 0 15px 45px;
-    position: relative;
-    background: #34495e;
-    
-  }
-  .box .steps ul li div span {
-    font-size: 13px;
-  }
-  .box .steps ul li:first-child div {
-    width: auto;
-    padding-left: 15px;
-  }
-  .box .steps ul li div::before {
-    content: " ";
-    border-top: 50px solid transparent;
-    border-bottom: 50px solid transparent;
-    border-left: 30px solid #ddd;
-    position: absolute;
-    top: 50%;
-    margin-top: -50px;
-    left: 100%;
-    z-index: 1;
-    margin-left: 1px;
-  }
-  .box .steps ul li div::after {
-    content: " ";
-    border-top: 50px solid transparent;
-    border-bottom: 50px solid transparent;
-    border-left: 30px solid #34495e;  
-    position: absolute;
-    top: 50%;
-    margin-top: -50px;
-    left: 100%;
-    z-index: 2;
-  }
-  .box .steps ul li.done div {
-    border-color: #2c3e50 !important;
-    color: #fff !important;
-    background: #2c3e50 !important;
-  }
-  .box .steps ul li.done div::after {
-    border-left: 30px solid #2c3e50;
-  }
-  .box .steps ul li.active div {
-    border-color: #167495 !important;
-    color: #fff !important;
-    background: #167495 !important;
-  }
-  .box .steps ul li.active div::after {
-    border-left: 30px solid #167495;
-  }
-  
-  
-  .box .step-component {
-    padding: 20px;
-    height: 200px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .box .btn-component {
-    margin-left: 10px;
-    margin-right: 10px;
-    margin-bottom: 5px;
-    display: flex;
-    justify-content: space-between;
-  }
+.box {
+  width: 99%;
+  margin-left: 0.5%;
+  border: 1px solid #ddd;
 
-  
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
+  padding: 0.1rem;
+  background-color: #1e1f26 !important;
+}
+.box .steps {
+  border-bottom: 1px solid #ddd;
+}
+.box .steps ul {
+  overflow: hidden;
+}
+.box .steps ul li div {
+  color: #999;
+  padding: 10px 0 15px 45px;
+  position: relative;
+  background: #2c3e50;
+}
+.box .steps ul li div span {
+  font-size: 13px;
+}
+.box .steps ul li:first-child div {
+  width: auto;
+  padding-left: 15px;
+}
+.box .steps ul li div::before {
+  content: " ";
+  border-top: 50px solid transparent;
+  border-bottom: 50px solid transparent;
+  border-left: 30px solid #ddd;
+  position: absolute;
+  top: 50%;
+  margin-top: -50px;
+  left: 100%;
+  z-index: 1;
+  margin-left: 1px;
+}
+.box .steps ul li div::after {
+  content: " ";
+  border-top: 50px solid transparent;
+  border-bottom: 50px solid transparent;
+  border-left: 30px solid #2c3e50;
+  position: absolute;
+  top: 50%;
+  margin-top: -50px;
+  left: 100%;
+  z-index: 2;
+}
+.box .steps ul li.done div {
+  border-color: #2c3e50 !important;
+  color: #fff !important;
+  background: #2c3e50 !important;
+}
+.box .steps ul li.done div::after {
+  border-left: 30px solid #2c3e50;
+}
+.box .steps ul li.active div {
+  border-color: #22313f !important;
+  color: #fff !important;
+  background: #22313f !important;
+}
+.box .steps ul li.active div::after {
+  border-left: 30px solid #22313f;
+}
+
+.box .step-component {
+  padding: 2px;
+  min-height: 200px;
+  /*display: flex;*/
+ text-align: left;
+ font-size: medium;
+}
+
+.box .btn-component {
+  display: flex;
+  justify-content: space-between;
+}
+
+.specification-footer {
+  background-color: #37383847;
+}
