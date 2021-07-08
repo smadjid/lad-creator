@@ -32,3 +32,21 @@ input {
   .div_new_frame{
     margin-top: 10px;
   }  
+  .modal-style .modal-header {
+    background-color: #618baf;
+    padding:10px;
+    color:#FFF;
+    border-bottom:2px dashed #618baf;
+    font-size: medium;
+ }
+ .modal-style .modal-content {
+ background-color: #efefef;
+ border-radius:0;
+ padding-left: 10px;
+}
+ .modal-style .modal-header .modal-title{
+font-size: medium;
+}
+.modal-style .modal-footer {
+  padding: 0;
+ }

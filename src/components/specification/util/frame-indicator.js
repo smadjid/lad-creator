@@ -387,7 +387,7 @@ const FrameIndicator = (props) => {
       <div className="frame_action_buttons row">
         <div className="col-md-8">
           <h5>
-            Sensemaking frame {props.position} -{" "}
+          <b>{props.type}</b> frame  -{" "}
             <b>
               <i>{props.framename}</i>
             </b>

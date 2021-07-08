@@ -19,6 +19,7 @@ const Frame = (props) => {
     setFrames(
       frames.concat(
         <FrameIndicator
+          type={new_frame_data.type}
           position={frames.length + 1}
           framename={new_frame_data.title}
         />
@@ -39,13 +40,16 @@ const Frame = (props) => {
           "Adding data and new relationships to better elaborate the current interpretation of the situation";
         break;
       case "Inquiry":
-        description = "Questioning data that is incompatible with the current interpretation of the situation";
+        description =
+          "Questioning data that is incompatible with the current interpretation of the situation";
         break;
       case "Preservation":
-        description = "Seeking if an explication of the situation is consistent despite apparent incompatibility";
+        description =
+          "Seeking if an explication of the situation is consistent despite apparent incompatibility";
         break;
       case "Comparison":
-        description = "Comparing multiple interpretations that can explain the situation";
+        description =
+          "Comparing multiple interpretations that can explain the situation";
         break;
       case "Reframing":
         description = "Looking for a reason that explains the situation";
@@ -83,6 +87,7 @@ const Frame = (props) => {
             keyboard={false}
             size="lg"
             aria-labelledby="contained-modal-title-vcenter"
+            dialogClassName="modal-style"
             scrollable
             centered
           >
@@ -102,7 +107,7 @@ const Frame = (props) => {
                     onChange={(e) => updateDialogData("title", e)}
                     required
                   />
-                  <small  className="form-text text-muted">
+                  <small className="form-text text-muted">
                     Please make it unique and keep it concise
                   </small>
                 </div>
@@ -113,7 +118,7 @@ const Frame = (props) => {
                   </strong>
                   <select
                     className="form-control"
-                    id="select_relation"                    
+                    id="select_relation"
                     value={new_frame_data.type}
                     onChange={(e) => {
                       updateDialogData("type", e);
@@ -128,20 +133,23 @@ const Frame = (props) => {
                     <option>Seeking</option>
                     <option>(Other)</option>
                   </select>
-                  <small  className="form-text text-muted">Short description of the slected item</small>
-                  <div><panel >
-                    {new_frame_data.description}
-                  </panel></div>
+                  <small className="form-text text-muted">
+                    Short description of the slected item
+                  </small>
+                  <div>
+                    <panel>{new_frame_data.description}</panel>
+                  </div>
                 </div>
               </form>
             </Modal.Body>
             <Modal.Footer>
-              <Button  onClick={handleClose}>
+              <Button onClick={handleClose} size="sm" variant="secondary">
                 Close
               </Button>
               <Button
                 type="submit"
-               
+                size="sm"
+                variant="secondary"
                 onClick={handleSave}
               >
                 Save Changes
