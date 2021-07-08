@@ -1,0 +1,17 @@
+.frame_indicator, .selectItem{
+    color:rgba(0, 0, 0, 0.87);
+}
+.frame_indicator{
+    padding:3%;
+    margin: 10px;
+    background-color: white;
+     box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.1);
+     border-radius: 5px
+}
+.frame_action_buttons .f_buttons{
+    
+    text-align: right;
+}
+.frame_action_buttons .btn{
+    margin-left: 10px;
+}

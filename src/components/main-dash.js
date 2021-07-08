@@ -25,7 +25,7 @@ function MainDash(props) {
       <Icon.LayoutWtf />  &nbsp;&nbsp;|&nbsp;&nbsp; Open and edit an existing LAD specification
     </button>
     <button type="button" className={`${styles.button}  btn btn-outline-light btn-lg` }>
-      <Icon.Collection />  &nbsp;&nbsp;|&nbsp;&nbsp; Explorer and manage the current Library
+      <Icon.Collection />  &nbsp;&nbsp;|&nbsp;&nbsp; Explore and manage the current Library
     </button>
     <button type="button" className={`${styles.button}  btn btn-outline-light btn-lg` }>
       <Icon.GearWideConnected />  &nbsp;&nbsp;|&nbsp;&nbsp;
@@ -42,7 +42,6 @@ function MainDash(props) {
   const [activeStep, setActiveStep] = useState(steps[0]);
   const specificationHandler=()=>{
     setActiveStep(steps[1]);
-    console.log(activeStep);
     return ;
   }
   return (

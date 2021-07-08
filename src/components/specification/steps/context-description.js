@@ -1,109 +1,221 @@
 import React, { useState } from "react";
 
 const ContextDescription = (props) => {
+  const [learningContext, setLearningContext] = useState("Institutional LMS");
+  const handleLearningContext = (e) => {
+    setLearningContext(e.target.value);
+  };
+  const [institution, setInstitution] = useState("moodle");
+  const handleInstitution = (e) => {
+    setInstitution(e.target.value);
+  };
+
+  const displayDetails = () => {
+    switch (learningContext) {
+      case "Institutional LMS":
+        return (
+          <select
+            className="form-select"
+            id="country"
+            placeholder="Your role"
+            value={institution}
+            onChange={handleInstitution}
+            required
+          >
+            <option value="moodle">Moodle</option>
+            <option value="mindflash">Mindflash</option>
+            <option value="blackboard">Blackboard</option>
+            <option value="joomla">Joomla LMS</option>
+            <option value="canva">Canvas</option>
+            <option value="captiva">Adobe Captivate Prime LMS</option>
+            <option value="docebo">Docebo</option>
+            <option value="skyprep">SkyPrep</option>
+            <option value="knowmax">Knowmax</option>
+            <option value="proprofs">ProProfs LMS</option>
+            <option value="ispring">iSpring Learn</option>
+            <option value="talent">TalentLMS</option>
+            <option value="litmos">Litmos</option>
+            <option value="edmodo">Edmodo</option>
+            <option value="brightspace">Brightspace</option>
+            <option value="absorb">Absorb LMS</option>
+            <option value="schoology">Schoology</option>
+            <option value="efront">eFront</option>
+            <option value="other">Other</option>
+          </select>
+        );
+      default:
+        return (
+          <textarea
+            type="text"
+            className="form-control"
+            id="lastName"
+            placeholder="Provide a short description"
+            value=""
+          ></textarea>
+        );
+    }
+  };
+
   return (
-    <div className="container-fluid">
-      <div className="row g-5">
-        <div className="col-md-5 col-lg-4 order-md-last">
-          <h4 className="d-flex justify-content-between align-items-center mb-3">
-            <span className="text-secondary">Summary</span>
-          </h4>
-          <ul className="list-group mb-3">
-            <li className="list-group-item d-flex justify-content-between lh-sm">
-              <div>
-                <h6 className="my-0">User's role</h6>
-                <small className="text-muted">(not provided)</small>
-              </div>
-              <span className="text-muted">(X)</span>
-            </li>
-          </ul>
+    
+      <form className="needs-validation" novalidate>
+        <div class="form-group row">
+          <h3>Learning context</h3>
+          <panel>Decsribe the learning context and your role within</panel>
+          <hr className="my-1" />
         </div>
 
-        <div className="col-md-7 col-lg-8">
-          <form className="needs-validation" novalidate>
-            <div class="form-group row">
-              <h3>Learning context</h3>
-              <panel>
-                Decsribe the context where the dashoard is meant to be used
-              </panel>
-              <hr className="my-1" />
-            </div>
+        <div className="col-md-8 mt-2 ">
+          <label for="country" className="form-label">
+            Type of learning environment
+          </label>
+          <select
+            className="form-select"
+            id="country"
+            placeholder="Your role"
+            value={learningContext}
+            onChange={handleLearningContext}
+            required
+          >
+            <option value="Institutional LMS">Institutional LMS</option>
+            <option value="Distant Class">Distant Class</option>
+            <option value="face-to-face">Face-to-face Class</option>
+            <option value="hybrid">Hybrid class</option>
+            <option value="mooc">MOOC</option>
+            <option value="other">Other</option>
+          </select>
+          <div className="invalid-feedback">Please select a valid type.</div>
+          <div className="col-sm-10">
+            <label for="firstName" className="form-label">
+              Environment details
+            </label>
+            {displayDetails()}
+          </div>
 
-            <div className="col-md-8 g-3">
-              <label for="role" className="form-label">
-                Your role within the learning context
-              </label>
-              <select
-                className="form-select"
-                id="role"
-                placeholder="Your role"
-                required
-              >
-                <option value="teacher">
-                  Teacher - who is in charge of the course
-                </option>
-                <option value="tutor">Tutor</option>
-                <option value="learner">Learner</option>
-                <option value="manager">Manager</option>
-                <option value="other">Other</option>
-              </select>
-              <div className="invalid-feedback">
-                Please select a valid role.
-              </div>
-              <hr className="my-3" />
-            </div>
-
-            <div className="col-md-8 mt-2 ">
-              <label for="country" className="form-label">
-                Type of learning environment
-              </label>
-              <select
-                className="form-select"
-                id="country"
-                placeholder="Your role"
-                required
-              >
-                <option value="teacher">Online class</option>
-                <option value="tutor">Offline class</option>
-                <option value="learner">Hybrid class</option>
-                <option value="manager">MOOC</option>
-                <option value="other">Other</option>
-              </select>
-              <div className="invalid-feedback">
-                Please select a valid role.
-              </div>
-              <div className="col-sm-10">
-                <label for="firstName" className="form-label">
-                  Details ?
-                </label>
-                <textarea
-                  type="text"
-                  className="form-control"
-                  id="lastName"
-                  placeholder=""
-                  value=""
-                />
-              </div>
-              <hr className="my-3" />
-            </div>
-
-       
-            <div className="form-check">
-              <input
-                type="checkbox"
-                className="form-check-input"
-                id="save-info"
-              />
-              <label className="form-check-label" for="save-info">
-                Save this information for next time
-              </label>
-            </div>
-
-            <hr className="my-4" />
-          </form>
+          <hr className="my-3" />
         </div>
-      </div>
-    </div>
+
+        <div className="col-md-8 g-3">
+          <label for="role" className="form-label">
+            Your role within the learning context
+          </label>
+          <select
+            className="form-select"
+            id="role"
+            placeholder="Your role"
+            required
+          >
+            <option value="teacher">Teacher - (in charge of the course)</option>
+            <option value="tutor">Tutor - (...)</option>
+            <option value="learner">Learner - (...)</option>
+            <option value="manager">Manager - (...)</option>
+            <option value="manager">Extern/Researcher - (...)</option>
+            <option value="other">Other</option>
+          </select>
+          <div className="col-sm-10">
+            <label>Complementary information about your role</label>
+            <textarea
+              type="text"
+              className="form-control"
+              id="lastName"
+              placeholder="Provide a short description"
+              value=""
+            ></textarea>
+          </div>
+        </div>
+        <hr className="my-4" />
+        <div class="form-group row">
+          <h3>Dashboard use context</h3>
+          <panel>
+            Decsribe the context where the dashoard is meant to be used
+          </panel>
+          <hr className="my-1" />
+        </div>
+
+        <div className="col-md-8 mt-2 ">
+          <label for="use" className="form-label">
+            The dashboard is maint to be used by
+          </label>
+          <div class="form-check">
+            <input
+              className="form-check-input"
+              type="checkbox"
+              name="use"
+              id="use1"
+              value="learner"
+            />
+            <label className="form-check-label" for="use1">
+              Learners
+            </label>
+          </div>
+          <div class="form-check">
+            <input
+              className="form-check-input"
+              type="checkbox"
+              name="use"
+              id="use2"
+              value="teachers"
+            />
+            <label class="form-check-label" for="use2">
+              Teachers
+            </label>
+          </div>
+
+          <div class="form-check">
+            <input
+              className="form-check-input"
+              type="checkbox"
+              name="use"
+              id="use2"
+              value="manager"
+            />
+            <label class="form-check-label" for="use2">
+              Managers
+            </label>
+          </div>
+
+          <hr className="my-3" />
+        </div>
+
+        
+
+        <div className="col-md-8 mt-2 ">
+          <label for="use" className="form-label">
+            The dashboard is maint to be used in
+          </label>
+          <div class="form-check">
+            <input
+              className="form-check-input"
+              type="checkbox"
+              name="use"
+              id="use1"
+              value="real"
+            />
+            <label className="form-check-label" for="use1">
+              In real time
+            </label>
+          </div>
+          <div class="form-check">
+            <input
+              className="form-check-input"
+              type="checkbox"
+              name="use"
+              id="use2"
+              value="retro"
+            />
+            <label class="form-check-label" for="use2">
+              Retrospectively
+            </label>
+          </div>
+
+          <hr className="my-3" />
+        </div>
+        <h2>Other things to collect</h2>
+        <h3>....</h3>
+        <h4>....</h4>
+        <hr className="my-4" />
+      </form>
+    
   );
 };
 export default ContextDescription;

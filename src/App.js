@@ -20,7 +20,7 @@ function App() {
           <a href="http://padlad.github.io/">PadLAD project</a>
         </p>
       </main>
-      <footer>(c)Madjid SADALLAH</footer>
+   
     </div>
   );
 }
