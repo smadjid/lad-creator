@@ -113,8 +113,7 @@ const Frame = (props) => {
                   </strong>
                   <select
                     className="form-control"
-                    id="select_relation"
-                    placeholder="Enter a title for the new frame"
+                    id="select_relation"                    
                     value={new_frame_data.type}
                     onChange={(e) => {
                       updateDialogData("type", e);

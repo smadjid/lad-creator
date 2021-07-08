@@ -7,22 +7,18 @@ import DecisionDescription from "./steps/decision-description";
 import IndicatorChooser from "./steps/indicator-chooser";
 import FrameReference from "./steps/frame-reference"
 import ComprehensionLevel from "./steps/comprehension-level";
-import ProjectionLevel from "./steps/projection-level";
 
-const firstComponent = () => {
+const outlineComponent = () => {
   return <ContextDescription />;
 };
-const secondComponent = () => {
+const decisionComponent = () => {
     return <DecisionDescription />;
 };
-const thirdComponent = () => {
+const mainFrameComponent = () => {
     return <FrameReference />;
 };
-const forthComponent = () => {
+const secondaryFrameComponent = () => {
   return <ComprehensionLevel />;
-}
-const fifthComponent = () => {
-  return <ProjectionLevel />;
 }
 const finalComponent = () => {
   return <div>Final Component</div>;
@@ -34,41 +30,35 @@ function SpecificationWizard(props) {
       key: "firstStep",
       label: "Use case outline",
       isDone: true,
-      component: firstComponent,
+      component: outlineComponent,
     },
     {
       key: "secondStep",
       label: "Decision context",
       isDone: true,
-      component: secondComponent,
+      component: decisionComponent,
     },
     {
       key: "thirdStep",
       label: "Situation perception",
       isDone: false,
-      component: thirdComponent,
+      component: mainFrameComponent,
     },
     {
       key: "forthStep",
       label: "Fine-grained analysis",
       isDone: false,
-      component: forthComponent,
+      component: secondaryFrameComponent,
     },
     {
       key: "fifthStep",
-      label: "Complementary analysis",
-      isDone: false,
-      component: fifthComponent,
-    },
-    {
-      key: "sixthStep",
       label: "Interface composition",
       isDone: false,
       component: finalComponent,
     },
     {
       key: "finalStep",
-      label: "Final configs & LAD generation",
+      label: "LAD config & generation",
       isDone: false,
       component: finalComponent,
     },
