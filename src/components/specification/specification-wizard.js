@@ -5,7 +5,7 @@ import "./specification-wizard.css";
 import ContextDescription from "./steps/context-description";
 import DecisionDescription from "./steps/decision-description";
 import IndicatorChooser from "./steps/indicator-chooser";
-import KPI from "./steps/kpi"
+import FrameReference from "./steps/frame-reference"
 import ComprehensionLevel from "./steps/comprehension-level";
 import ProjectionLevel from "./steps/projection-level";
 
@@ -16,7 +16,7 @@ const secondComponent = () => {
     return <DecisionDescription />;
 };
 const thirdComponent = () => {
-    return <KPI />;
+    return <FrameReference />;
 };
 const forthComponent = () => {
   return <ComprehensionLevel />;

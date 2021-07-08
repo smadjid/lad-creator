@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Chart from "../steps/chart";
 import Select from "react-select";
 import "./frame-indicator.css";
-
+import Frame from "./frame";
 const FrameIndicator = (props) => {
   const [objectives, setObjectives] = useState([]);
   const [indicators, setIndicators] = useState([]);
@@ -421,7 +421,7 @@ const FrameIndicator = (props) => {
               value="activity2"
             />
             <label class="form-check-label" for="objective">
-              <strong>Elobation</strong>
+              <strong>Elaboration</strong>
               <i>
                 &nbsp;-&nbsp;Adding data and new relationships to better
                 elaborate the current interpretation of the situation.
@@ -520,7 +520,9 @@ const FrameIndicator = (props) => {
           <h5>Select a suitable visualisation</h5>
           <Chart />
         </form>
+        <Frame />
       </div>
+      
     </div>
   );
 };

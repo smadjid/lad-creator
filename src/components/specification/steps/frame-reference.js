@@ -2,16 +2,17 @@ import React, { useState } from "react";
 import IndicatorChooser from "./indicator-chooser";
 import Chart from "./chart";
 import Select from "react-select";
-import "./kpi.css";
+import "./frame-reference.css";
+import Frame from "../util/frame";
 
-const KPI = (props) => {
+const FrameReference = (props) => {
   
   return (
     <div class="row">
       <div class="form-group row">
       <div class="row">
         <h3>
-          Main indicator (<i>anchor</i>) for situation perception
+          Frame of reference for situation perception
         </h3>
         <panel>
           Decsribe what main indicators that allow you to perform your analysis
@@ -26,7 +27,8 @@ const KPI = (props) => {
         <Chart />
       </div>
     </div>
+    <Frame />
     </div>
   );
 };
-export default KPI;
+export default FrameReference;
