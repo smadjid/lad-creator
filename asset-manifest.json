@@ -1,23 +1,23 @@
 {
   "files": {
-    "main.css": "/lad-creator/static/css/main.1ee05b5b.chunk.css",
-    "main.js": "/lad-creator/static/js/main.46bcf5a2.chunk.js",
-    "main.js.map": "/lad-creator/static/js/main.46bcf5a2.chunk.js.map",
-    "runtime-main.js": "/lad-creator/static/js/runtime-main.484836f1.js",
-    "runtime-main.js.map": "/lad-creator/static/js/runtime-main.484836f1.js.map",
-    "static/js/2.c51d7cf4.chunk.js": "/lad-creator/static/js/2.c51d7cf4.chunk.js",
-    "static/js/2.c51d7cf4.chunk.js.map": "/lad-creator/static/js/2.c51d7cf4.chunk.js.map",
-    "static/js/3.27199889.chunk.js": "/lad-creator/static/js/3.27199889.chunk.js",
-    "static/js/3.27199889.chunk.js.map": "/lad-creator/static/js/3.27199889.chunk.js.map",
-    "index.html": "/lad-creator/index.html",
-    "static/css/main.1ee05b5b.chunk.css.map": "/lad-creator/static/css/main.1ee05b5b.chunk.css.map",
-    "static/js/2.c51d7cf4.chunk.js.LICENSE.txt": "/lad-creator/static/js/2.c51d7cf4.chunk.js.LICENSE.txt",
-    "static/media/logo.a8f13f8c.png": "/lad-creator/static/media/logo.a8f13f8c.png"
+    "main.css": "/ladStudio/static/css/main.1ee05b5b.chunk.css",
+    "main.js": "/ladStudio/static/js/main.69a932d8.chunk.js",
+    "main.js.map": "/ladStudio/static/js/main.69a932d8.chunk.js.map",
+    "runtime-main.js": "/ladStudio/static/js/runtime-main.ff733b3c.js",
+    "runtime-main.js.map": "/ladStudio/static/js/runtime-main.ff733b3c.js.map",
+    "static/js/2.aad06a0a.chunk.js": "/ladStudio/static/js/2.aad06a0a.chunk.js",
+    "static/js/2.aad06a0a.chunk.js.map": "/ladStudio/static/js/2.aad06a0a.chunk.js.map",
+    "static/js/3.6031244a.chunk.js": "/ladStudio/static/js/3.6031244a.chunk.js",
+    "static/js/3.6031244a.chunk.js.map": "/ladStudio/static/js/3.6031244a.chunk.js.map",
+    "index.html": "/ladStudio/index.html",
+    "static/css/main.1ee05b5b.chunk.css.map": "/ladStudio/static/css/main.1ee05b5b.chunk.css.map",
+    "static/js/2.aad06a0a.chunk.js.LICENSE.txt": "/ladStudio/static/js/2.aad06a0a.chunk.js.LICENSE.txt",
+    "static/media/logo.a8f13f8c.png": "/ladStudio/static/media/logo.a8f13f8c.png"
   },
   "entrypoints": [
-    "static/js/runtime-main.484836f1.js",
-    "static/js/2.c51d7cf4.chunk.js",
+    "static/js/runtime-main.ff733b3c.js",
+    "static/js/2.aad06a0a.chunk.js",
     "static/css/main.1ee05b5b.chunk.css",
-    "static/js/main.46bcf5a2.chunk.js"
+    "static/js/main.69a932d8.chunk.js"
   ]
 }
