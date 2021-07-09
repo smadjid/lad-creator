@@ -7,6 +7,8 @@ import DecisionDescription from "./steps/decision-description";
 import IndicatorChooser from "./steps/indicator-chooser";
 import FrameReference from "./steps/frame-reference"
 import ComprehensionLevel from "./steps/comprehension-level";
+import GenerateComponent from "./steps/generate-component";
+import dash from "../../data/template_dash.json";
 
 const outlineComponent = () => {
   return <ContextDescription />;
@@ -21,10 +23,15 @@ const secondaryFrameComponent = () => {
   return <ComprehensionLevel />;
 }
 const finalComponent = () => {
-  return <div>Final Component</div>;
+  return <GenerateComponent />;
 };
 
 function SpecificationWizard(props) {
+  const [dashboardStructure, setDashboardStructure]=useState({
+    context:{},
+    decision:{},
+    
+  });
   const [steps, setSteps] = useState([
     {
       key: "firstStep",
@@ -204,7 +211,7 @@ function SpecificationWizard(props) {
                 value={
                   steps[steps.length - 1].key !== activeStep.key
                     ? "Next    "
-                    : "Generate"
+                    : "Close"
                 }
                 onClick={handleNext}
               >
