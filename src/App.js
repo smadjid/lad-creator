@@ -16,7 +16,7 @@ function App() {
       <main className="App-main">
         <MainDash />
         <p>
-          The <em>LAD Creator</em> tool is part of the{" "}
+          The <em>LAD Studio</em> tool is part of the{" "}
           <a href="http://padlad.github.io/">PadLAD project</a>
         </p>
       </main>
