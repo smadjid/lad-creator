@@ -10,7 +10,7 @@ function App() {
           <img src={logo} className="App-logo" alt="logo" />
           <b> </b>
         </div>
-        <hr />
+        <hr /> 
       </header>
 
       <main className="App-main">
