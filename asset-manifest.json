@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/lad-creator/static/css/main.1ee05b5b.chunk.css",
-    "main.js": "/lad-creator/static/js/main.0ceaec8a.chunk.js",
-    "main.js.map": "/lad-creator/static/js/main.0ceaec8a.chunk.js.map",
+    "main.js": "/lad-creator/static/js/main.46bcf5a2.chunk.js",
+    "main.js.map": "/lad-creator/static/js/main.46bcf5a2.chunk.js.map",
     "runtime-main.js": "/lad-creator/static/js/runtime-main.484836f1.js",
     "runtime-main.js.map": "/lad-creator/static/js/runtime-main.484836f1.js.map",
     "static/js/2.c51d7cf4.chunk.js": "/lad-creator/static/js/2.c51d7cf4.chunk.js",
@@ -12,12 +12,12 @@
     "index.html": "/lad-creator/index.html",
     "static/css/main.1ee05b5b.chunk.css.map": "/lad-creator/static/css/main.1ee05b5b.chunk.css.map",
     "static/js/2.c51d7cf4.chunk.js.LICENSE.txt": "/lad-creator/static/js/2.c51d7cf4.chunk.js.LICENSE.txt",
-    "static/media/logo.643c5d7a.png": "/lad-creator/static/media/logo.643c5d7a.png"
+    "static/media/logo.a8f13f8c.png": "/lad-creator/static/media/logo.a8f13f8c.png"
   },
   "entrypoints": [
     "static/js/runtime-main.484836f1.js",
     "static/js/2.c51d7cf4.chunk.js",
     "static/css/main.1ee05b5b.chunk.css",
-    "static/js/main.0ceaec8a.chunk.js"
+    "static/js/main.46bcf5a2.chunk.js"
   ]
 }
