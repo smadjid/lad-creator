@@ -2,13 +2,16 @@ import React, { useState } from "react";
 import Chart from "../steps/chart";
 import Select from "react-select";
 import "./frame-indicator.css";
-import Frame from "./frame";
+import FrameComprehension from "../steps/frame-comprehension";
+import { Accordion, Card } from "react-bootstrap";
+
 const FrameIndicator = (props) => {
   const [objectives, setObjectives] = useState([]);
   const [indicators, setIndicators] = useState([]);
   const [indicatorClass, setIndicatorClass] = useState();
   const [objectiveValue, setObjectiveValue] = useState();
   const [indicatorValue, setIndicatorValue] = useState();
+  const [position, setPosition] = useState("right");
   const allIndicators = [
     {
       value: "ind_11_1",
@@ -381,148 +384,165 @@ const FrameIndicator = (props) => {
   const handleIndicatorChange = (e) => {
     setIndicatorValue(e);
   };
+  const handlePositionChange = (e) => {
+    setPosition(e.target.options[e.target.selectedIndex].value);
+  };
   const [frameCollapsed, setFrameCollapsed] = useState(false);
   return (
-    <div className="row frame_indicator">
-      <div className="frame_action_buttons row">
-        <div className="col-md-8">
-          <h5>
-          <b>{props.type} frame </b>  -{" "}
-            <b>
-              <i>{props.framename}</i>
-            </b>
-          </h5>
-          <hr />
-        </div>
-        <div className="col-md-4 f_buttons">
+    <div className="row card text-dark ">
+      <div class="frame_header">
+        <h5>
+          {" "}
+          <span class="badge bg-success">
+            <i>{props.type} Frame</i>
+          </span>
+          <b> {props.framename}</b> 
+        </h5>
+        <div>
           <span
-            className="btn btn-primary"
+            className="btn btn-sm btn-outline-primary "
             onClick={() => setFrameCollapsed(!frameCollapsed)}
           >
             {`${frameCollapsed ? "Show" : "Hide"} `}
           </span>
-          <span className="btn btn-danger" onClick={() =>{
-            
-    console.log("NOT IMPLEMENTED");
-          } }>
+          &nbsp;
+          <span
+            className="btn btn-sm btn-outline-danger"
+            onClick={() => {
+              console.log("NOT IMPLEMENTED");
+              props.onDelete(props.id);
+            }}
+          >
             Delete
           </span>
         </div>
       </div>
       <div className={`${frameCollapsed ? "collapse" : ""} row`}>
-        <div className="col-md-7">
-          <h4>Activity for this frame</h4>
-          <div class="form-check">
-            <input
-              className="form-check-input"
-              type="radio"
-              name="activity"
-              id="objective1"
-              value="activity2"
-            />
-            <label class="form-check-label" for="objective">
-              <strong>Elaboration</strong>
-              <i>
-                &nbsp;-&nbsp;Adding data and new relationships to better
-                elaborate the current interpretation of the situation.
-              </i>
-            </label>
-          </div>
-          <div class="form-check">
-            <input
-              className="form-check-input"
-              type="radio"
-              name="activity"
-              id="objective2"
-              value="activity2"
-            />
-            <label class="form-check-label" for="objective2">
-              <strong>Inquiry</strong>
-              <i>
-                &nbsp;-&nbsp;Questioning data that is incompatible with the
-                current interpretation of the situation.
-              </i>
-            </label>
-          </div>
-          <div class="form-check">
-            <input
-              className="form-check-input"
-              type="radio"
-              name="activity"
-              id="objective3"
-              value="activity3"
-            />
-            <label class="form-check-label" for="objective2">
-              <strong>Preservation</strong>
-              <i>
-                &nbsp;-&nbsp;Seeking if an explication of the situation is
-                consistent despite apparent incompatibility
-              </i>
-            </label>
-          </div>
-          <div class="form-check">
-            <input
-              className="form-check-input"
-              type="radio"
-              name="activity"
-              id="objective4"
-              value="activity4"
-            />
-            <label class="form-check-label" for="objective2">
-              <strong>Comparison</strong>
-              <i>
-                &nbsp;-&nbsp;Comparing multiple interpretations that can explain
-                the situation.{" "}
-              </i>
-            </label>
-          </div>
-          <div class="form-check">
-            <input
-              className="form-check-input"
-              type="radio"
-              name="activity"
-              id="objective5"
-              value="activity5"
-            />
-            <label class="form-check-label" for="objective2">
-              <strong>Reframing </strong>
-              <i>
-                &nbsp;-&nbsp;Looking for a reason that explains the situation.
-              </i>
-            </label>
-          </div>
-          <div class="form-check">
-            <input
-              className="form-check-input"
-              type="radio"
-              name="activity"
-              id="objective6"
-              value="activity6"
-            />
-            <label class="form-check-label" for="objective2">
-              <strong>Seeking</strong>
-              <i>&nbsp;-&nbsp;Seeking a new interpretation of the situation.</i>
-            </label>
-          </div>
-          <hr />
-          <h5>Search and select an appropriate indicator </h5>
-
-          <div className="form-group has-search">
-            <Select
-              isSearchable
-              className="selectItem"
-              placeholder="Search and/or select an appropriate indicator"
-              options={allIndicators}
-            />
+        <div className="col-md-7 card-body">
+          <div className="card">
+            <Card className="transition-config">
+              <Card.Header className="dark-white">
+                <h5>Indicator and visualization </h5>
+              </Card.Header>
+              <Card.Body>
+                <h5>Search and select an appropriate indicator </h5>
+                <div className="form-group has-search">
+                  <Select
+                    isSearchable
+                    className="selectItem"
+                    placeholder="Search and/or select an appropriate indicator"
+                    options={allIndicators}
+                  />
+                </div>
+                <hr />
+                <h5>Select a suitable visualisation</h5>
+                <div>
+                  <Chart />
+                </div>
+              </Card.Body>
+            </Card>
           </div>
         </div>
-        <form className="needs-validation col-md-5" noValidate>
-          <h5>Select a suitable visualisation</h5>
-          <Chart />
-        </form>
-        <Frame />
+
+        <Card className="col-md-5 bg-light transition-config">
+          <Card.Header className="dark-white">
+            <h5>Transition config </h5>
+          </Card.Header>
+          <Card.Body>
+            <div>
+              <Card className=" text-dark bg-light mb-3">
+                <Card.Header>Transition from the reference frame</Card.Header>
+
+                <Card.Body>
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      value=""
+                      id="select_relation1"
+                    />
+                    <label class="form-check-label" for="select_relation1">
+                    On click on the frame
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      value=""
+                      id="select_relation2"
+                    />
+                    <label class="form-check-label" for="select_relation2">
+                    On hover on the frame
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      value=""
+                      id="select_relation3"
+                    />
+                    <label class="form-check-label" for="select_relation3">
+                    Simultaneous display
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      value=""
+                      id="select_relation1"
+                    />
+                    <label class="form-check-label" for="select_relation1">
+                    (Other)
+                    </label>
+                  </div>
+
+                  
+                  <small className="form-text text-muted">
+                    Short description of the slected item
+                  </small>
+                </Card.Body>
+              </Card>
+
+              <Card className="text-dark bg-light mb-3">
+                <Card.Header>Position of the frame</Card.Header>
+
+                <Card.Body>
+                  <select
+                    className="form-control"
+                    id="select_relation"
+                    onChange={handlePositionChange}
+                    value={position}
+                  >
+                    <option value="right">Right of the reference frame</option>
+                    <option value="left">Left of the reference frame</option>
+                    <option value="above">Above of the reference frame</option>
+                    <option value="below">
+                      Underneath of the reference frame
+                    </option>
+                    <option value="on">Replace the reference frame</option>
+                  </select>
+                  <small className="form-text text-muted">
+                    Short description of the slected item
+                  </small>
+                  <img
+                    className="chart_box-image"
+                    src={
+                      process.env.PUBLIC_URL +
+                      "/charts/position_" +
+                      position +
+                      ".png"
+                    }
+                  />
+                </Card.Body>
+              </Card>
+            </div>
+          </Card.Body>
+        </Card>
+        <FrameComprehension />
       </div>
-      
     </div>
   );
 };

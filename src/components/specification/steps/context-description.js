@@ -210,10 +210,7 @@ const ContextDescription = (props) => {
 
           <hr className="my-3" />
         </div>
-        <h2>Other things to collect</h2>
-        <h3>....</h3>
-        <h4>....</h4>
-        <hr className="my-4" />
+        
       </form>
     
   );

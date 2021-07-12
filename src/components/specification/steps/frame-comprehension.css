@@ -3,7 +3,7 @@ input {
     padding: 8px;
     width: 300px;
   }
-  .no-autocomplete {
+   .no-autocomplete {
     color: #999;
     padding: 8px;
   }
@@ -31,6 +31,7 @@ input {
   }
   .div_new_frame{
     margin-top: 10px;
+    
   }  
   .modal-style .modal-header {
     background-color: #618baf;
@@ -44,7 +45,7 @@ input {
  border-radius:0;
  padding-left: 10px;
 }
- .modal-style .modal-header .modal-title{
+.modal-style .modal-header .modal-title{
 font-size: medium;
 }
 .modal-style .modal-footer {

@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import "./chart.css";
 
 const Chart = (props) => {
+  const updateComponent =
+  (props.onUpdate == undefined) ?  ((e) =>   console.log(e)):((e) =>   props.onUpdate(e));
+
   const allChartTypes = [
     {
       key: "violin",
@@ -304,21 +307,23 @@ const Chart = (props) => {
 
     setChartTypes(s_graphs);
     setCurrentVisualElement(s_graphs[0]);
+
+    updateComponent(s_graphs[0].title);
   };
 
   const handleTypeChange = (e) => {
-    console.log("CALLED handleTypeChange");
     setSelectChart(e.currentTarget.value);
     let filtered = chartTypes.reduce(
       (a, o) => (o.title == e.currentTarget.value && a.push(o), a),
       []
     );
     setCurrentVisualElement(filtered[0]);
+    updateComponent(filtered[0].title);
   };
 
   return (
-    <div className="row">
-      <div className="row">
+    <div>
+      <div className="row1">
         <label for="chart" className="form-label">
           Class of charts
         </label>
@@ -341,7 +346,6 @@ const Chart = (props) => {
           })}
         </select>
       </div>
-      <div className="row"></div>
       <label for="chart" className="form-label">
         Chart name
       </label>
@@ -356,22 +360,25 @@ const Chart = (props) => {
           return <option key={obj.key}>{obj.title}</option>;
         })}
       </select>
-      
-        <div className="chart_box">
-            <div className="chart_box-overlay"></div>
-            <img className="chart_box-image" src={
-              process.env.PUBLIC_URL +
-              "/charts/" +
-              currentVisualElement.key +
-              ".png"
-            } />
-            <div className="chart_box-details fadeIn-bottom">
-              <p className="chart_box-text">
-                <i className="fa fa-map-marker"></i> {currentVisualElement.description}
-              </p>
-            </div>
+
+      <div className="chart_box">
+        <div className="chart_box-overlay"></div>
+        <img
+          className="chart_box-image"
+          src={
+            process.env.PUBLIC_URL +
+            "/charts/" +
+            currentVisualElement.key +
+            ".png"
+          }
+        />
+        <div className="chart_box-details fadeIn-bottom">
+          <p className="chart_box-text">
+            <i className="fa fa-map-marker"></i>{" "}
+            {currentVisualElement.description}
+          </p>
+        </div>
       </div>
-      
     </div>
   );
 };

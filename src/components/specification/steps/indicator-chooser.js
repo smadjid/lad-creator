@@ -45,6 +45,7 @@ const IndicatorChooser = (props) => {
         ]);
     }
     setObjectiveValue(objectives[0]);
+    
   };
 
   const handleObjectiveChange = (e) => {
@@ -96,12 +97,13 @@ const IndicatorChooser = (props) => {
       default:
         selectedObjective_indicators=indicators_list;
     }
-    console.log(selectedObjective_indicators);
     setIndicators(selectedObjective_indicators);
     setIndicatorValue(indicators[0]);
+    
   };
   const handleIndicatorChange = (e) => {
-    setIndicatorValue(e);
+    setIndicatorValue(e); console.log(e.label);
+    props.onUpdate(e.label);
   };
 
   return (
@@ -120,6 +122,8 @@ const IndicatorChooser = (props) => {
             <Select 
             isSearchable
               className="selectItem"
+              value={indicatorValue}
+              onChange={handleIndicatorChange}
               placeholder="Search and/or select an appropriate indicator"
               options={indicators_list} />
           </div>
