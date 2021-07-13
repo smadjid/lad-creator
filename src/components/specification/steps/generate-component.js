@@ -13,20 +13,23 @@ const GenerateComponent = () => {
   const blob = new Blob([fileData], { type: "text/plain" });
 
   const [mainPanel, setMainPanel] = useState();
+  const [comprehensionFrames, setComprehensionFrames] = useState([]);
   const [dashMeta, setDashMeta] = useState();
 
   const [file, setFile] = useState();
 
   const generateMeta = () => {
-    setDashMeta({id: null,
+    setDashMeta({
+      id: null,
       uid: "cLV5GDCkz",
-      title: ladContext.Title,      
+      title: ladContext.Title,
       tags: [],
       style: "dark",
       timezone: "browser",
       editable: true,
       hideControls: false,
-      graphTooltip: 1,});
+      graphTooltip: 1,
+    });
   };
 
   const generateMainFrame = () => {
@@ -45,16 +48,42 @@ const GenerateComponent = () => {
     });
   };
 
+  const generateOneFrame = (data) => {
+    return {
+      type: data.graphic,
+      title: data.framename,
+      gridPos: {
+        x: 0,
+        y: 0,
+        w: 12,
+        h: 9,
+      },
+      id: data.id,
+      mode: "markdown",
+      content: "# title",
+    };
+  };
+  const generateComprehensionFrames = () => {
+    //console.log(ladContext.comprehensionFrames); return;
+    ladContext.comprehensionFrames.map((f) => {
+      setComprehensionFrames(comprehensionFrames.concat(generateOneFrame(f)));
+    });
+  };
+
   const generateJsonStructure = () => {
     generateMainFrame();
     generateMeta();
-  //  setFile(dashMeta);
-    const f={...file,...dashMeta};
-    setFile({...file,...dashMeta,panels: [mainPanel]});
+    generateComprehensionFrames();
+    console.log(comprehensionFrames);
+    //  setFile(dashMeta);
+    let p = [];
+    p = p.concat(mainPanel);
+    p = p.concat(comprehensionFrames);
+    const f = { ...file, ...dashMeta };
+    setFile({ ...file, ...dashMeta, panels: p });
     return;
 
     setFile({
-      
       time: {
         from: "now-6h",
         to: "now",
