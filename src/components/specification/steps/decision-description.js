@@ -1,6 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import "./decision-description.css"
+import { AppContext } from "../specification-wizard";
 
 const DecisionDescription = (props) => {
+  const [ladContext, setLadContext] = useContext(AppContext);
   const [typeDecision, settypeDecision] = useState("Institutional LMS");
   const handletypeDecision = (e) => {
     settypeDecision(e.target.value);
@@ -9,7 +12,12 @@ const DecisionDescription = (props) => {
   const handleInstitution = (e) => {
     setInstitution(e.target.value);
   };
-
+  const updateLadContext = (e)=>{
+    
+    setLadContext((prevState) => {
+      return { ...prevState, Title:e.target.value };
+    });
+  }
   const displayDetails = () => {
     switch (typeDecision) {
       case "Institutional LMS":
@@ -42,19 +50,19 @@ const DecisionDescription = (props) => {
 
   return (
       <form className="needs-validation" novalidate>
-        <div class="form-group row">
+        <div class="form-group row decision-meta">
           <h3>Decision to be taken</h3>
           <panel>Provide a title for the situational decision</panel>
-          <div class="input-group input-group-sm mb-3">
+          <div class="input-group input-group-sm mb-3 decision-title">
   <span class="input-group-text" id="inputGroup-sizing-sm" >Title</span>
-  <input type="text" class="form-control" aria-label="Sizing example input" placeholder="A short title" aria-describedby="inputGroup-sizing-sm"/>  
+  <input type="text" class="form-control" aria-label="Sizing example input" placeholder="A short title" value={ladContext.Title} onChange={updateLadContext}  aria-describedby="inputGroup-sizing-sm"/>  
 </div>
 <panel>Provide a description of the situation and the decision</panel>
   <div class="input-group">
   <span class="input-group-text" placeholder="A concise description">Description</span>
   <textarea class="form-control" aria-label="With textarea"></textarea>
 </div>
-          <hr className="my-1" />
+          
         </div>
 
         <div className="col-md-8 mt-2 ">
