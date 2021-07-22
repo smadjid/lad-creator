@@ -97,7 +97,7 @@ function DashboardSpecificationWizard(props) {
         return x;
       })
     );
-    console.log(steps[index]);
+    
     setActiveStep(steps[index + 1]);
   };
 

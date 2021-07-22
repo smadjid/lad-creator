@@ -1,0 +1,132 @@
+.sidebar {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background-color:#1e1f26!important;
+  font-size:medium;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  padding-left: 0px;
+}
+
+.sidebar-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sidebar-item-content {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.sidebar-item-icon {
+  margin-right: 6px;
+}
+
+.sidebar-item-text {
+  width: 100%;
+}
+
+.sidebar-item-expand-arrow {
+  font-size: 1.5rem !important;
+}
+
+.sidebar-item-expand-arrow-expanded {
+  color: #09bb12;
+  font-weight: bold;
+}
+
+
+
+
+
+.App {
+  text-align: center;
+  min-height: 100vh;
+  background-color: #1e2b41;
+}
+
+.App-header {
+  width: 100%;
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.library-items {
+  background-color: #282c34;
+  /*min-height: 100vh;*/
+  display: flex;
+  flex-direction: column;
+  /*align-items: center;*/
+  
+  font-size: .8rem;
+  color: white;
+  
+}
+
+input, textarea, select {
+  padding: 0.6rem;
+  width: 300px;
+  margin-bottom: 1rem;
+}
+
+.add-decision, .add-indicator, .add-frame, .add-visualization, .add-frame, .add-panel {
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+  
+}
+
+#btn {
+  cursor: pointer;
+  width: 8rem;
+  padding: 1rem 0rem;
+  font-size: 1rem;
+  background-color: cornflowerblue;
+  color: white;
+  border: none;
+  border-radius: 2rem;
+}
+#btn:hover {
+  background-color: rgb(73, 119, 206);
+}
+
+.del-btn {
+  cursor: pointer;
+  width: 8rem;
+  padding: 1rem 0rem;
+  font-size: 1rem;
+  background-color: rgb(237, 100, 100);
+  color: white;
+  border: none;
+  border-radius: 2rem;
+}
+
+.del-btn:hover {
+  background-color: rgb(206, 73, 73);
+}
+
+.decision, .indicator, .frame, .visualization, .panel {
+  border: 1px solid grey;
+  width: fit-content;
+  padding: 1em;
+}
+
+.decisions, .indicators, .frames, .visualizations, .panels {
+  display: flex;
+}

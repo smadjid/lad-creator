@@ -102,7 +102,7 @@ const IndicatorChooser = (props) => {
     
   };
   const handleIndicatorChange = (e) => {
-    setIndicatorValue(e); console.log(e.label);
+    setIndicatorValue(e);
     props.onUpdate(e.label);
   };
 
@@ -162,9 +162,7 @@ const IndicatorChooser = (props) => {
                 { value: "class_4", label: "Monitoring comprehension" },
               ]}
             >
-              <option value="class_1">
-                Monitoring the use of media and tools
-              </option>
+              <option value="class_1">Monitoring the use of media and tools</option>
               <option value="class_2">Monitoring Information Retrieval</option>
               <option value="class_3">Monitoring of student activity</option>
               <option value="class_4">Monitoring comprehension</option>

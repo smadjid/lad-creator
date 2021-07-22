@@ -1,8 +1,11 @@
 import React, { useState, useContext } from "react";
 import "./decision-description.css"
 import { AppContext } from "../specification-wizard";
+import { useForm } from "react-hook-form";
 
 const DecisionDescription = (props) => {
+  const { register, handleSubmit, reset } = useForm();
+  
   const [ladContext, setLadContext] = useContext(AppContext);
   const [typeDecision, settypeDecision] = useState("Institutional LMS");
   const handletypeDecision = (e) => {
@@ -18,35 +21,7 @@ const DecisionDescription = (props) => {
       return { ...prevState, Title:e.target.value };
     });
   }
-  const displayDetails = () => {
-    switch (typeDecision) {
-      case "Institutional LMS":
-        return (
-          <select
-            className="form-select"
-            id="country"
-            placeholder="Your role"
-            value={institution}
-            onChange={handleInstitution}
-            required
-          >
-            <option value="moodle">Moodle</option>
-            <option value="mindflash">Mindflash</option>
-            <option value="blackboard">Blackboard</option>           
-          </select>
-        );
-      default:
-        return (
-          <textarea
-            type="text"
-            className="form-control"
-            id="lastName"
-            placeholder="Provide a short description"
-            value=""
-          ></textarea>
-        );
-    }
-  };
+  
 
   return (
       <form className="needs-validation" novalidate>
@@ -66,10 +41,10 @@ const DecisionDescription = (props) => {
         </div>
 
         <div className="col-md-8 mt-2 ">
-          <label for="country" className="form-label">
+          <label for="country" className="form-label" >
             Type of decision
           </label>
-          <select
+          <select 
             className="form-select"
             id="country"
             placeholder="Your role"
@@ -96,6 +71,7 @@ const DecisionDescription = (props) => {
               name="objective"
               id="objective1"
               value="student"
+              
             />
             <label className="form-check-label" for="objective1">
               Person (learner/teacher/...): focused on the user and his profile

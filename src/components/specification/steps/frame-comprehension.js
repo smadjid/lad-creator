@@ -4,7 +4,7 @@ import FrameIndicator from "../util/frame-indicator";
 import Modal from "react-bootstrap/Modal";
 import { Button } from "react-bootstrap";
 import uniqid from "uniqid";
-
+ 
 import { AppContext } from "../specification-wizard";
 
 const FrameComprehension = (props) => {
@@ -27,7 +27,7 @@ const FrameComprehension = (props) => {
     setNewFrameData((prevState) => {
       return { ...prevState, ["level"]: lev };
     });
-    console.log(lev);
+    
     setFrames(
       frames.concat(
         <FrameIndicator

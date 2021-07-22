@@ -3,7 +3,7 @@ import "./chart.css";
 
 const Chart = (props) => {
   const updateComponent =
-  (props.onUpdate == undefined) ?  ((e) =>   console.log(e)):((e) =>   props.onUpdate(e));
+  (props.onUpdate === undefined) ?  ((e) =>   console.log(e)):((e) =>   props.onUpdate(e));
 
   const allChartTypes = [
     {
@@ -286,10 +286,10 @@ const Chart = (props) => {
     setSelectClass(e.currentTarget.value);
 
     let s_class = allChartClasses.reduce(
-      (a, o) => (o.key == e.target.value && a.push(o), a),
+      (a, o) => (o.key === e.target.value && a.push(o), a),
       []
     );
-    if (s_class.length == 0) {
+    if (s_class.length === 0) {
       setSelectChart([]);
       setChartTypes([]);
       setCurrentVisualElement({
@@ -314,7 +314,7 @@ const Chart = (props) => {
   const handleTypeChange = (e) => {
     setSelectChart(e.currentTarget.value);
     let filtered = chartTypes.reduce(
-      (a, o) => (o.title == e.currentTarget.value && a.push(o), a),
+      (a, o) => (o.title === e.currentTarget.value && a.push(o), a),
       []
     );
     setCurrentVisualElement(filtered[0]);

@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 
+
 const ContextDescription = (props) => {
+  
+
   const [learningContext, setLearningContext] = useState("Institutional LMS");
   const handleLearningContext = (e) => {
     setLearningContext(e.target.value);
@@ -50,7 +53,7 @@ const ContextDescription = (props) => {
             className="form-control"
             id="lastName"
             placeholder="Provide a short description"
-            value=""
+            value="" 
           ></textarea>
         );
     }

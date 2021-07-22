@@ -12,11 +12,11 @@ const FrameReference = (props) => {
   const updateContext = (type, value) => {
     
     
-    if (type == "ref_graph")
+    if (type === "ref_graph")
       setLadContext((prevState) => {
         return { ...prevState, mainFrame:{ ...prevState.mainFrame, graphic: value} };
       });
-    if (type == "ref_indicator")
+    if (type === "ref_indicator")
       setLadContext((prevState) => {
         return { ...prevState, mainFrame:{ ...prevState.mainFrame, indicator: value} };
       });

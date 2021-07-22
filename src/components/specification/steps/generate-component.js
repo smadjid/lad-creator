@@ -64,7 +64,7 @@ const GenerateComponent = () => {
     };
   };
   const generateComprehensionFrames = () => {
-    //console.log(ladContext.comprehensionFrames); return;
+    
     ladContext.comprehensionFrames.map((f) => {
       setComprehensionFrames(comprehensionFrames.concat(generateOneFrame(f)));
     });
