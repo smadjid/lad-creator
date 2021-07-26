@@ -24,12 +24,12 @@ function MainDash(props) {
     return <div className='card card_box'>
     <button type="button" className="button btn btn-outline-light btn-lg" onClick={specificationHandler}>
       <Icon.ShieldPlus />  &nbsp;&nbsp;|&nbsp;&nbsp; Craft a new LAD Specification
+    </button>    
+    <button type="button" className="button btn btn-outline-light btn-lg" onClick={libraryViewHandler}>
+      <Icon.Collection />  &nbsp;&nbsp;|&nbsp;&nbsp; Explore and manage the current Library
     </button>
     <button type="button" className="button btn btn-outline-light btn-lg">
       <Icon.LayoutWtf />  &nbsp;&nbsp;|&nbsp;&nbsp; Open and edit an existing LAD specification
-    </button>
-    <button type="button" className="button btn btn-outline-light btn-lg" onClick={libraryViewHandler}>
-      <Icon.Collection />  &nbsp;&nbsp;|&nbsp;&nbsp; Explore and manage the current Library
     </button>
     <button type="button" className="button btn btn-outline-light btn-lg">
       <Icon.GearWideConnected />  &nbsp;&nbsp;|&nbsp;&nbsp;
