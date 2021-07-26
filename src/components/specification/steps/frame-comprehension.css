@@ -1,7 +1,6 @@
 input {
     border: 1px solid #999;
     padding: 8px;
-    width: 300px;
   }
    .no-autocomplete {
     color: #999;
@@ -41,9 +40,9 @@ input {
     font-size: medium;
  }
  .modal-style .modal-content {
- background-color: #efefef;
- border-radius:0;
- padding-left: 10px;
+ background-color: #212529;
+ border: 1px solid white;
+ 
 }
 .modal-style .modal-header .modal-title{
 font-size: medium;

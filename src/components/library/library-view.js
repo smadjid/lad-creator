@@ -1,20 +1,17 @@
 import React, { useState } from "react";
 import Sidebar from "./sidebar";
-import { BrowserRouter as Router, Switch, Route,  } from "react-router-dom";
 import Decisions from "./decisions";
 import Frames from "./frames";
 import Indicators from "./indicators";
 import Visualizations from "./visualizations";
 
-
-import HomeIcon from "@material-ui/icons/Home";
+import { ExitToApp } from "@material-ui/icons";
 import ReceiptIcon from "@material-ui/icons/Receipt";
-import NotificationsIcon from "@material-ui/icons/Notifications";
-import DesktopWindowsIcon from "@material-ui/icons/DesktopWindows";
 import SettingsIcon from "@material-ui/icons/Settings";
 
 import "./library-view.css"
 import Panels from "./panels";
+import CPanels from "./cpanels";
 
 
 
@@ -27,16 +24,13 @@ function LibraryView() {
 
   }
   function onClick(e, item) {
-    if(item.name === 'home') 
+    if(item.name === 'exit') 
     return onLeave();
     setDdisplayItem(item.name);    
   //  window.alert(JSON.stringify(item, null, 2));
   } 
   
   const items = [
-    { name: "home", label: "Home", onClick, Icon: HomeIcon },
-    
-    "divider",
     {
       name: "indicators",
       label: "Indicators",
@@ -65,7 +59,7 @@ function LibraryView() {
       Icon: SettingsIcon,
       items: [
         { name: "panels", label: "Simple Panels", onClick}, 
-        { name: "rows", label: "Complex panels", onClick }
+        { name: "cpanels", label: "Composite panels", onClick }
       ]
     },
     "divider",
@@ -82,14 +76,17 @@ function LibraryView() {
     "divider",
     {
       name: "decisions",
-      label: "Decisions",
+      label: "Use cases",
       Icon: ReceiptIcon,
       onClick,
     /*  items: [
         { name: "decision_class", label: "Classes", onClick },
         { name: "decision_type", label: "Types", onClick }
       ]*/
-    }
+    },
+    "divider",
+    { name: "exit", label: "Exit Library", onClick, Icon: ExitToApp },
+        
   ];
 
   const [displayItem, setDdisplayItem]=useState();
@@ -106,6 +103,9 @@ function LibraryView() {
       }
       {displayItem === 'panels' &&
         <Panels /> 
+      }
+      {displayItem === 'cpanels' &&
+        <CPanels /> 
       }
       {displayItem === 'indicators' &&
         <Indicators /> 

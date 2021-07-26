@@ -1,11 +1,14 @@
 import "./library-view.css";
 
 import React, { useState, useEffect } from "react";
-import AddVisualization from "./visualizations_lib/add_visualization";
-import Edit from "./visualizations_lib/edit_visualization";
-import Delete from "./visualizations_lib/delete_visualization";
 import Actions from "./visualizations_lib/visualization_actions";
 import axios from "axios";
+import {
+  AddBoxRounded,
+  EditRounded,
+  HighlightOffRounded,
+} from "@material-ui/icons";
+import DataTable from "../specification/util/data-table";
 
 export const VizContext = React.createContext();
 
@@ -57,16 +60,20 @@ function Visualizations() {
   };
 
   const deleteVisualization = (id) => {
-    axios
-      .delete(`http://localhost:3001/visualizations/${id}`)
-      .then((res) => {
-        setVisualizations(
-          visualizations.filter((item) => {
-            return item.id !== id;
+    window.confirm(
+      "Are you sure you want to delete this type of visualization?"
+    )
+      ? axios
+          .delete(`http://localhost:3001/visualizations/${id}`)
+          .then((res) => {
+            setVisualizations(
+              visualizations.filter((item) => {
+                return item.id !== id;
+              })
+            );
           })
-        );
-      });
-      updateDisplay();
+      : (id = id);
+    updateDisplay();
   };
 
   const getVisualizations = () => {
@@ -101,6 +108,7 @@ function Visualizations() {
       title: "New",
       description: "Description",
       chart: null,
+      class: "Distribution",
     };
 
     setCurrentElement(item);
@@ -126,28 +134,27 @@ function Visualizations() {
         onClose={handleModalClose}
         onSave={handleModalSave}
       />
-      <hr />
 
-      <button className="btn btn-success" onClick={CreateNewVisualization}>
-        NEW
-      </button>
-      <h4>View, edit or delete defined types of visualizations</h4>
+      <div>
+        <button className="btn btn-success" onClick={CreateNewVisualization}>
+          <AddBoxRounded /> &nbsp; New visualization type
+        </button>
+      </div>
       <table className="table table-bordered table-hover table-dark table-striped text-md-start">
         <thead>
           <tr>
             <th scope="col">#</th>
             <th scope="col">Title</th>
-            <th scope="col">Type</th>
+            <th scope="col">CLass</th>
             <th scope="col">Representation</th>
             <th scope="col">Description</th>
-            <th scope="col">Edit</th>
             <th scope="col">Actions</th>
           </tr>
         </thead>
         <tbody>
           {visualizations.map((item) => {
             return (
-              <tr>
+              <tr key={item.id}>
                 <th scope="row">{item.id}</th>
                 <td>{item.title}</td>
                 <td>{item.class}</td>
@@ -158,21 +165,19 @@ function Visualizations() {
                 </td>
                 <td>{item.description}</td>
 
-                <td></td>
                 <td>
                   <button
-                    className="btn btn-outline-danger"
+                    className="btn btn-sm btn-outline-primary"
                     onClick={() => EditVisualization(item)}
                   >
-                    Edit
+                    <EditRounded />
                   </button>
                   <button
-                    className="btn btn-outline-danger"
+                    className="btn btn-sm btn-outline-danger"
                     onClick={() => deleteVisualization(item.id)}
                   >
-                    Delete
+                    <HighlightOffRounded />
                   </button>
-                  
                 </td>
               </tr>
             );

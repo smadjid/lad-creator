@@ -4,12 +4,17 @@
   text-align: center;
 }
 
-.App-logo {
-  
-  height: 10vmin;
-  width: 20vmin;
+.App-logo {  
+  height: 8vmin;
   pointer-events: none;
   float: left;
+}
+
+.Inst-logo {  
+  height: 6vmin;
+  pointer-events: none;
+  float: right;
+  margin-right: 2vmin;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -19,7 +24,8 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: #26282c;
+  box-shadow:  0 5px 5px -2px rgb(0 0 0 / 20%);
   /*min-height: 100vh;*/
   display: flex;
   flex-direction: column;
@@ -27,21 +33,31 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
-  padding-bottom: 15px;
+  padding-bottom: 2vh;
+  margin-bottom: 3vh;
 }
 .main-head{
   margin-top: 10px;
 
 }
 .App-main {
- background-color: #282c34;
-  min-height: 100vh;
+ /*background-color: #282c34;*/
+  min-height: 60vh;
   flex-direction: column;
   /*align-items: center;*/
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
 }
+
+footer {
+  /*background-color: #282c34;*/
+   flex-direction: column;
+   /*align-items: center;*/
+   justify-content: center;
+   font-size: calc(10px + 2vmin);
+   color: white;
+ }
 
 .App-link {
   color: #61dafb;
@@ -56,3 +72,7 @@
   }
 }
 
+.table tr td:last-child {
+  width: 1%;
+  white-space: nowrap;
+}

@@ -153,7 +153,6 @@ app.get("/panels", (req, res) => {
 
 app.post("/panels", (req, res) => {
   const insertQuery = "INSERT INTO panels SET ?"; 
-
   db.query(insertQuery, req.body, (err, result) => {
     if (err) {
       console.log(err);
@@ -165,10 +164,11 @@ app.post("/panels", (req, res) => {
 
 app.put("/panels", (req, res) => {
   const updateQuery =
-    "UPDATE panels SET description = ?, rating = ? WHERE id = ?";
+    "UPDATE panels SET title = ?,  description = ?, indicator_id = ?, visualization_id = ? WHERE id = ?";
   db.query(
     updateQuery,
-    [req.body.description, req.body.rating, req.body.id],
+    [req.body.title, req.body.description, 
+      req.body.indicator_id, req.body.visualization_id,req.body.id],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -193,6 +193,126 @@ app.delete("/panels/:id", (req, res) => {
   );
 });
 
+app.get("/plist", (req, res) => {
+  db.query("SELECT * FROM plist", (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(result);
+    }
+  });
+});
+
+app.post("/plist", (req, res) => {
+  const insertQuery = "INSERT INTO plist SET ?"; 
+  db.query(insertQuery, req.body, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send("plist Added to Database");
+    }
+  });
+});
+
+app.delete("/plist/:id", (req, res) => {
+  db.query(
+    "DELETE FROM plist WHERE id = ?",
+    req.params.id,
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
+app.get("/cpanels", (req, res) => {
+  db.query("SELECT * FROM cpanels", (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(result);
+    }
+  });
+});
+
+app.post("/cpanels", (req, res) => {
+  const insertQuery = "INSERT INTO cpanels SET ?"; 
+  db.query(insertQuery, req.body, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send("CPanel Added to Database");
+    }
+  });
+});
+
+app.put("/cpanels", (req, res) => {
+  const updateQuery =
+    "UPDATE cpanels SET title = ?,  description = ? WHERE id = ?";
+  db.query(
+    updateQuery,
+    [req.body.title, req.body.description,  req.body.id],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
+app.delete("/cpanels/:id", (req, res) => {
+  db.query(
+    "DELETE FROM cpanels WHERE id = ?",
+    req.params.id,
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
+app.get("/flist", (req, res) => {
+  db.query("SELECT * FROM flist", (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(result);
+    }
+  });
+});
+
+app.post("/flist", (req, res) => {
+  const insertQuery = "INSERT INTO flist SET ?"; 
+  db.query(insertQuery, req.body, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send("flist Added to Database");
+    }
+  });
+});
+
+app.delete("/flist/:id", (req, res) => {
+  db.query(
+    "DELETE FROM flist WHERE id = ?",
+    req.params.id,
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
 app.get("/frames", (req, res) => {
   db.query("SELECT * FROM frames", (err, result) => {
     if (err) {
@@ -211,16 +331,17 @@ app.post("/frames", (req, res) => {
       console.log(err);
     } else {
       res.send("Frame Added to Database");
+      
     }
   });
 });
 
 app.put("/frames", (req, res) => {
   const updateQuery =
-    "UPDATE frames SET description = ?, rating = ? WHERE id = ?";
+    "UPDATE frames SET title = ?, description = ?, class = ? WHERE id = ?";
   db.query(
     updateQuery,
-    [req.body.description, req.body.rating, req.body.id],
+    [req.body.title, req.body.description, req.body.class, req.body.id],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -246,7 +367,6 @@ app.delete("/frames/:id", (req, res) => {
 });
 
 app.get("/visualizations", (req, res) => {
-  console.log("GET visualizations :"+req.body);
   db.query("SELECT * FROM visualizations", (err, result) => {
     if (err) {
       console.log(err);

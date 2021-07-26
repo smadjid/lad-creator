@@ -1,13 +1,78 @@
 import "./library-view.css";
 
-import { useState, useEffect } from "react";
-import AddIndicator from "./indicators_lib/add_indicator";
-import Edit from "./indicators_lib/edit_indicator";
-import Delete from "./indicators_lib/delete_indicator";
+import React, { useState, useEffect } from "react";
+import Actions from "./indicators_lib/indicator_actions";
 import axios from "axios";
+import {
+  AddBoxRounded,
+  EditRounded,
+  HighlightOffRounded,
+} from "@material-ui/icons";
 
-function Indicators() { 
+export const IndicatorContext = React.createContext();
+
+function Indicators() {
   const [indicators, setIndicators] = useState([]);
+
+  const [showModal, setShowModal] = useState(false);
+
+  const handleModalClose = () => {
+    setShowModal(false);
+  };
+
+  const handleModalSave = () => {
+    if (creationMode)
+      axios
+        .post("http://localhost:3001/indicators", currentElement)
+        .then(() => {
+          setIndicators([
+            ...indicators,
+            {
+              data: currentElement,
+              headers: { "Content-Type": "multipart/form-data" },
+            },
+          ]);
+          updateDisplay();
+        });
+    else
+      axios
+        .put("http://localhost:3001/indicators", currentElement)
+        .then((res) => {
+          setIndicators(
+            indicators.map((item) => {
+              return item.id === currentElement.id
+                ? {
+                    id: item.id,
+                    title: item.title,
+                    description: item.description,
+                    class: item.class,
+                  }
+                : item;
+            })
+          );
+          updateDisplay();
+        });
+
+    setShowModal(false);
+    updateDisplay();
+  };
+
+  const deleteIndicator = (id) => {
+    window.confirm(
+      "Are you sure you want to delete this type of indicators?"
+    )
+      ? axios
+          .delete(`http://localhost:3001/indicators/${id}`)
+          .then((res) => {
+            setIndicators(
+              indicators.filter((item) => {
+                return item.id !== id;
+              })
+            );
+          })
+      : (id = id);
+    updateDisplay();
+  };
 
   const getIndicators = () => {
     axios.get("http://localhost:3001/indicators").then((res) => {
@@ -16,54 +81,93 @@ function Indicators() {
   };
 
   useEffect(() => {
-    getIndicators(); 
+    getIndicators();
   }, []);
 
+  const updateDisplay = () => {
+    getIndicators();
+  };
+
+
+  const [currentElement, setCurrentElement] = useState();
+  const [creationMode, setCreationMode] = useState(true);
+  const indicatorContext = [currentElement, setCurrentElement];
+
+  const CreateNewIndicator = () => {
+    const item = {
+      title: "New",
+      description: "Description",
+      class: " ",
+    };
+
+    setCurrentElement(item);
+    setCreationMode(true);
+    setShowModal(true);
+
+    return;
+  };
+  const EditIndicator = (item) => {
+    setCurrentElement(item);
+    setCreationMode(false);
+    setShowModal(true);
+  };
   return (
-    <>
-    <AddIndicator indicators={indicators} setIndicators={setIndicators} />
-    <hr />
-    <h4>View, edit or delete indicators</h4>
+    <IndicatorContext.Provider value={indicatorContext}>
+      <Actions
+        title="un titre"
+        show={showModal}
+        mode="Creation"
+        indicators={indicators}
+        setIndicators={setIndicators}
+        updateDisplay={updateDisplay}
+        onClose={handleModalClose}
+        onSave={handleModalSave}
+      />
+
+      <div>
+        <button className="btn btn-success" onClick={CreateNewIndicator}>
+          <AddBoxRounded /> &nbsp; New indicator type
+        </button>
+      </div>
       <table className="table table-bordered table-hover table-dark table-striped text-md-start">
         <thead>
           <tr>
             <th scope="col">#</th>
-            <th scope="col">Title</th>
-            <th scope="col">Type</th>
+            <th scope="col">Name</th>
+            <th scope="col">Class</th>
             <th scope="col">Description</th>
-            <th scope="col">Edit</th>
-            <th scope="col">Delete</th>
+            <th scope="col">Actions</th>
           </tr>
         </thead>
         <tbody>
           {indicators.map((item) => {
             return (
-              <tr>
+              <tr key={item.id}>
                 <th scope="row">{item.id}</th>
                 <td>{item.title}</td>
-                <td>{item.rating ==1 ? "Monitoring the use of media and tools":(item.rating ==2 ?">Monitoring Information Retrieval":item.rating ==3 ?"Monitoring student activity":"Monitoring student comprehension")}</td>
+                <td>{item.class}</td>               
                 <td>{item.description}</td>
-                <td><Edit
-                id={item.id}
-                indicators={indicators}
-                setIndicators={setIndicators}
-              /></td>
-              <td>
-              <Delete
-                id={item.id}
-                indicators={indicators}
-                setIndicators={setIndicators}
-              /></td>
+
+                <td>
+                  <button
+                    className="btn btn-sm btn-outline-primary"
+                    onClick={() => EditIndicator(item)}
+                  >
+                    <EditRounded />
+                  </button>
+                  <button
+                    className="btn btn-sm btn-outline-danger"
+                    onClick={() => deleteIndicator(item.id)}
+                  >
+                    <HighlightOffRounded />
+                  </button>
+                </td>
               </tr>
             );
           })}
-
-         
         </tbody>
       </table>
-      
-      
-    </>
+    </IndicatorContext.Provider>
   );
 }
 

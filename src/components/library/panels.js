@@ -1,15 +1,99 @@
 import "./library-view.css";
 
-import { useState, useEffect } from "react";
-import AddPanel from "./panels_lib/add_panel";
-import Edit from "./panels_lib/edit_panel";
-import Delete from "./panels_lib/delete_panel";
+import React, { useState, useEffect } from "react";
+import Actions from "./panels_lib/panel_actions";
 import axios from "axios";
+import {
+  AddBoxRounded,
+  EditRounded,
+  HighlightOffRounded,
+} from "@material-ui/icons";
 
-function Panels() { 
+export const PanelContext = React.createContext();
+
+function Panels() {
   const [panels, setPanels] = useState([]);
+  const [visualizations, setVisualizations] = useState([]);
   const [indicators, setIndicators] = useState([]);
-  const [charts, setCharts] = useState([]);
+
+  const [showModal, setShowModal] = useState(false);
+
+  
+  const [currentPanel, setCurrentPanel] = useState();
+  const [currentIndicator, setCurrentIndicator] = useState();
+  const [currentVisualization, setCurrentVisualization] = useState();
+  
+  const panelContext = [
+    currentPanel,
+    setCurrentPanel,
+    currentIndicator,
+    setCurrentIndicator,
+    currentVisualization,
+    setCurrentVisualization,
+    indicators,
+    visualizations
+  ];
+
+  const [creationMode, setCreationMode] = useState(true);
+
+  const handleModalClose = () => {
+    setShowModal(false);
+  };
+
+  const handleModalSave = () => {
+
+    setCurrentPanel({...currentPanel,visualization_id:currentVisualization.id});
+
+    let element = currentPanel;
+    element.visualization_id=currentVisualization.id;
+    element.indicator_id=currentIndicator.id;
+    console.log(element);
+     
+    if (creationMode)
+      axios.post("http://localhost:3001/panels", element).then(() => {
+        setPanels([
+          ...panels,
+          {
+            data: element,
+            headers: { "Content-Type": "multipart/form-data" },
+          },
+        ]);
+        updateDisplay();
+      });
+    else
+      axios.put("http://localhost:3001/panels", element).then((res) => {
+        setPanels(
+          panels.map((item) => {
+            return item.id === element.id
+              ? {
+                  id: item.id,
+                  title: item.title,
+                  description: item.description,
+                  visualization_id: item.visualization_id,
+                  indicator_id: item.indicator_id,
+                }
+              : item;
+          })
+        );
+        updateDisplay();
+      });
+
+    setShowModal(false);
+    updateDisplay();
+  };
+
+  const deletePanel = (id) => {
+    window.confirm("Are you sure you want to delete this type of panel?")
+      ? axios.delete(`http://localhost:3001/panels/${id}`).then((res) => {
+          setPanels(
+            panels.filter((item) => {
+              return item.id !== id;
+            })
+          );
+        })
+      : (id = id);
+    updateDisplay();
+  };
 
   const getPanels = () => {
     axios.get("http://localhost:3001/panels").then((res) => {
@@ -17,81 +101,153 @@ function Panels() {
     });
   };
 
+  const getVisualizations = () => {
+    axios.get("http://localhost:3001/visualizations").then((res) => {
+      setVisualizations(res.data);
+    });
+  };
   const getIndicators = () => {
     axios.get("http://localhost:3001/indicators").then((res) => {
       setIndicators(res.data);
     });
   };
 
-  const getCharts = () => {
-    axios.get("http://localhost:3001/visualizations").then((res) => {
-      setCharts(res.data);
-    });
-  };
-
   useEffect(() => {
     getPanels();
-  }, []);
-
-  useEffect(() => {
+    getVisualizations();
     getIndicators();
   }, []);
 
-  useEffect(() => {
-    getCharts();
-  }, []);
+  const updateDisplay = () => {
+    getPanels();
+    getVisualizations();
+    getIndicators();
+  };
 
+  const decodeChart = (blob) => {
+    if (!blob) return;
+    if (typeof blob === "string") return blob;
+    const { data } = blob;
+    const img = new Buffer.from(data).toString("ascii");
+
+    return img;
+  };
+
+  const fetchVizElement = (id) =>{
+      
+      if(typeof id === 'undefined') return{title:null,chart:null};
+      else{
+          let elt = visualizations.find(x  => x.id === id) 
+          if(elt) return elt
+          else return{title:null,chart:null};
+      }
+  }
+
+  const fetchIndElement = (id) =>{
+      
+    if(typeof id === 'undefined') return;
+    else{
+        let elt = indicators.find(x  => x.id === id) 
+        if(elt) return elt.title;
+    }
+}
+
+
+  const CreateNewPanel = () => {
+    const item = {
+      title: "New",
+      description: "Description",
+      visualization_id: null,
+      indicator_id: null,
+    };
+    setCurrentIndicator(indicators[0]);
+    setCurrentVisualization(visualizations[0]);
+
+    setCurrentPanel(item);
+    setCreationMode(true);
+    setShowModal(true);
+
+    return;
+  };
+  const EditPanel = (item) => {
+    
+    indicators.map((elt)=>{
+        if(elt.id == item.indicator_id) setCurrentIndicator(elt)
+    });
+
+
+    visualizations.map((elt)=>{
+        if(elt.id == item.visualization_id) setCurrentVisualization(elt)
+    });
+
+    setCurrentPanel(item);
+    
+    setCreationMode(false);
+    setShowModal(true);
+  };
   return (
-    <>
-   
-    <AddPanel panels={panels} setPanels={setPanels} indicators={indicators} charts={charts}/>
-<hr />
-    <h4>View, edit or delete defined types of panels</h4>
+    <PanelContext.Provider value={panelContext}>
+      <Actions
+        title="un titre"
+        show={showModal}
+        mode="Creation"
+        panels={panels}
+        setPanels={setPanels}
+        updateDisplay={updateDisplay}
+        onClose={handleModalClose}
+        onSave={handleModalSave}
+      />
+
+      <div>
+        <button className="btn btn-success" onClick={CreateNewPanel}>
+          <AddBoxRounded /> &nbsp; New panel type
+        </button>
+      </div>
       <table className="table table-bordered table-hover table-dark table-striped text-md-start">
         <thead>
           <tr>
             <th scope="col">#</th>
             <th scope="col">Title</th>
-            <th scope="col">Type</th>
+            <th scope="col">Indicator</th>
+            <th scope="col">Representation</th>
             <th scope="col">Description</th>
-           
-            <th scope="col">Associated indicator</th>
-            <th scope="col">Graphical representation</th>
-            <th scope="col">Edit</th>
-            <th scope="col">Delete</th>
+            <th scope="col">Actions</th>
           </tr>
-        </thead> 
+        </thead>
         <tbody>
           {panels.map((item) => {
             return (
-              <tr>
+              <tr key={item.id}>
                 <th scope="row">{item.id}</th>
                 <td>{item.title}</td>
-                <td>{item.rating ==1 ? "Elaboration":(item.rating ==2 ?"Inquiry":item.rating ==3 ?"Preservation":item.rating ==4 ?"Comparison":item.rating ==2 ?"Reframing":"Seeking")}</td>
+                <td>{fetchIndElement(item.indicator_id)}</td>
+                <td> <i>{fetchVizElement(item.visualization_id).title}</i>
+                  <div className="chart_box">                  
+                    <img alt="Chart" src={decodeChart(fetchVizElement(item.visualization_id).chart)} />
+                  </div>
+                </td>
                 <td>{item.description}</td>
-                <td>{item.indicator}</td>
-                <td>{item.graphic}</td>
-                <td><Edit
-                id={item.id}
-                panels={panels}
-                setPanels={setPanels}
-              /></td>
-              <td>
-              <Delete
-                id={item.id}
-                panels={panels}
-                setPanels={setPanels}
-              /></td>
+
+                <td>
+                  <button
+                    className="btn btn-sm btn-outline-primary"
+                    onClick={() => EditPanel(item)}
+                  >
+                    <EditRounded />
+                  </button>
+                  <button
+                    className="btn btn-sm btn-outline-danger"
+                    onClick={() => deletePanel(item.id)}
+                  >
+                    <HighlightOffRounded />
+                  </button>
+                </td>
               </tr>
             );
           })}
-
-         
         </tbody>
       </table>
-      
-      
-    </>
+    </PanelContext.Provider>
   );
 }
 

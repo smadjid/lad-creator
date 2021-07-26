@@ -1,36 +1,32 @@
 import "../library-view.css";
 import React, { useContext } from "react";
-import ChartUpload from "../chart-upload";
 import Modal from "react-bootstrap/Modal";
 import { Button } from "react-bootstrap";
-import { VizContext } from "../visualizations";
-import Draggable from "react-draggable";
+import { IndicatorContext } from "../indicators";
 
-export const chartContext = React.createContext();
 
 const Actions = (props) => {
-  const [element, setElement] = useContext(VizContext);
+  const [element, setElement] = useContext(IndicatorContext);
 
   return (
     <>
       {element === undefined ? (
         " "
       ) : (
-        <Draggable>
-        <Modal
-          show={props.show}
-          backdrop="static"
-          keyboard={true}
-          size="lg"
-          aria-labelledby="contained-modal-title-vcenter"
-          dialogClassName="modal-style"
-          scrollable
-          centered
-        >
-          <Modal.Header>
-            <Modal.Title>{element.title}</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
+          <Modal
+            show={props.show}
+            backdrop="static"
+            keyboard={true}
+            size="lg"
+            aria-labelledby="contained-modal-title-vcenter"
+            dialogClassName="modal-style"
+            scrollable
+            centered
+          >
+            <Modal.Header>
+              <Modal.Title>{element.title}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
               <table className="table table-dark">
                 <tbody>
                   <tr>
@@ -38,7 +34,7 @@ const Actions = (props) => {
                     <td>
                       <input
                         type="text"
-                        placeholder="Visualization Title"
+                        placeholder="Indicator Title"
                         onChange={(e) =>
                           setElement({ ...element, title: e.target.value })
                         }
@@ -47,10 +43,7 @@ const Actions = (props) => {
                         required
                       />
                     </td>
-                    <td rowSpan="4">
-                      Chart
-                      <ChartUpload />
-                    </td>
+                    
                   </tr>
                   <tr>
                     <td>Description</td>
@@ -76,19 +69,23 @@ const Actions = (props) => {
                       <select
                         className="formselect"
                         value={element.class}
-                        onChange={(e) =>
-                          {setElement({ ...element, class: e.target.value });}
-                        }
+                        onChange={(e) => {
+                          setElement({ ...element, class: e.target.value });
+                          console.log(e.target.value);
+                        }}
                         name="class"
                         required
                       >
-                        <option value="Distribution">Distribution</option>
-                        <option value="Correlation">Correlation</option>
-                        <option value="Ranking">Ranking</option>
-                        <option value="Part of a Whole">Part of a Whole</option>
-                        <option value="Evolution">Evolution</option>
-                        <option value="Map">Map</option>
-                        <option value="Flow">Flow</option>
+                        <option value="Monitoring the use of media and tools">
+                          Monitoring the use of media and tools
+                        </option>
+                        <option value="Monitoring Information Retrieval">
+                          Monitoring Information Retrieval
+                        </option>
+                        <option value="Monitoring student activity">Monitoring student activity</option>
+                        <option value="Monitoring student comprehension">
+                          Monitoring student comprehension
+                        </option>
                       </select>
                     </td>
                   </tr>
@@ -104,27 +101,26 @@ const Actions = (props) => {
                   </tr>
                 </tbody>
               </table>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button
-              type="button"
-              size="sm"
-              variant="secondary"
-              onClick={props.onClose}
-            >
-              Cancel
-            </Button>
-            <Button
-              type="submit"
-              size="sm"
-              variant="secondary"
-              onClick={props.onSave}
-            >
-              Save
-            </Button>
-          </Modal.Footer>
-        </Modal>
-        </Draggable>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button
+                type="button"
+                size="sm"
+                variant="secondary"
+                onClick={props.onClose}
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                size="sm"
+                variant="secondary"
+                onClick={props.onSave}
+              >
+                Save
+              </Button>
+            </Modal.Footer>
+          </Modal>
       )}
     </>
   );
