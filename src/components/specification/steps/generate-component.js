@@ -123,7 +123,7 @@ const GenerateComponent = () => {
             className="btn btn-primary btn-sm "
             onClick={generateJsonStructure}
           >
-            Generat the structure
+            Generate the structure
           </span>
         </div>
         <div class="p-2 text-right col-sm-3">

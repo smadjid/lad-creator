@@ -2,13 +2,12 @@ import React, { useState } from "react";
 import Chart from "../steps/chart";
 import Select from "react-select";
 import "./frame-indicator.css";
-import FrameComprehension from "../steps/frame-comprehension";
+import FrameComprehension from "../steps/frames/frame-comprehension";
 import { Accordion, Card } from "react-bootstrap";
 
 const FrameIndicator = (props) => {
   const [objectives, setObjectives] = useState([]);
   const [indicators, setIndicators] = useState([]);
-  const [indicatorClass, setIndicatorClass] = useState();
   const [objectiveValue, setObjectiveValue] = useState();
   const [indicatorValue, setIndicatorValue] = useState();
   const [position, setPosition] = useState("right");

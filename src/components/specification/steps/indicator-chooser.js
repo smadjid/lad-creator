@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Chart from "./chart";
+import Chart from "./frames/chart-component";
 import Select from "react-select";
 import "./indicator-chooser.css";
 import indicators_list from "../../../data/indicators.json"

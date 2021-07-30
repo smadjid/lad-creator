@@ -325,15 +325,22 @@ app.get("/frames", (req, res) => {
 
 app.post("/frames", (req, res) => {
   const insertQuery = "INSERT INTO frames SET ?";
+  const last = "SELECT LAST_INSERT_ID();"
 
   db.query(insertQuery, req.body, (err, result) => {
     if (err) {
       console.log(err);
     } else {
-      res.send("Frame Added to Database");
+      
+      db.query(last, (err, r) => {
+        if (err) {console.log(err);} 
+        else {res.send(r);console.log(r)}
+      });
       
     }
   });
+
+ 
 });
 
 app.put("/frames", (req, res) => {

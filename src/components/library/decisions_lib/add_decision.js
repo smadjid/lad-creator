@@ -44,7 +44,7 @@ export default function AddDecision(props) {
                 {...register("decision_rating", { required: true })}
               >
                 <option value="1">Adaptation</option>
-                <option value="2">Évaluation</option>
+                <option value="2">Evaluation</option>
                 <option value="3">Evolution</option>
                 <option value="4">Planification</option>
                 <option value="5">Remediation</option>

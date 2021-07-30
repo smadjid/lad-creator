@@ -5,10 +5,13 @@ import "./specification-wizard.css";
 import ContextDescription from "./steps/context-description";
 import DecisionDescription from "./steps/decision-description";
 import IndicatorChooser from "./steps/indicator-chooser";
-import FrameReference from "./steps/frame-reference";
-import FrameComprehension from "./steps/frame-comprehension";
+import FrameReferenceOld from "./steps/frame-reference-old";
+import FrameComprehension from "./steps/frames/frame-comprehension";
 import GenerateComponent from "./steps/generate-component";
+import InterfaceComponent from "./steps/interface-component";
 import dash from "../../data/template_dash.json";
+import { Button, OverlayTrigger, Popover } from "react-bootstrap";
+import { AssignmentSharp, Bookmarks } from "@material-ui/icons";
 
 export const AppContext = React.createContext();
 
@@ -19,7 +22,7 @@ const decisionComponent = () => {
   return <DecisionDescription />;
 };
 const mainFrameComponent = () => {
-  return <FrameReference />;
+  return <FrameReferenceOld />;
 };
 const secondaryFrameComponent = () => {
   return (
@@ -37,8 +40,8 @@ const secondaryFrameComponent = () => {
   );
 };
 
-const ladConfigComponent = () => {
-  return <div />;
+const interfaceConfigComponent = () => {
+  return <InterfaceComponent />;
 };
 const finalComponent = () => {
   return <GenerateComponent />;
@@ -80,13 +83,13 @@ function SpecificationWizard(props) {
     },
     {
       key: "fifthStep",
-      label: "Interface composition",
+      label: "Interface config",
       isDone: false,
-      component: ladConfigComponent,
+      component: interfaceConfigComponent,
     },
     {
       key: "finalStep",
-      label: "LAD config & generation",
+      label: "LAD Generation",
       isDone: false,
       component: finalComponent,
     },
@@ -144,6 +147,10 @@ function SpecificationWizard(props) {
     props.onCloseWizard();
     return;
   };
+
+  const summaryDisplay = () => {
+    return <h3>TEST</h3>;
+  };
   const ladContext = [dashboardStructure, setDashboardStructure];
   return (
     <AppContext.Provider value={ladContext}>
@@ -166,74 +173,102 @@ function SpecificationWizard(props) {
                   </li>
                 );
               })}
+              
+              <div style={{position:'absolute', right:'0', display: "block", padding: 10 }}>
+                  <OverlayTrigger
+                    placement="bottom"
+                    rootCloseEvent="mousedown"
+                    trigger="click"
+                    overlay={
+                      <Popover>
+                        <Popover.Title as="h3"></Popover.Title>
+                        <Popover.Content>
+                          <ul className="list-group mb-3">
+                            <li className="list-group-item d-flex justify-content-between lh-sm">
+                              <div>
+                                <h6 className="my-0">Dashboard Title</h6>
+                                <small className="text-muted">
+                                  {dashboardStructure.Title}
+                                </small>
+                              </div>
+                              <span className="text-muted">(X)</span>
+                            </li>
+
+                            <li className="list-group-item d-flex justify-content-between lh-sm">
+                              <div>
+                                <h6 className="my-0">Reference Indicator</h6>
+                                <small className="text-muted">
+                                  {dashboardStructure.mainFrame.indicator}
+                                </small>
+                              </div>
+                              <span className="text-muted">(X)</span>
+                            </li>
+
+                            <li className="list-group-item d-flex justify-content-between lh-sm">
+                              <div>
+                                <h6 className="my-0">
+                                  Reference Frame graphic
+                                </h6>
+                                <small className="text-muted">
+                                  {dashboardStructure.mainFrame.graphic}
+                                </small>
+                              </div>
+                              <span className="text-muted">(X)</span>
+                            </li>
+
+                            <li className="list-group-item d-flex justify-content-between lh-sm">
+                              <div>
+                                <h6 className="my-0">
+                                  # Comprehension Frames (
+                                  {
+                                    dashboardStructure.comprehensionFrames
+                                      .length
+                                  }
+                                  )
+                                </h6>
+                                <small className="text-muted">
+                                  <ol>
+                                    {dashboardStructure.comprehensionFrames.map(
+                                      (f) => {
+                                        return (
+                                          <li>
+                                            {f.framename} ({f.type})
+                                          </li>
+                                        );
+                                      }
+                                    )}
+                                  </ol>
+                                </small>
+                              </div>
+                              <span className="text-muted">(X)</span>
+                            </li>
+
+                            <li className="list-group-item d-flex justify-content-between lh-sm">
+                              <div>
+                                <h6 className="my-0">Use objective</h6>
+                                <small className="text-muted">
+                                  (not provided)
+                                </small>
+                              </div>
+                              <span className="text-muted">(X)</span>
+                            </li>
+                          </ul>
+                        </Popover.Content>
+                      </Popover>
+                    }
+                  >
+                    
+                    <AssignmentSharp role='button'/>
+                  </OverlayTrigger>
+                </div>
             </ul>
           </div>
           <div className="step-component">
             <div className="container-fluid row">
-              <div className="col-md-8 col-lg-9">{activeStep.component()}</div>
-              <div className="col-md-4 col-lg-3 order-md-last">
-                <h4 className="d-flex justify-content-between align-items-center mb-3">
-                  <span className="text-secondary">Summary</span>
-                </h4>
-                <ul className="list-group mb-3">
-                  <li className="list-group-item d-flex justify-content-between lh-sm">
-                    <div>
-                      <h6 className="my-0">Dashboard Title</h6>
-                      <small className="text-muted">
-                        {dashboardStructure.Title}
-                      </small>
-                    </div>
-                    <span className="text-muted">(X)</span>
-                  </li>
+              {activeStep.component()}
 
-                  <li className="list-group-item d-flex justify-content-between lh-sm">
-                    <div>
-                      <h6 className="my-0">Reference Indicator</h6>
-                      <small className="text-muted">
-                        {dashboardStructure.mainFrame.indicator}
-                      </small>
-                    </div>
-                    <span className="text-muted">(X)</span>
-                  </li>
-
-                  <li className="list-group-item d-flex justify-content-between lh-sm">
-                    <div>
-                      <h6 className="my-0">
-                        Reference Frame graphic
-                      </h6>
-                      <small className="text-muted">
-                        {dashboardStructure.mainFrame.graphic}
-                      </small>
-                    </div>
-                    <span className="text-muted">(X)</span>
-                  </li>
-
-                  <li className="list-group-item d-flex justify-content-between lh-sm">
-                    <div>
-                      <h6 className="my-0">
-                        # Comprehension Frames (
-                        {dashboardStructure.comprehensionFrames.length})
-                      </h6>
-                      <small className="text-muted">
-                        <ol>
-                          {dashboardStructure.comprehensionFrames.map((f) => {
-                            return <li>{f.framename} ({f.type})</li>;
-                          })}
-                        </ol>
-                      </small>
-                    </div>
-                    <span className="text-muted">(X)</span>
-                  </li>
-
-                  <li className="list-group-item d-flex justify-content-between lh-sm">
-                    <div>
-                      <h6 className="my-0">Use objective</h6>
-                      <small className="text-muted">(not provided)</small>
-                    </div>
-                    <span className="text-muted">(X)</span>
-                  </li>
-                </ul>
-              </div>
+               
+               
             </div>
           </div>
 

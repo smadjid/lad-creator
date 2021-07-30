@@ -1,0 +1,36 @@
+.frame_indicator, .selectItem{
+    color:rgba(0, 0, 0, 0.87);
+}
+.frame_indicator{
+    padding:1%;
+    margin: 10px;
+    background-color: white;
+     box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.1);
+     border-radius: 5px;
+     border: solid 2px #198754;
+}
+.frame_header{
+    
+    padding: 0.2rem 1rem !important;
+    margin-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(0,0,0,.125);
+    display: flex;
+    background-color: darkslategrey;
+    color:whitesmoke;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1rem;
+    border-top-left-radius: calc(.3rem - 1px);
+    border-top-right-radius: calc(.3rem - 1px);
+
+
+}
+.transition-config{
+    padding: 0!important;
+    height: fit-content;
+}
+
+.frame_action_buttons .modal-footer{
+    padding: O;
+}

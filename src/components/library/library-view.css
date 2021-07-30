@@ -132,4 +132,49 @@ input, textarea, select {
 }
 
 .cpanel-tab td:last-child{ width: 60% ;}
-.Collapsible{ width: 60% ;}
+
+
+.Collapsible__trigger {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.Collapsible__trigger.is-open svg {
+  transform: rotate(180deg);
+}
+
+.cpanel-item {
+  
+  color: #212529;  
+  background-color: #f8f9fa;
+  
+}
+.cpanel-item td{
+  
+  padding: .1rem 1rem;
+}
+.new-scenario{
+  text-align: left;
+}
+
+.frame-accordion .card{
+  text-align: justify;
+  color:#454753;
+}
+
+.frame-card .card-header button{
+  text-align: justify;
+  color:#878891;
+  border: none!important;
+  text-decoration: none;
+  width: 100%;
+}
+.frame-card .card-body{
+border-left: solid 10px #212529;
+margin-bottom: 5px;
+}
+
+.Collapsible{
+  width: 100%;
+}

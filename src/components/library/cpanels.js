@@ -9,12 +9,12 @@ import {
   EditRounded,
   HighlightOff,
   HighlightOffRounded,
+  KeyboardArrowDown,
   Loupe,
   RemoveCircle,
 } from "@material-ui/icons";
 import CPanelItem from "./panels_lib/cpanel_items";
-import { EyeFill } from "react-bootstrap-icons";
-import { Collapse } from "react-bootstrap";
+import { InfoCircle, InfoCircleFill } from "react-bootstrap-icons";
 
 export const CPanelContext = React.createContext();
 
@@ -138,13 +138,13 @@ function CPanels() {
   };
 
   const decodeChart = (elt) => {
-    if (!elt) return; 
+    if (!elt) return;
     let blob = elt.chart;
     if (!blob) return;
     if (typeof blob === "string") return blob;
     const { data } = blob;
     const img = new Buffer.from(data).toString("ascii");
-    
+
     return img;
   };
 
@@ -162,7 +162,6 @@ function CPanels() {
     if (visualizations)
       viz = visualizations.find((x) => x.id === pan.visualization_id);
 
-    
     return viz;
   };
   const getIndByID = (id) => {
@@ -172,13 +171,11 @@ function CPanels() {
     };
     let ind = {
       title: " ",
-      description: " "
+      description: " ",
     };
     if (panels) pan = panels.find((x) => x.id === id);
-    if (indicators)
-      ind = indicators.find((x) => x.id === pan.indicator_id);
+    if (indicators) ind = indicators.find((x) => x.id === pan.indicator_id);
 
-    
     return ind;
   };
 
@@ -284,11 +281,6 @@ function CPanels() {
     visualizations.map((elt)=>{
         if(elt.id == item.visualization_id) setCurrentVisualization(elt)
     }); */
-
-    
-
-    
-    
   };
   return (
     <CPanelContext.Provider value={cpanelContext}>
@@ -333,7 +325,9 @@ function CPanels() {
             return (
               <tr key={item.id}>
                 <th scope="row">{item.id}</th>
-                <td><h6>{item.title}</h6></td>
+                <td>
+                  <h6>{item.title}</h6>
+                </td>
                 <td>{item.description}</td>
                 <td>
                   <span
@@ -345,45 +339,59 @@ function CPanels() {
                   </span>
                   <br />
                   <br />
-                  <ol className="list-group-flush">
+                  <table className="table table-bordered">
                     {getCPanelItems(item).map((i) => {
                       return (
-                        <li className="list-group-item d-flex justify-content-between align-items-center">
-                          <h6>{getPanByID(i.panel_id).title}</h6>
-                          <Collapsible
-                            className="align-item-right"
-                            trigger={
-                              <span
-                                role="button"
-                                className="text-info btn-sm btn"
-                              >
-                                Dispaly/Hide details of the panel <EyeFill />
-                              </span>
-                            }
-                          >
-                          <h6><i>Indicator:</i> {getIndByID(i.panel_id).title} </h6>
-                          <i>{getVizByID(i.panel_id).title}</i>
-                          <div className="chart_box">
-                          
+                        <tr
+                          key={i.id}
+                          className="cpanel-item  justify-content-between align-items-center"
+                        >
+                          <td>
+                            {" "}
+                            <h6>{getPanByID(i.panel_id).title}</h6>
+                          </td>
+                          <td>
+                            <Collapsible
+                              className="align-item-right row"
+                              trigger={
+                                <span
+                                  role="button"
+                                  className="text-info btn-sm btn"
+                                >
+                                  Details of the panel <KeyboardArrowDown />
+                                </span>
+                              }
+                            >
+                              <h6>
+                                <i>Indicator:</i> {getIndByID(i.panel_id).title}{" "}
+                              </h6>
+                              <span>{getIndByID(i.panel_id).description}</span>
+                              <div className="chart_box">
+                                <h6>{getVizByID(i.panel_id).title}</h6>
                                 <img
                                   alt="Chart"
                                   src={decodeChart(getVizByID(i.panel_id))}
                                 />
-                                {/* <span >{getVizElement().description}</span> */}
                               </div>
-                           
-                          </Collapsible>
-                          <span
-                            role="button"
-                            className="text-danger btn-sm"
-                            onClick={() => dropCPanItem(i.id)}
-                          >
-                            <RemoveCircle />
-                          </span>{" "}
-                        </li>
+                              <span>
+                                <InfoCircleFill />{" "}
+                                <i>{getVizByID(i.panel_id).description}</i>
+                              </span>
+                            </Collapsible>
+                          </td>
+                          <td>
+                            <span
+                              role="button"
+                              className="text-danger btn-sm"
+                              onClick={() => dropCPanItem(i.id)}
+                            >
+                              <RemoveCircle />
+                            </span>
+                          </td>
+                        </tr>
                       );
                     })}
-                  </ol>
+                  </table>
                   <i>{fetchPanelElement(item.id).title}</i>
                   {/*  <div className="chart_box">                  
                     <img alt="Chart" src={decodeChart(fetchPanelElement(item.visualization_id).chart)} /> </div>*/}

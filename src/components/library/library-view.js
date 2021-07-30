@@ -12,6 +12,7 @@ import SettingsIcon from "@material-ui/icons/Settings";
 import "./library-view.css"
 import Panels from "./panels";
 import CPanels from "./cpanels";
+import Scenario from "./scenario";
 
 
 
@@ -79,10 +80,10 @@ function LibraryView() {
       label: "Use cases",
       Icon: ReceiptIcon,
       onClick,
-    /*  items: [
-        { name: "decision_class", label: "Classes", onClick },
-        { name: "decision_type", label: "Types", onClick }
-      ]*/
+      items: [
+        { name: "scenario", label: "Create scenario", onClick },
+        { name: "o_scenario", label: "Open...", onClick }
+      ]
     },
     "divider",
     { name: "exit", label: "Exit Library", onClick, Icon: ExitToApp },
@@ -112,6 +113,9 @@ function LibraryView() {
       }
       {displayItem === 'visualizations' &&
         <Visualizations  /> 
+      }
+      {displayItem === 'scenario' &&
+        <Scenario />
       }
       </div>
     </div>

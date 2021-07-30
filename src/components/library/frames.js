@@ -25,6 +25,12 @@ function Frames() {
   const [currentPanel, setCurrentPanel] = useState();
   const [fList, setfList] = useState();
 
+  const [currentElement, setCurrentElement] = useState({
+    title: "initi",
+    description: "to be provided",
+    chart: null,
+  });
+
   const [compositeMode, setCompositeMode] = useState(false);
 
   const frameContext = [
@@ -124,7 +130,6 @@ function Frames() {
   };
 
   const getPanByID = (id, isComposite) => {
-      
     let elt = {
       title: " ",
       description: " ",
@@ -134,7 +139,7 @@ function Frames() {
     } else {
       if (panels) elt = panels.find((x) => x.id === id);
     }
-    
+
     if (!elt)
       elt = {
         title: " ",
@@ -229,7 +234,6 @@ function Frames() {
   };
 
   const EditFrame = (item) => {
-    
     setCurrentFrame(item);
     setCreationMode(false);
     setShowModal(true);
@@ -308,17 +312,21 @@ function Frames() {
                   <ol className="list-group-flush">
                     {getFrameItems(item).map((i) => {
                       return (
-                        <li className="list-group-item d-flex justify-content-between align-items-center">
+                        <li
+                          key={i.id}
+                          className="list-group-item d-flex justify-content-between align-items-center"
+                        >
                           <h6>{getPanByID(i.panel_id, i.isComposite).title}</h6>
                           <div>
-                          <i>{i.isComposite? 'Composite':'Simple'}</i>
-                          <span
-                            role="button"
-                            className="text-danger btn-sm"
-                            onClick={() => dropCPanItem(i.id)}
-                          >
-                            <RemoveCircle />
-                          </span>{" "}</div>
+                            <i>{i.isComposite ? "Composite" : "Simple"}</i>
+                            <span
+                              role="button"
+                              className="text-danger btn-sm"
+                              onClick={() => dropCPanItem(i.id)}
+                            >
+                              <RemoveCircle />
+                            </span>{" "}
+                          </div>
                         </li>
                       );
                     })}
