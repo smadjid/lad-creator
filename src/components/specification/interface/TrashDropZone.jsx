@@ -1,9 +1,9 @@
 import React from "react";
 import classNames from "classnames";
 import { useDrop } from "react-dnd";
-import { COMPONENT, ROW, COLUMN } from "./constants";
+import { FRAMEBOX, ROW, COLUMN } from "./constants";
 
-const ACCEPTS = [ROW, COLUMN, COMPONENT];
+const ACCEPTS = [ROW, COLUMN, FRAMEBOX];
 
 const TrashDropZone = ({ data, onDrop }) => {
   const [{ isOver, canDrop }, drop] = useDrop({

@@ -1,5 +1,5 @@
 import shortid from "shortid";
-import { ROW, COLUMN, COMPONENT } from "./constants";
+import { ROW, COLUMN, FRAMEBOX } from "./constants";
 
 // a little function to help us with reordering the result
 export const reorder = (list, startIndex, endIndex) => {
@@ -153,7 +153,7 @@ export const handleMoveToDifferentParent = (
           children: [item]
         };
       } else {
-        // moving component outside into new row made on the fly
+        // moving framebox outside into new row made on the fly
         newLayoutStructure = {
           ...ROW_STRUCTURE,
           children: [COLUMN_STRUCTURE]
@@ -162,8 +162,8 @@ export const handleMoveToDifferentParent = (
       break;
     }
     case 2: {
-      // moving component outside into a row which creates column
-      if (item.type === COMPONENT) {
+      // moving framebox outside into a row which creates column
+      if (item.type === FRAMEBOX) {
         newLayoutStructure = COLUMN_STRUCTURE;
       } else {
         // moving column into existing row
@@ -189,7 +189,7 @@ export const handleMoveToDifferentParent = (
   return updatedLayout;
 };
 
-export const handleMoveSidebarComponentIntoParent = (
+export const handleMoveSidebarFrameBoxIntoParent = (
   layout,
   splitDropZonePath,
   item

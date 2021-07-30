@@ -2,10 +2,10 @@ import React, { useRef } from "react";
 import { useDrag } from "react-dnd";
 import { COLUMN } from "./constants";
 import DropZone from "./DropZone";
-import Component from "./Component";
+import FrameBox from "./frame-box";
 
 const style = {};
-const Column = ({ data, components, handleDrop, path }) => {
+const Column = ({ data, frameboxs, handleDrop, path }) => {
   const ref = useRef(null);
 
   const [{ isDragging }, drag] = useDrag({ 
@@ -24,12 +24,12 @@ const Column = ({ data, components, handleDrop, path }) => {
   const opacity = isDragging ? 0 : 1;
   drag(ref);
 
-  const renderComponent = (component, currentPath) => {
+  const renderFrameBox = (framebox, currentPath) => {
     return (
-      <Component
-        key={component.id}
-        data={component}
-        components={components}
+      <FrameBox
+        key={framebox.id}
+        data={framebox}
+        frameboxs={frameboxs}
         path={currentPath}
       />
     );
@@ -42,11 +42,11 @@ const Column = ({ data, components, handleDrop, path }) => {
       className="base draggable column"
     >
       {data.id}
-      {data.children.map((component, index) => {
+      {data.children.map((framebox, index) => {
         const currentPath = `${path}-${index}`;
 
         return (
-          <React.Fragment key={component.id}>
+          <React.Fragment key={framebox.id}>
             <DropZone
               data={{
                 path: currentPath,
@@ -54,7 +54,7 @@ const Column = ({ data, components, handleDrop, path }) => {
               }}
               onDrop={handleDrop}
             />
-            {renderComponent(component, currentPath)}
+            {renderFrameBox(framebox, currentPath)}
           </React.Fragment>
         );
       })}

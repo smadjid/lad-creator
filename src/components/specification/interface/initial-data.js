@@ -1,4 +1,4 @@
-import { COMPONENT, ROW, COLUMN } from "./constants";
+import { FRAMEBOX, ROW, COLUMN } from "./constants";
 
 const initialData = {
   layout: [
@@ -11,12 +11,12 @@ const initialData = {
           id: "column0",
           children: [
             {
-              type: COMPONENT,
-              id: "component0"
+              type: FRAMEBOX,
+              id: "framebox0"
             },
             {
-              type: COMPONENT,
-              id: "component1"
+              type: FRAMEBOX,
+              id: "framebox1"
             }
           ]
         },
@@ -25,8 +25,8 @@ const initialData = {
           id: "column1",
           children: [
             {
-              type: COMPONENT,
-              id: "component2"
+              type: FRAMEBOX,
+              id: "framebox2"
             }
           ]
         }
@@ -41,28 +41,28 @@ const initialData = {
           id: "column2",
           children: [
             {
-              type: COMPONENT,
-              id: "component3"
+              type: FRAMEBOX,
+              id: "framebox3"
             },
             {
-              type: COMPONENT,
-              id: "component0"
+              type: FRAMEBOX,
+              id: "framebox0"
             },
             {
-              type: COMPONENT,
-              id: "component2"
+              type: FRAMEBOX,
+              id: "framebox2"
             }
           ]
         }
       ]
     }
   ],
-  components: {
-    component0: { id: "component0", type: "input", content: "Some input" },
-    component1: { id: "component1", type: "image", content: "Some image" },
-    component2: { id: "component2", type: "email", content: "Some email" },
-    component3: { id: "component3", type: "name", content: "Some name" },
-    component4: { id: "component4", type: "phone", content: "Some phone" }
+  frameboxs: {
+    framebox0: { id: "framebox0", type: "input", content: "Some input" },
+    framebox1: { id: "framebox1", type: "image", content: "Some image" },
+    framebox2: { id: "framebox2", type: "email", content: "Some email" },
+    framebox3: { id: "framebox3", type: "name", content: "Some name" },
+    framebox4: { id: "framebox4", type: "phone", content: "Some phone" }
   }
 };
 

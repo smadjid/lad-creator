@@ -17,9 +17,9 @@ import shortid from "shortid";
 
 const Container = () => {
   const initialLayout = initialData.layout;
-  const initialFrameBoxs = initialData.frameBoxs;
+  const initialFrameBoxs = initialData.frameboxs;
   const [layout, setLayout] = useState(initialLayout);
-  const [frameBoxs, setFrameBoxs] = useState(initialFrameBoxs);
+  const [frameboxs, setFrameBoxs] = useState(initialFrameBoxs);
 
   const handleDropToTrashBin = useCallback(
     (dropZone, item) => {
@@ -47,14 +47,14 @@ const Container = () => {
         // 1. Move sidebar item into page
         const newFrameBox = {
           id: shortid.generate(),
-          ...item.frameBox
+          ...item.framebox
         };
         const newItem = {
           id: newFrameBox.id,
           type: FRAMEBOX
         };
         setFrameBoxs({
-          ...frameBoxs,
+          ...frameboxs,
           [newFrameBox.id]: newFrameBox
         });
         setLayout(
@@ -104,7 +104,7 @@ const Container = () => {
         )
       );
     },
-    [layout, frameBoxs]
+    [layout, frameboxs]
   );
 
   const renderRow = (row, currentPath) => {
@@ -113,7 +113,7 @@ const Container = () => {
         key={row.id}
         data={row}
         handleDrop={handleDrop}
-        frameBoxs={frameBoxs}
+        frameboxs={frameboxs}
         path={currentPath}
       />
     );
