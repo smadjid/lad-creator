@@ -130,3 +130,7 @@ specification-wizard {
   .list-item:hover {
   background: rgb(235, 235, 235);
   }
+
+  .MuiFormControl-root{
+    width:90%;
+  }

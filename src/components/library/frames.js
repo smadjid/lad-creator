@@ -4,6 +4,7 @@ import Actions from "./frames_lib/frame_actions";
 import axios from "axios";
 import {
   AddBoxRounded,
+  DeleteForever,
   EditRounded,
   HighlightOffRounded,
   Loupe,
@@ -324,7 +325,7 @@ function Frames() {
                               className="text-danger btn-sm"
                               onClick={() => dropCPanItem(i.id)}
                             >
-                              <RemoveCircle />
+                              <DeleteForever />
                             </span>{" "}
                           </div>
                         </li>

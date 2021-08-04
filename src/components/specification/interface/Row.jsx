@@ -37,11 +37,10 @@ const Row = ({ data, frameboxs, handleDrop, path }) => {
 
   return (
     <div ref={ref} style={{ ...style, opacity }} className="base draggable row">
-      {data.id}
+      
       <div className="columns">
         {data.children.map((column, index) => {
           const currentPath = `${path}-${index}`;
-
           return (
             <React.Fragment key={column.id}>
               <DropZone

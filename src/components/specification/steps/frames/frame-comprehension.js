@@ -116,7 +116,7 @@ const FrameComprehension = (props) => {
     <form className="needs-validation" novalidate>
     <div className="align-middle f_buttons">
           <span className="btn btn-secondary" onClick={handleShow}>
-            Associate a new frame <DoubleArrow/>
+            Associate a new frame support <DoubleArrow/>
           </span>
           <div>
             <Modal

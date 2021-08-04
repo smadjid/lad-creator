@@ -1,0 +1,11 @@
+Activation:
+- click somewhere (button/link/element/part of an element)
+- hover somewhere (element/part of an element)
+- 
+
+Position:
+- above
+- below
+- left
+-right
+-overlap (totaly/partialy)

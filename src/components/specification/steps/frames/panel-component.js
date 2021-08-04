@@ -1,6 +1,12 @@
-import { KeyboardArrowDown, RemoveCircle } from "@material-ui/icons";
+import {
+  AssignmentSharp,
+  DeleteForever,
+  KeyboardArrowDown,
+  RemoveCircle,
+} from "@material-ui/icons";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { OverlayTrigger, Popover } from "react-bootstrap";
 import { InfoCircleFill } from "react-bootstrap-icons";
 import Collapsible from "react-collapsible";
 import ChartComponent from "./chart-component";
@@ -32,6 +38,7 @@ const PanelComponent = (props) => {
     if (!pList) return [];
     if (!id) return [];
     let elts = pList.filter((i) => i.cpanel_id === id);
+    //console.log(elts);
     return elts;
   };
 
@@ -70,7 +77,6 @@ const PanelComponent = (props) => {
   };
 
   const getPanelByID = (id) => {
-    //console.log(id)
     let elt = {
       title: " ",
       description: " ",
@@ -92,38 +98,25 @@ const PanelComponent = (props) => {
   };
 
   const getVizByID = (id) => {
-    let pan = {
-      title: " ",
-      description: " ",
-    };
     let viz = {
       title: " ",
       description: " ",
       chart: null,
     };
-    return viz;
 
-    if (panels) pan = panels.find((x) => x.id === id);
-    if (visualizations)
-      viz = visualizations.find((x) => x.id === pan.visualization_id);
-
-    return viz;
+    let f_viz = null;
+    if (visualizations) f_viz = visualizations.find((x) => x.id === id);
+    return f_viz ? f_viz : viz;
   };
   const getIndicatorByID = (id) => {
-    let pan = {
-      title: " ",
-      description: " ",
-    };
     let ind = {
       title: " ",
       description: " ",
     };
-    return ind;
+    //return ind;
 
-    if (panels) pan = panels.find((x) => x.id === id);
-    if (indicators) ind = indicators.find((x) => x.id === pan.indicator_id);
-
-    return ind;
+    if (indicators) ind = indicators.find((x) => x.id === id);
+    return ind ? ind : { title: " ", description: " " };
   };
 
   const fetchIndElement = (id) => {
@@ -134,52 +127,68 @@ const PanelComponent = (props) => {
     }
   };
   const displayUniquePanel = (p) => {
+    let indicator = getIndicatorByID(p.indicator_id);
+    let chart = getVizByID(p.visualization_id);
+
     return (
       <>
         {" "}
         <h6>
-          <i>Indicator:</i> {getIndicatorByID(p.panel_id).title}{" "}
+          <i>Indicator:</i> {indicator.title}{" "}
         </h6>
-        <span>{getIndicatorByID(p.panel_id).description}</span>
+        <span>{indicator.description}</span>
         <div className="chart_box">
-          <h6>{getVizByID(p.panel_id).title}</h6>
-          <img alt="Chart" src={decodeChart(getVizByID(p.panel_id))} />
+          <h6>{chart.title} <OverlayTrigger
+          placement="bottom"
+          rootCloseEvent="mousedown"
+          trigger="click"
+          overlay={
+            <Popover>
+              <Popover.Title as="h3"></Popover.Title>
+              <Popover.Content>{chart.description}</Popover.Content>
+            </Popover>
+          }
+        >
+          <InfoCircleFill role="button" />
+        </OverlayTrigger></h6>
+          {<img alt="Chart" src={decodeChart(chart)} />}
         </div>
-        <span>
-          <InfoCircleFill /> <i>{getVizByID(p.panel_id).description}</i>
-        </span>
+        
       </>
     );
   };
-  const simplePanel = () => {return displayUniquePanel(props.panel_id)};
-
+  const simplePanel = () => {
+    let panel = getPanelByID(props.panel_id);
+    if (panel) return displayUniquePanel(panel);
+  };
 
   const compositePanel = () => {
     return (
       <table className="table table-bordered">
         {getCPanelItems(props.panel_id).map((i) => {
+          let panel = getPanelByID(i.panel_id); //console.log(panel);
+          if (!panel) panel = {title:' '}
           return (
             <tr
               key={i.id}
               className="cpanel-item  justify-content-between align-items-center"
             >
               <td>
-                <h6>{getPanelByID(i.panel_id).title}</h6>
+                <h6>{panel.title}</h6>
               </td>
               <td>
                 <Collapsible
                   className="align-item-right row"
                   trigger={
                     <span role="button" className="text-info btn-sm btn">
-                      Details <KeyboardArrowDown />
+                      Details of the panel <KeyboardArrowDown />
                     </span>
                   }
                 >
-                  {displayUniquePanel(i.panel_id)}
-                  
+                  {displayUniquePanel(panel)}
                 </Collapsible>
               </td>
-              
+              <td></td>
             </tr>
           );
         })}
@@ -187,74 +196,17 @@ const PanelComponent = (props) => {
     );
   };
 
-
-  const tmpCompositePanel = () => {
-    return (
-      <table className="table table-bordered">
-        {getCPanelItems(props.panel_id).map((i) => {
-          return (
-            <tr
-              key={i.id}
-              className="cpanel-item  justify-content-between align-items-center"
-            >
-              <td>
-                <h6>{getPanelByID(i.panel_id).title}</h6>
-              </td>
-              <td>
-                <Collapsible
-                  className="align-item-right row"
-                  trigger={
-                    <span role="button" className="text-info btn-sm btn">
-                      Details <KeyboardArrowDown />
-                    </span>
-                  }
-                >
-                  <h6>
-                    <i>Indicator:</i> {getIndicatorByID(i.panel_id).title}{" "}
-                  </h6>
-                  <span>{getIndicatorByID(i.panel_id).description}</span>
-                  <div className="chart_box">
-                    <h6>{getVizByID(i.panel_id).title}</h6>
-                    <img
-                      alt="Chart"
-                      src={decodeChart(getVizByID(i.panel_id))}
-                    />
-                  </div>
-                  <span>
-                    <InfoCircleFill />{" "}
-                    <i>{getVizByID(i.panel_id).description}</i>
-                  </span>
-                </Collapsible>
-              </td>
-              <td>
-                <span
-                  role="button"
-                  className="text-danger btn-sm"
-                  //  onClick={() => dropCPanItem(i.id)}
-                >
-                  <RemoveCircle />
-                </span>
-              </td>
-            </tr>
-          );
-        })}
-      </table>
-    );
-  };
-  const tmpPanel = (is) => {
-    return <div>TMP Panel</div>;
-  };
   return (
     <Collapsible
       trigger={
         <span role="button" className="text-info btn-sm btn">
-          Details of the panel <KeyboardArrowDown />
+          {props.isComposite ? "Elements that compose the panel": 
+            "Details of the panel"}
+            <KeyboardArrowDown />
         </span>
       }
     >
-      {props.isComposite
-        ? compositePanel()
-        : simplePanel()}
+      {props.isComposite ? compositePanel() : simplePanel()}
       <h6>
         {/* <i>Indicator:</i> {getIndicatorByID(props.panel_id).title}{" "} */}
       </h6>

@@ -1,34 +1,266 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import ReactJson from "react-json-view";
 import jsonfile from "jsonfile";
 import dash from "../../../data/template_dash.json";
 import { AppContext } from "../specification-wizard";
 
 import "./generate-component.css";
+import { Button } from "react-bootstrap";
+import { BarChartPanel } from "./export/dashcharts";
+import shortid from "shortid";
+import axios from "axios";
+
+
+
 const GenerateComponent = () => {
   const [ladContext, setLadContext] = useContext(AppContext);
+  const [currentFrame, setCurrentFrame] = useState();
+  const [frames, setFrames] = useState([]);
+  const [structure, setStructure] = useState([]);
+
+  const [panels, setPanels] = useState([]);
+  const [cpanels, setCPanels] = useState([]);
+  const [pList, setpList] = useState();
+  const [currentPanel, setCurrentPanel] = useState();
+  const [fList, setfList] = useState();
+
+
+  const getFrames = () => {
+    axios.get("http://localhost:3001/frames").then((res) => {
+      setFrames(res.data);
+      
+    });
+  };
+  const getPanels = () => {
+    axios.get("http://localhost:3001/panels").then((res) => {
+      setPanels(res.data);
+    });
+  };
+  const getCPanels = () => {
+    axios.get("http://localhost:3001/cpanels").then((res) => {
+      setCPanels(res.data);
+    });
+  };
+  const getpList = () => {
+    axios.get("http://localhost:3001/plist").then((res) => {
+      setpList(res.data);
+    });
+  };
+  const getfList = () => {
+    axios.get("http://localhost:3001/flist").then((res) => {
+      setfList(res.data);
+    });
+  };
+
+  const getFrameItems = (item) => {
+    if (!fList) return [];
+    if (!item) return [];
+
+    let elts = fList.filter((i) => i.frame_id === item);
+
+    return elts;
+  };
+  const getPanByID = (id, isComposite) => {
+    let elt = {
+      title: " ",
+      description: " ",
+    };
+    if (isComposite) {
+      if (cpanels) elt = cpanels.find((x) => x.id === id);
+    } else {
+      if (panels) elt = panels.find((x) => x.id === id);
+    }
+
+    if (!elt)
+      elt = {
+        title: " ",
+        description: " ",
+      };
+
+    return elt;
+  };
+
+  const generateRow = (frame) =>{
+    const framePanels = getFrameItems(frame.id);
+    const width = parseInt(24/(framePanels.length));
+    let posX = 0;
+    let x = 0;
+    let panels = []
+    framePanels.map((panel)=>{    
+      let gridPos={
+        "h": 10,
+          "w": (width - 1),
+          "x": posX,
+          "y": 0
+      }  ;
+      posX = posX + width;
+      let panRes = BarChartPanel({id:panel.panel_id+70, 
+        title: getPanByID(panel.panel_id).title, gridPos:gridPos});
+      panels = panels.concat(panRes);
+
+    });
+    let row = [{
+      "collapsed": true,
+      "datasource": null,
+     /*  "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      }, */
+      "id": frame.id,
+      "panels": panels,
+      "title": frame.title,
+      "type": "row"
+    }];
+  //  const chart = BarChartPanel({id:frame.id+20});
+    //setComprehensionFrames(comprehensionFrames.concat(row));
+    return row;
+  }
+  const generateTitle = (title, description) =>{
+    return{
+      "id": 4,
+      "type": "text",
+      "title": title,
+      "targets": [
+        {
+          "refId": "A",
+          "format": "time_series",
+          "timeColumn": "time",
+          "metricColumn": "none",
+          "group": [],
+          "where": [
+            {
+              "type": "macro",
+              "name": "$__timeFilter",
+              "params": []
+            }
+          ],
+          "select": [
+            [
+              {
+                "type": "column",
+                "params": [
+                  "id"
+                ]
+              }
+            ]
+          ],
+          "rawQuery": false,
+          "rawSql": "SELECT\n  time AS \"time\",\n  id\nFROM devices\nWHERE\n  $__timeFilter(time)\nORDER BY time",
+          "table": "devices",
+          "timeColumnType": "timestamp"
+        }
+      ],
+      "options": {
+        "mode": "markdown",
+        "content": description
+      },
+      "pluginVersion": "8.0.5",
+      "description": "",
+      "datasource": null
+    }
+  }
+
+  const generateDashStructure = ()=>{
+   // const frame = frames[0];
+   // const title = generateTitle(frame.title);
+  //  const struct = generateRow(frame);
+  let dash=[]
+    frames.map((frame)=>{
+      dash = dash.concat(generateRow(frame));
+    })    ;
+    setComprehensionFrames(dash);
+    return dash;
+  }
+
+  useEffect(() => {
+    getFrames();
+    getCPanels();
+    getPanels();
+    getpList();
+    getfList();
+  }, []);
 
   const filename = "generated_dashboard";
   const fileData = JSON.stringify(dash);
   const blob = new Blob([fileData], { type: "text/plain" });
-
+  
   const [mainPanel, setMainPanel] = useState();
   const [comprehensionFrames, setComprehensionFrames] = useState([]);
-  const [dashMeta, setDashMeta] = useState();
+  const [dashMeta, setDashMeta] = useState({
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": "-- Grafana --",
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "gnetId": null,
+    "graphTooltip": 0,
+    "links": [],
+    "panels": [],
+    "schemaVersion": 30,
+    "style": "dark",
+    "tags": [],
+    "templating": {
+      "list": []
+    },
+    "time": {
+      "from": "now-6h",
+      "to": "now"
+    },
+    "timepicker": {},
+    "timezone": "",
+    "title": "LAD Studio",
+    "uid": shortid.generate(),
+    "version": 2
+  });
 
   const [file, setFile] = useState();
 
   const generateMeta = () => {
     setDashMeta({
-      id: null,
-      uid: "cLV5GDCkz",
-      title: ladContext.Title,
-      tags: [],
-      style: "dark",
-      timezone: "browser",
-      editable: true,
-      hideControls: false,
-      graphTooltip: 1,
+      "annotations": {
+        "list": [
+          {
+            "builtIn": 1,
+            "datasource": "-- Grafana --",
+            "enable": true,
+            "hide": true,
+            "iconColor": "rgba(0, 211, 255, 1)",
+            "name": "Annotations & Alerts",
+            "type": "dashboard"
+          }
+        ]
+      },
+      "editable": true,
+      "gnetId": null,
+      "graphTooltip": 0,
+      "links": [],
+      "panels": [],
+      "schemaVersion": 30,
+      "style": "dark",
+      "tags": [],
+      "templating": {
+        "list": []
+      },
+      "time": {
+        "from": "now-6h",
+        "to": "now"
+      },
+      "timepicker": {},
+      "timezone": "",
+      "title": "LAD Studio",
+      "uid": shortid.generate(),
+      "version": 2
     });
   };
 
@@ -63,22 +295,24 @@ const GenerateComponent = () => {
       content: "# title",
     };
   };
-  const generateComprehensionFrames = () => {
-    
-    ladContext.comprehensionFrames.map((f) => {
-      setComprehensionFrames(comprehensionFrames.concat(generateOneFrame(f)));
-    });
+  const generateBarChart = () => {
+    const l =comprehensionFrames.length + 1
+    const frame = BarChartPanel({id:l});
+    setComprehensionFrames(comprehensionFrames.concat(frame));
   };
+  
 
   const generateJsonStructure = () => {
-    generateMainFrame();
+    //   generateMainFrame();
+    let dash = generateDashStructure();
     generateMeta();
-    generateComprehensionFrames();
-    console.log(comprehensionFrames);
+    // generateComprehensionFrames();
+    //generateBarChart();
+    // console.log(comprehensionFrames);
     //  setFile(dashMeta);
     let p = [];
-    p = p.concat(mainPanel);
-    p = p.concat(comprehensionFrames);
+    //p = p.concat(mainPanel);
+    p = p.concat(dash);
     const f = { ...file, ...dashMeta };
     setFile({ ...file, ...dashMeta, panels: p });
     return;
@@ -116,24 +350,47 @@ const GenerateComponent = () => {
   };
   return (
     <div className="  row">
-      <div class="bg-secondary card-header d-flex flex-row">
-        <div class="p-2 col-sm-6">Dashboard JSon structure</div>
-        <div class="p-2 text-right col-sm-3">
-          <span
-            className="btn btn-primary btn-sm "
-            onClick={generateJsonStructure}
+      <div className="col-md-4 card-header ">
+        <h6>
+          Current frames{" "}
+          <button
+            role="button"
+            onClick={() => {
+              return setComprehensionFrames([]);
+            }}
           >
-            Generate the structure
-          </span>
-        </div>
-        <div class="p-2 text-right col-sm-3">
-          <span className="btn btn-success btn-sm " onClick={saveJSonFile}>
-            Save the dashboard
-          </span>
-        </div>
+            reset
+          </button>
+        </h6>
+        <ol>
+          {comprehensionFrames.map((f) => {
+            return <li>{f.type}</li>;
+          })}
+        </ol>
+        <h6>Add</h6>
+        <Button onClick={generateBarChart}>sample barchart</Button>
+        <Button onClick={generateBarChart}>sample barchart</Button>
       </div>
-      <div className="card-body bg-light">
-        <ReactJson src={file} collapsible view="dual" />
+      <div className="col-md-8">
+        <div className="bg-secondary card-header d-flex flex-row ">
+          <div className="p-2 col-sm-6">Dashboard JSon structure</div>
+          <div className="p-2 text-right col-sm-3">
+            <span
+              className="btn btn-primary btn-sm "
+              onClick={generateJsonStructure}
+            >
+              Generate the structure
+            </span>
+          </div>
+          <div className="p-2 text-right col-sm-3">
+            <span className="btn btn-success btn-sm " onClick={saveJSonFile}>
+              Save the dashboard
+            </span>
+          </div>
+        </div>
+        <div className="card-body bg-light">
+          <ReactJson src={file} collapsible view="dual" enableClipboard />
+        </div>
       </div>
     </div>
   );

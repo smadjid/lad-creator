@@ -461,7 +461,7 @@ const FrameIndicator = (props) => {
                       id="select_relation1"
                     />
                     <label class="form-check-label" for="select_relation1">
-                    On click on the frame
+                    On click 
                     </label>
                   </div>
                   <div class="form-check">
@@ -472,7 +472,7 @@ const FrameIndicator = (props) => {
                       id="select_relation2"
                     />
                     <label class="form-check-label" for="select_relation2">
-                    On hover on the frame
+                    On hover 
                     </label>
                   </div>
                   <div class="form-check">
@@ -519,7 +519,7 @@ const FrameIndicator = (props) => {
                     <option value="left">Left of the reference frame</option>
                     <option value="above">Above of the reference frame</option>
                     <option value="below">
-                      Underneath of the reference frame
+                      Under of the reference frame
                     </option>
                     <option value="on">Replace the reference frame</option>
                   </select>

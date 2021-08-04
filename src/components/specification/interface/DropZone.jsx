@@ -5,7 +5,7 @@ import { FRAMEBOX, SIDEBAR_ITEM, ROW, COLUMN } from "./constants";
 
 const ACCEPTS = [SIDEBAR_ITEM, FRAMEBOX, ROW, COLUMN];
 
-const DropZone = ({ data, onDrop, isLast, className }) => {
+const DropZone = ({ data, onDrop, isLast, className }) => { 
   const [{ isOver, canDrop }, drop] = useDrop({
     accept: ACCEPTS,
     drop: (item, monitor) => {
@@ -15,6 +15,7 @@ const DropZone = ({ data, onDrop, isLast, className }) => {
       const dropZonePath = data.path;
       const splitDropZonePath = dropZonePath.split("-");
       const itemPath = item.path;
+      //console.log(item)
 
       // sidebar items can always be dropped anywhere
       if (!itemPath) {

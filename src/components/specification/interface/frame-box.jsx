@@ -10,10 +10,12 @@ const style = {
 };
 const FrameBox = ({ data, frameboxs, path }) => {
   const ref = useRef(null);
+  //console.log(frameboxs)
 
   const [{ isDragging }, drag] = useDrag({
     type: FRAMEBOX,
-    item: {  id: data.id, path },
+    content: data.content,
+    item: {  id: data.id, content: data.content, path },
     collect: monitor => ({
       isDragging: monitor.isDragging()
     })
@@ -23,6 +25,7 @@ const FrameBox = ({ data, frameboxs, path }) => {
   drag(ref);
 
   const framebox = frameboxs[data.id];
+  
 
   return (
     <div
@@ -30,8 +33,8 @@ const FrameBox = ({ data, frameboxs, path }) => {
       style={{ ...style, opacity }}
       className="framebox draggable"
     >
-      <div>{data.id}</div>
-      <div>{framebox.content}</div>
+    
+       <div>{data.content}</div> 
     </div>
   );
 };

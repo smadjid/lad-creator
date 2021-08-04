@@ -4,7 +4,6 @@ import Modal from "react-bootstrap/Modal";
 import { Button } from "react-bootstrap";
 import { FrameContext } from "../frames";
 
-export const chartContext = React.createContext();
 
 const Actions = (props) => {
   const [

@@ -42,6 +42,7 @@ input {
  .modal-style .modal-content {
  background-color: #212529;
  border: 1px solid white;
+ min-height: 40%;
  
 }
 .modal-style .modal-header .modal-title{

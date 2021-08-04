@@ -62,6 +62,7 @@ const FrameItemDlg = (props) => {
                     <i>{currentPanel ? currentPanel.description : ""}</i>
                   </td>
                 </tr>
+                
               </tbody>
             </table>
           </Modal.Body>

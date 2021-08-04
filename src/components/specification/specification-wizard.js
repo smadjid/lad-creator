@@ -13,6 +13,8 @@ import dash from "../../data/template_dash.json";
 import { Button, OverlayTrigger, Popover } from "react-bootstrap";
 import { AssignmentSharp, Bookmarks } from "@material-ui/icons";
 
+export const GlobalInterfaceContext = React.createContext();
+
 export const AppContext = React.createContext();
 
 const outlineComponent = () => {
@@ -40,14 +42,15 @@ const secondaryFrameComponent = () => {
   );
 };
 
-const interfaceConfigComponent = () => {
-  return <InterfaceComponent />;
-};
+
 const finalComponent = () => {
   return <GenerateComponent />;
 };
 
 function SpecificationWizard(props) {
+  const [globalLayout, setGlobalLayout] = useState([{id: 0, layout:[]}]);
+  const globalInterfaceContext = [globalLayout, setGlobalLayout];
+
   const [dashboardStructure, setDashboardStructure] = useState({
     Title: "Initial Title",
     mainFrame: { indicator: "Indicator", graphic: "Graph" },
@@ -55,6 +58,10 @@ function SpecificationWizard(props) {
     context: {},
     metaLAD: { title: "New LAD", version: 0.1 },
   });
+
+  const interfaceConfigComponent = () => { 
+    return (<GlobalInterfaceContext.Provider value={globalInterfaceContext}><InterfaceComponent /></GlobalInterfaceContext.Provider>);
+  };
 
   const [steps, setSteps] = useState([
     {
@@ -148,9 +155,6 @@ function SpecificationWizard(props) {
     return;
   };
 
-  const summaryDisplay = () => {
-    return <h3>TEST</h3>;
-  };
   const ladContext = [dashboardStructure, setDashboardStructure];
   return (
     <AppContext.Provider value={ladContext}>
@@ -174,7 +178,7 @@ function SpecificationWizard(props) {
                 );
               })}
               
-              <div style={{position:'absolute', right:'0', display: "block", padding: 10 }}>
+              <div style={{position:'absolute', right:'10px', display: "block", padding: 10 }}>
                   <OverlayTrigger
                     placement="bottom"
                     rootCloseEvent="mousedown"

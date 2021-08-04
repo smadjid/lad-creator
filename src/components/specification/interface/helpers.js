@@ -143,7 +143,7 @@ export const handleMoveToDifferentParent = (
     type: ROW,
     id: shortid.generate()
   };
-
+  console.log(COLUMN_STRUCTURE);
   switch (splitDropZonePath.length) {
     case 1: {
       // moving column outside into new row made on the fly
@@ -163,11 +163,13 @@ export const handleMoveToDifferentParent = (
     }
     case 2: {
       // moving framebox outside into a row which creates column
-      if (item.type === FRAMEBOX) {
+      if ((!item.type) | item.type === FRAMEBOX) {
+        item.type = FRAMEBOX;
         newLayoutStructure = COLUMN_STRUCTURE;
       } else {
         // moving column into existing row
         newLayoutStructure = item;
+        console.log(item);
       }
 
       break;

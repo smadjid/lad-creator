@@ -1,28 +1,19 @@
 import React, { useEffect, useState } from "react";
-import Chart from "./chart-component";
-import Select from "react-select";
 import "./frame-component.css";
-import FrameComprehension from "./frame-comprehension";
-import { Accordion, Card, Dropdown, DropdownButton } from "react-bootstrap";
+import { Card, Dropdown, DropdownButton } from "react-bootstrap";
 import PanelComponent from "./panel-component";
 import axios from "axios";
 import {
-  AddBoxRounded,
   ArrowForwardIos,
-  CreateNewFolder,
   DeleteForever,
   DoubleArrow,
-  EditRounded,
   ExpandLess,
   ExpandMore,
-  HighlightOffRounded,
-  InsertDriveFile,
-  Loupe,
-  PlaylistAdd,
   PostAdd,
   RemoveCircle,
 } from "@material-ui/icons";
 import FrameItemDlg from "./frame_item_dlg";
+import { FormControl, MenuItem, Select, InputLabel } from "@material-ui/core";
 
 export const FrameContext = React.createContext();
 
@@ -59,7 +50,7 @@ const FrameComponent = (props) => {
     console.log(currentElement);
   };
 
-  const [position, setPosition] = useState("right");
+  const [position, setPosition] = useState("");
 
   const getFrames = () => {
     axios.get("http://localhost:3001/frames").then((res) => {
@@ -100,7 +91,7 @@ const FrameComponent = (props) => {
   };
 
   const handlePositionChange = (e) => {
-    setPosition(e.target.options[e.target.selectedIndex].value);
+    setPosition(e.target.value);
   };
 
   const getPanByID = (id, isComposite) => {
@@ -182,16 +173,16 @@ const FrameComponent = (props) => {
     // setShowModal(true);
     return;
   };
-  const deleteFrame = () =>{
+  const deleteFrame = () => {
     let i = 0;
     window.confirm("Are you sure you want to delete this frame?")
       ? axios.delete(`http://localhost:3001/frames/${props.id}`).then((res) => {
-        props.onUpdate();
-          i=0;
+          props.onUpdate();
+          i = 0;
         })
       : (i = 1);
-      updateDisplay();
-  }
+    updateDisplay();
+  };
   const handleItemModalClose = () => {
     setShowItemModal(false);
   };
@@ -254,184 +245,192 @@ const FrameComponent = (props) => {
           </div>
         </div>
         <div className={`${frameCollapsed ? "collapse" : ""} row`}>
-          <div className="col-md-7 card-body">
-            <div className="card">
-              <Card className="transition-config">
-                <Card.Header className="dark-white d-flex justify-content-between">
-                  <h6>Panels that support the frame </h6>
-                  <DropdownButton
-                    variant="secondary"
-                    menuVariant="dark"
-                    title={<PostAdd />}
-                    size="sm"
-                  >
-                    <Dropdown.Item href="#" onClick={() => AddSimplePanel()}>
-                      <ArrowForwardIos />
-                      Simple panel
-                    </Dropdown.Item>
-                    <Dropdown.Divider />
-                    <Dropdown.Item href="#" onClick={() => AddCompositePanel()}>
-                      <DoubleArrow /> Composite panel
-                    </Dropdown.Item>
-                  </DropdownButton>
-                </Card.Header>
-                <Card.Body>
-                  <div>
-                    {getFrameItems(props.id).map((i) => {
-                      return (
-                        <div
-                          key={i.id}
-                          className="list-group-item d-flex justify-content-between align-items-center"
-                        >
-                          <div>
-                            <h6>
-                              {getPanByID(i.panel_id, i.isComposite).title}
-                            </h6>
-                            <i>{i.isComposite ? "Composite" : "Simple"}</i>
-                            <span
-                              role="button"
-                              className="text-danger btn-sm"
-                              onClick={() => dropCPanItem(i.id)}
-                            >
-                              <RemoveCircle />
-                            </span>
-                          </div>
+          <div className="col-md-12 card-body">
+            <div className="row">
+            
+              <div className="card col-md-7">
+              
+                <Card className="transition-config">
+                  <Card.Header className="dark-white d-flex justify-content-between">
+                    <h6>Panels that compose the frame support</h6>
+                    <DropdownButton
+                      variant="secondary"
+                      menuVariant="dark"
+                      title={<PostAdd />}
+                      size="sm"
+                    >
+                      <Dropdown.Item href="#" onClick={() => AddSimplePanel()}>
+                        <ArrowForwardIos />
+                        Simple panel
+                      </Dropdown.Item>
+                      <Dropdown.Divider />
+                      <Dropdown.Item
+                        href="#"
+                        onClick={() => AddCompositePanel()}
+                      >
+                        <DoubleArrow /> Composite panel
+                      </Dropdown.Item>
+                    </DropdownButton>
+                  </Card.Header>
+                  <Card.Body>
+                    <div>
+                      {getFrameItems(props.id).map((i) => {
+                        return (
+                          <div
+                            key={i.id}
+                            className="list-group-item d-flex justify-content-between align-items-center"
+                          >
+                            <div>
+                              <h6>
+                                {getPanByID(i.panel_id, i.isComposite).title}
+                              </h6>
+                              <i>{i.isComposite ? "Composite" : "Simple"}</i>
+                              <span
+                                role="button"
+                                className="text-danger btn-sm"
+                                onClick={() => dropCPanItem(i.id)}
+                              >
+                                <DeleteForever />
+                              </span>
+                            </div>
 
-                          <PanelComponent
-                            panel_id={i.panel_id}
-                            isComposite={i.isComposite}
-                            data={currentElement}
+                            <PanelComponent
+                              panel_id={i.panel_id}
+                              isComposite={i.isComposite}
+                              data={currentElement}
+                            />
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </Card.Body>
+                </Card>
+              </div>
+
+              <Card className="col-md-5 bg-light transition-config">
+              
+                <Card.Header className="dark-white">
+                  <h6>Transition into this frame support </h6>
+                </Card.Header>
+                <Card.Body className="col-md-12">
+                  <div className="row">
+                  
+                    <div className="col-md-6">
+                    
+                      <Card className=" text-dark bg-light mb-3">
+                        <Card.Header>
+                          Activation from the reference frame
+                        </Card.Header>
+                        <Card.Body>
+                          <FormControl>
+                            <InputLabel id="activation_action">
+                              Activation action
+                            </InputLabel>
+                            <Select
+                              labelId="activation_action"
+                              id="demo-controlled-open-select"
+                            >
+                              <MenuItem value="">
+                                <em>None</em>
+                              </MenuItem>
+                              <MenuItem value='click'>Click</MenuItem>
+                              <MenuItem value='hover'>Hover</MenuItem>
+                              <MenuItem value='select'>Select</MenuItem>
+                            </Select>
+                          </FormControl>
+                          
+
+                          {/*  <small className="form-text text-muted">
+                          Short description of the slected item
+                        </small> */}
+                        </Card.Body>
+                      </Card>
+                      <Card className=" text-dark bg-light mb-3">
+                        <Card.Header>
+                          Display of the this frame
+                        </Card.Header>
+                        <Card.Body>
+                          <FormControl>
+                            <InputLabel id="activation_action">
+                              Display setting
+                            </InputLabel>
+                            <Select
+                              labelId="activation_action"
+                              id="demo-controlled-open-select"
+                            >
+                              <MenuItem value="">
+                                <em>None</em>
+                              </MenuItem>
+                              <MenuItem value='overlap'>Side to side</MenuItem>
+                              <MenuItem value='new'>New windows</MenuItem>
+                              <MenuItem value='replace'>Replacement</MenuItem>
+                              <MenuItem value='overlap'>Overlap</MenuItem>
+                            </Select>
+                          </FormControl>
+                          
+
+                          {/*  <small className="form-text text-muted">
+                          Short description of the slected item
+                        </small> */}
+                        </Card.Body>
+                      </Card> 
+                    </div>
+                    <div className="col-md-6">
+                      <Card className="text-dark bg-light mb-3">
+                        <Card.Header>Position relative to the reference frame</Card.Header>
+
+                        <Card.Body>
+                        <FormControl>
+                            <InputLabel id="position_action">
+                              Placement 
+                            </InputLabel>
+                            <Select
+                              labelId="position_action"
+                              id="select_relation"
+                              onChange={handlePositionChange}
+                            value={position}
+                            >
+                              <MenuItem value="">
+                                <em>None</em>
+                              </MenuItem>
+                              <MenuItem value="right">
+                              On the right
+                            </MenuItem>
+                            <MenuItem value="left">
+                              On the left
+                            </MenuItem>
+                            <MenuItem value="above">
+                              Above
+                            </MenuItem>
+                            <MenuItem value="below">
+                              Below
+                            </MenuItem>
+                            <MenuItem value="on">
+                              At place (replace)
+                            </MenuItem>
+                            </Select>
+                          </FormControl>
+
+                          
+                          {/*  <small className="form-text text-muted">
+                          Short description of the slected item
+                        </small> */}
+                          <img
+                            className="chart_box-image"
+                            src={
+                              process.env.PUBLIC_URL +
+                              "/charts/position_" +
+                              position +
+                              ".png"
+                            }
                           />
-                        </div>
-                      );
-                    })}
+                        </Card.Body>
+                      </Card>
+                    </div>{" "}
                   </div>
                 </Card.Body>
               </Card>
             </div>
-
-            <br />
-            <Card className="col-md-12 bg-light transition-config">
-              <Card.Header className="dark-white">
-                <h5>Transition config </h5>
-              </Card.Header>
-              <Card.Body className="col-md-12">
-                <div className="row">
-                  <div className="col-md-6">
-                    <Card className=" text-dark bg-light mb-3">
-                      <Card.Header>
-                        Transition from the reference frame
-                      </Card.Header>
-
-                      <Card.Body>
-                        <div class="form-check">
-                          <input
-                            class="form-check-input"
-                            type="checkbox"
-                            value=""
-                            id="select_relation1"
-                          />
-                          <label
-                            class="form-check-label"
-                            for="select_relation1"
-                          >
-                            On click on the frame
-                          </label>
-                        </div>
-                        <div class="form-check">
-                          <input
-                            class="form-check-input"
-                            type="checkbox"
-                            value=""
-                            id="select_relation2"
-                          />
-                          <label
-                            class="form-check-label"
-                            for="select_relation2"
-                          >
-                            On hover on the frame
-                          </label>
-                        </div>
-                        <div class="form-check">
-                          <input
-                            class="form-check-input"
-                            type="checkbox"
-                            value=""
-                            id="select_relation3"
-                          />
-                          <label
-                            class="form-check-label"
-                            for="select_relation3"
-                          >
-                            Simultaneous display
-                          </label>
-                        </div>
-                        <div class="form-check">
-                          <input
-                            class="form-check-input"
-                            type="checkbox"
-                            value=""
-                            id="select_relation1"
-                          />
-                          <label
-                            class="form-check-label"
-                            for="select_relation1"
-                          >
-                            (Other)
-                          </label>
-                        </div>
-
-                        <small className="form-text text-muted">
-                          Short description of the slected item
-                        </small>
-                      </Card.Body>
-                    </Card>
-                  </div>
-                  <div className="col-md-6">
-                    <Card className="text-dark bg-light mb-3">
-                      <Card.Header>Position of the frame</Card.Header>
-
-                      <Card.Body>
-                        <select
-                          className="form-control"
-                          id="select_relation"
-                          onChange={handlePositionChange}
-                          value={position}
-                        >
-                          <option value="right">
-                            Right of the reference frame
-                          </option>
-                          <option value="left">
-                            Left of the reference frame
-                          </option>
-                          <option value="above">
-                            Above of the reference frame
-                          </option>
-                          <option value="below">
-                            Underneath of the reference frame
-                          </option>
-                          <option value="on">
-                            Replace the reference frame
-                          </option>
-                        </select>
-                        <small className="form-text text-muted">
-                          Short description of the slected item
-                        </small>
-                        <img
-                          className="chart_box-image"
-                          src={
-                            process.env.PUBLIC_URL +
-                            "/charts/position_" +
-                            position +
-                            ".png"
-                          }
-                        />
-                      </Card.Body>
-                    </Card>
-                  </div>{" "}
-                </div>
-              </Card.Body>
-            </Card>
           </div>
           {/* <FrameComprehension /> */}
         </div>

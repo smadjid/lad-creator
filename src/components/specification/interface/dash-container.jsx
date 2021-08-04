@@ -1,43 +1,59 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useContext } from "react";
 
 import DropZone from "./DropZone";
 import TrashDropZone from "./TrashDropZone";
-import SideBarItem from "./SideBarItem";
 import Row from "./Row";
 import initialData from "./initial-data";
 import {
   handleMoveWithinParent,
   handleMoveToDifferentParent,
   handleMoveSidebarFrameBoxIntoParent,
-  handleRemoveItemFromLayout
+  handleRemoveItemFromLayout,
 } from "./helpers";
 
-import { SIDEBAR_ITEMS, SIDEBAR_ITEM, FRAMEBOX, COLUMN } from "./constants";
+import { InterfaceContext } from "./page-container";
+import { GlobalInterfaceContext } from "../specification-wizard";
+
+import { SIDEBAR_ITEM, FRAMEBOX, COLUMN } from "./constants";
 import shortid from "shortid";
 
-const Container = () => {
-  const initialLayout = initialData.layout;
-  const initialFrameBoxs = initialData.frameboxs;
-  const [layout, setLayout] = useState(initialLayout);
-  const [frameboxs, setFrameBoxs] = useState(initialFrameBoxs);
+
+const DashContainer = ({index, initialLayout}) => {
+  //const initialLayout = initialData.layout;
+  const [layout, setLayout] = useContext(InterfaceContext);
+  
+  const [globalLayout, setGlobalLayout] = useContext(GlobalInterfaceContext);
+
+  //setLayout(globalLayout[index].layout);
+  
+  
+  const [frameboxs, setFrameBoxs] = useState([]);
+
+  const updateLayout= (layoutData) =>{
+    setLayout(layoutData);
+    const newGLayout = [...globalLayout];
+    newGLayout[index] = {id: index, layout:layoutData};
+    
+    setGlobalLayout(newGLayout);
+    console.log(newGLayout);
+    
+  }
 
   const handleDropToTrashBin = useCallback(
     (dropZone, item) => {
       const splitItemPath = item.path.split("-");
-      setLayout(handleRemoveItemFromLayout(layout, splitItemPath));
+      updateLayout(handleRemoveItemFromLayout(layout, splitItemPath));
     },
     [layout]
   );
 
   const handleDrop = useCallback(
     (dropZone, item) => {
-      console.log('dropZone', dropZone)
-      console.log('item', item)
 
       const splitDropZonePath = dropZone.path.split("-");
       const pathToDropZone = splitDropZonePath.slice(0, -1).join("-");
 
-      const newItem = { id: item.id, type: item.type };
+      const newItem = { id: item.id, type: item.type, content: item.content };
       if (item.type === COLUMN) {
         newItem.children = item.children;
       }
@@ -47,17 +63,20 @@ const Container = () => {
         // 1. Move sidebar item into page
         const newFrameBox = {
           id: shortid.generate(),
-          ...item.framebox
+          content: item.framebox.content,
+          ...item.framebox,
         };
         const newItem = {
           id: newFrameBox.id,
-          type: FRAMEBOX
+          content: item.framebox.content,
+          type: FRAMEBOX,
         };
+        
         setFrameBoxs({
           ...frameboxs,
-          [newFrameBox.id]: newFrameBox
+          [newFrameBox.id]: newFrameBox,
         });
-        setLayout(
+        updateLayout(
           handleMoveSidebarFrameBoxIntoParent(
             layout,
             splitDropZonePath,
@@ -75,7 +94,7 @@ const Container = () => {
       if (splitItemPath.length === splitDropZonePath.length) {
         // 2.a. move within parent
         if (pathToItem === pathToDropZone) {
-          setLayout(
+          updateLayout(
             handleMoveWithinParent(layout, splitDropZonePath, splitItemPath)
           );
           return;
@@ -83,7 +102,7 @@ const Container = () => {
 
         // 2.b. OR move different parent
         // TODO FIX columns. item includes children
-        setLayout(
+        updateLayout(
           handleMoveToDifferentParent(
             layout,
             splitDropZonePath,
@@ -95,7 +114,7 @@ const Container = () => {
       }
 
       // 3. Move + Create
-      setLayout(
+      updateLayout(
         handleMoveToDifferentParent(
           layout,
           splitDropZonePath,
@@ -119,52 +138,49 @@ const Container = () => {
     );
   };
 
+  
   // dont use index for key when mapping over items
   // causes this issue - https://github.com/react-dnd/react-dnd/issues/342
-  return (
-    <div className="interface">
-      <div className="sideBar">
-        {Object.values(SIDEBAR_ITEMS).map((sideBarItem, index) => (
-          <SideBarItem key={sideBarItem.id} data={sideBarItem} />
-        ))}
-      </div>
-      <div className="pageContainer">
-        <div className="page">
-          {layout.map((row, index) => {
-            const currentPath = `${index}`;
+  
+  return (<>     
+          <div className="page">
+            {layout.map((row, index) => {              
+              const currentPath = `${index}`;
+              return (
+                <React.Fragment key={row.id}>
+                  <DropZone
+                    data={{
+                      path: currentPath,
+                      childrenCount: layout.length,
+                      page : "1"
+                    }}
+                    
+                    onDrop={handleDrop}
+                    path={currentPath}
+                  />
+                  {renderRow(row, currentPath)}
+                </React.Fragment>
+              );
+            })}
+            <DropZone
+              data={{
+                path: `${layout.length}`,
+                childrenCount: layout.length,
+              }}
+              onDrop={handleDrop}
+              isLast
+            />
+          </div>
 
-            return (
-              <React.Fragment key={row.id}>
-                <DropZone
-                  data={{
-                    path: currentPath,
-                    childrenCount: layout.length
-                  }}
-                  onDrop={handleDrop}
-                  path={currentPath}
-                />
-                {renderRow(row, currentPath)}
-              </React.Fragment>
-            );
-          })}
-          <DropZone
+          <TrashDropZone
             data={{
-              path: `${layout.length}`,
-              childrenCount: layout.length
+              layout,
             }}
-            onDrop={handleDrop}
-            isLast
+            onDrop={handleDropToTrashBin}
           />
-        </div>
-
-        <TrashDropZone
-          data={{
-            layout
-          }}
-          onDrop={handleDropToTrashBin}
-        />
-      </div>
-    </div>
+        
+      )
+      </>
   );
 };
-export default Container;
+export default DashContainer;

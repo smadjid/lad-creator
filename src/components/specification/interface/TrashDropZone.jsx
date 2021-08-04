@@ -2,6 +2,7 @@ import React from "react";
 import classNames from "classnames";
 import { useDrop } from "react-dnd";
 import { FRAMEBOX, ROW, COLUMN } from "./constants";
+import { Trash } from "react-bootstrap-icons";
 
 const ACCEPTS = [ROW, COLUMN, FRAMEBOX];
 
@@ -42,7 +43,7 @@ const TrashDropZone = ({ data, onDrop }) => {
       className={classNames("trashDropZone", { active: isActive })}
       ref={drop}
     >
-      TRASH
+       <span>Delete columns, rows, and frame supports (drag and drop)</span> &nbsp; <Trash />
     </div>
   );
 };

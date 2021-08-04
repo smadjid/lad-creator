@@ -6,6 +6,7 @@ import axios from "axios";
 import Collapsible from "react-collapsible";
 import {
   AddBoxRounded,
+  DeleteForever,
   EditRounded,
   HighlightOff,
   HighlightOffRounded,
@@ -385,7 +386,7 @@ function CPanels() {
                               className="text-danger btn-sm"
                               onClick={() => dropCPanItem(i.id)}
                             >
-                              <RemoveCircle />
+                              <DeleteForever />
                             </span>
                           </td>
                         </tr>

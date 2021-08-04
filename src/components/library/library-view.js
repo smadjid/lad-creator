@@ -14,10 +14,6 @@ import Panels from "./panels";
 import CPanels from "./cpanels";
 import Scenario from "./scenario";
 
-
-
-
-
 function LibraryView() {
   function onLeave(){
     window.location.href = "/";
@@ -74,7 +70,7 @@ function LibraryView() {
         { name: "frame_types", label: "Types", onClick }
       ]*/
     },
-    "divider",
+   /*  "divider",
     {
       name: "decisions",
       label: "Use cases",
@@ -84,7 +80,7 @@ function LibraryView() {
         { name: "scenario", label: "Create scenario", onClick },
         { name: "o_scenario", label: "Open...", onClick }
       ]
-    },
+    }, */
     "divider",
     { name: "exit", label: "Exit Library", onClick, Icon: ExitToApp },
         
