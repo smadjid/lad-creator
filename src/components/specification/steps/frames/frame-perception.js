@@ -1,9 +1,6 @@
 import React, { useState, useContext } from "react";
-import IndicatorChooser from "./indicator-chooser";
-import Chart from "./chart";
-import Select from "react-select";
-import "./frame-reference.css";
-import FrameComprehension from "./frame-comprehension";
+import IndicatorChooser from "../indicator-chooser";
+import Chart from "../chart";
 import { AppContext } from "../../specification-wizard";
 
 const FramePerception = (props) => {
@@ -39,7 +36,7 @@ const FramePerception = (props) => {
           <Chart onUpdate={(v) => updateContext('ref_graph',v)} />
         </div>
       </div>
-      <FrameComprehension />
+      
     </div>
   );
 };

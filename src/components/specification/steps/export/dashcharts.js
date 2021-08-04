@@ -96,7 +96,7 @@ export const HBarChartPanel = (props) => {
     id: props.id,
     gridPos: props.gridPos,
     type: "barchart",
-    title: props.title + " : Les sites les plus consultés par l'élève $student",
+    title: props.title + " : Les sites les plus consultés ",
     pluginVersion: "8.0.5",
     fieldConfig: {
       defaults: {
@@ -140,7 +140,7 @@ export const HBarChartPanel = (props) => {
         metricColumn: "none",
         rawQuery: true,
         rawSql:
-          'SELECT SUBSTRING(name, 1, 40) as name, count(*) as total , now() as time\nFROM logs\nWHERE\n  $__timeFilter(timestamp) and log_type = "url"  and st_name="$student" \ngroup by name\norder by 2 desc\nlimit 5',
+          'SELECT SUBSTRING(name, 1, 40) as name, count(*) as total , now() as time\nFROM logs\nWHERE\n  $__timeFilter(timestamp) and log_type = "url"  and  \ngroup by name\norder by 2 desc\nlimit 5',
         refId: "A",
         select: [
           [
@@ -185,7 +185,7 @@ export const HBarChartPanel = (props) => {
   return json;
 };
 
-const lineChart = (props) => {
+export const lineChart = (props) => {
   let json = {
     id: props.id,
     gridPos: props.gridPos,
@@ -292,12 +292,12 @@ const lineChart = (props) => {
   return json;
 };
 
-const tableChart = (props) => {
+export const tableChart = (props) => {
   let json = {
     id: props.id,
     gridPos: props.gridPos,
     type: "briangann-datatable-panel",
-    title: props.title+ " : Documantary activities",
+    title: props.title + " : Documantary activities",
     repeat: "theme",
     pluginVersion: "7.4.3",
     alignNumbersToRightEnabled: true,
@@ -399,7 +399,7 @@ const tableChart = (props) => {
         metricColumn: "none",
         rawQuery: true,
         rawSql:
-          'SELECT Time(timestamp)  as \'Hour\', SUBSTRING(content, 1, 20) as \'Act.\',\nSUBSTRING(name, 1, 20) as \'Tool\',\nTIME_FORMAT(dur, "%H:%i:%s") as "Duration"\nFROM logs\nWHERE\n   log_type = "keystrokes"  and st_name="$student" and $seance="$seance" and activity_class=\'Information-Documentation\'\norder by timestamp',
+          'SELECT Time(timestamp)  as \'Hour\', SUBSTRING(content, 1, 20) as \'Act.\',\nSUBSTRING(name, 1, 20) as \'Tool\',\nTIME_FORMAT(dur, "%H:%i:%s") as "Duration"\nFROM logs\nWHERE\n   log_type = "keystrokes" and activity_class=\'Information-Documentation\'\norder by timestamp',
         refId: "A",
         select: [
           [
@@ -464,4 +464,81 @@ const tableChart = (props) => {
     datasource: null,
   };
   return json;
+};
+
+export const pieChart = (props) => {
+  return {
+    id: props.id,
+    gridPos: props.gridPos,
+    type: "piechart",
+    title: props.title,
+    "fieldConfig": {
+      "defaults": {
+        "custom": {
+          "hideFrom": {
+            "tooltip": false,
+            "viz": false,
+            "legend": false
+          }
+        },
+        "color": {
+          "mode": "palette-classic"
+        },
+        "mappings": []
+      },
+      "overrides": []
+    },
+    "options": {
+      "reduceOptions": {
+        "values": true,
+        "calcs": [
+          "lastNotNull"
+        ],
+        "fields": ""
+      },
+      "pieType": "pie",
+      "displayLabels": [
+        "value"
+      ],
+      "tooltip": {
+        "mode": "multi"
+      },
+      "legend": {
+        "displayMode": "list",
+        "placement": "right",
+        "values": []
+      }
+    },
+    "targets": [
+      {
+        "format": "time_series",
+        "group": [],
+        "metricColumn": "none",
+        "rawQuery": true,
+        "rawSql": "SELECT st_name, count(*) \" \", now() as time\nFROM logs\nWHERE\nactivity_class = \"Système\" \ngroup by name\norder by 2 desc\nlimit 5",
+        "refId": "A",
+        "select": [
+          [
+            {
+              "params": [
+                "id"
+              ],
+              "type": "column"
+            }
+          ]
+        ],
+        "table": "devices",
+        "timeColumn": "time",
+        "timeColumnType": "timestamp",
+        "where": [
+          {
+            "name": "$__timeFilter",
+            "params": [],
+            "type": "macro"
+          }
+        ]
+      }
+    ],
+    "datasource": null
+  };
 };

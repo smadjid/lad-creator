@@ -5,7 +5,7 @@ import "./specification-wizard.css";
 import ContextDescription from "./steps/context-description";
 import DecisionDescription from "./steps/decision-description";
 import IndicatorChooser from "./steps/indicator-chooser";
-import FrameReferenceOld from "./steps/frame-reference-old";
+import FramePerception from "./steps/frames/frame-perception";
 import FrameComprehension from "./steps/frames/frame-comprehension";
 import GenerateComponent from "./steps/generate-component";
 import InterfaceComponent from "./steps/interface-component";
@@ -24,7 +24,7 @@ const decisionComponent = () => {
   return <DecisionDescription />;
 };
 const mainFrameComponent = () => {
-  return <FrameReferenceOld />;
+  return <FramePerception />;
 };
 const secondaryFrameComponent = () => {
   return (

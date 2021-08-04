@@ -6,11 +6,9 @@ import { AppContext } from "../specification-wizard";
 
 import "./generate-component.css";
 import { Button } from "react-bootstrap";
-import { BarChartPanel } from "./export/dashcharts";
+import { BarChartPanel, HBarChartPanel,lineChart,tableChart,pieChart } from "./export/dashcharts";
 import shortid from "shortid";
 import axios from "axios";
-
-
 
 const GenerateComponent = () => {
   const [ladContext, setLadContext] = useContext(AppContext);
@@ -23,12 +21,11 @@ const GenerateComponent = () => {
   const [pList, setpList] = useState();
   const [currentPanel, setCurrentPanel] = useState();
   const [fList, setfList] = useState();
-
+  const [visualizations, setVisualizations] = useState([]);
 
   const getFrames = () => {
     axios.get("http://localhost:3001/frames").then((res) => {
       setFrames(res.data);
-      
     });
   };
   const getPanels = () => {
@@ -49,6 +46,11 @@ const GenerateComponent = () => {
   const getfList = () => {
     axios.get("http://localhost:3001/flist").then((res) => {
       setfList(res.data);
+    });
+  };
+  const getVisualizations = () => {
+    axios.get("http://localhost:3001/visualizations").then((res) => {
+      setVisualizations(res.data);
     });
   };
 
@@ -80,99 +82,117 @@ const GenerateComponent = () => {
     return elt;
   };
 
-  const generateRow = (frame) =>{
+  const getVizByID = (id) => {
+    let viz = {
+      title: " ",
+      description: " ",
+      chart: null,
+    };
+
+    let f_viz = null;
+    if (visualizations) f_viz = visualizations.find((x) => x.id === id);
+    return f_viz ? f_viz : viz;
+  };
+
+  const generateRow = (frame) => {
     const framePanels = getFrameItems(frame.id);
-    const width = parseInt(24/(framePanels.length));
+
+    const width = parseInt(24 / framePanels.length);
     let posX = 0;
     let x = 0;
-    let panels = []
-    framePanels.map((panel)=>{    
-      let gridPos={
-        "h": 10,
-          "w": (width - 1),
-          "x": posX,
-          "y": 0
-      }  ;
+    let panels = [];
+    framePanels.map((panel) => {
+      let viz = getVizByID(getPanByID(panel.panel_id).visualization_id).title;
+      let gridPos = {
+        h: 10,
+        w: width - 1,
+        x: posX,
+        y: 0,
+      };
       posX = posX + width;
-      let panRes = BarChartPanel({id:panel.panel_id+70, 
-        title: getPanByID(panel.panel_id).title, gridPos:gridPos});
+      let panRes = charting({
+        id: panel.panel_id + 70,
+        title: getPanByID(panel.panel_id).title,
+        gridPos: gridPos,
+        type: viz,
+      });
       panels = panels.concat(panRes);
-
     });
-    let row = [{
-      "collapsed": true,
-      "datasource": null,
-     /*  "gridPos": {
+    let row = [
+      {
+        collapsed: true,
+        datasource: null,
+        /*  "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
         "y": 0
       }, */
-      "id": frame.id,
-      "panels": panels,
-      "title": frame.title,
-      "type": "row"
-    }];
-  //  const chart = BarChartPanel({id:frame.id+20});
+        id: frame.id,
+        panels: panels,
+        title: frame.title,
+        type: "row",
+      },
+    ];
+    //  const chart = BarChartPanel({id:frame.id+20});
     //setComprehensionFrames(comprehensionFrames.concat(row));
     return row;
-  }
-  const generateTitle = (title, description) =>{
-    return{
-      "id": 4,
-      "type": "text",
-      "title": title,
-      "targets": [
+  };
+  const generateTitle = (title, description) => {
+    return {
+      id: 4,
+      type: "text",
+      title: title,
+      targets: [
         {
-          "refId": "A",
-          "format": "time_series",
-          "timeColumn": "time",
-          "metricColumn": "none",
-          "group": [],
-          "where": [
+          refId: "A",
+          format: "time_series",
+          timeColumn: "time",
+          metricColumn: "none",
+          group: [],
+          where: [
             {
-              "type": "macro",
-              "name": "$__timeFilter",
-              "params": []
-            }
+              type: "macro",
+              name: "$__timeFilter",
+              params: [],
+            },
           ],
-          "select": [
+          select: [
             [
               {
-                "type": "column",
-                "params": [
-                  "id"
-                ]
-              }
-            ]
+                type: "column",
+                params: ["id"],
+              },
+            ],
           ],
-          "rawQuery": false,
-          "rawSql": "SELECT\n  time AS \"time\",\n  id\nFROM devices\nWHERE\n  $__timeFilter(time)\nORDER BY time",
-          "table": "devices",
-          "timeColumnType": "timestamp"
-        }
+          rawQuery: false,
+          rawSql:
+            'SELECT\n  time AS "time",\n  id\nFROM devices\nWHERE\n  $__timeFilter(time)\nORDER BY time',
+          table: "devices",
+          timeColumnType: "timestamp",
+        },
       ],
-      "options": {
-        "mode": "markdown",
-        "content": description
+      options: {
+        mode: "markdown",
+        content: description,
       },
-      "pluginVersion": "8.0.5",
-      "description": "",
-      "datasource": null
-    }
-  }
+      pluginVersion: "8.0.5",
+      description: "",
+      datasource: null,
+    };
+  };
 
-  const generateDashStructure = ()=>{
-   // const frame = frames[0];
-   // const title = generateTitle(frame.title);
-  //  const struct = generateRow(frame);
-  let dash=[]
-    frames.map((frame)=>{
+  const generateDashStructure = () => {
+    // const frame = frames[0];
+    // const title = generateTitle(frame.title);
+    //  const struct = generateRow(frame);
+    let dash = [];
+    frames.map((frame) => {
       dash = dash.concat(generateRow(frame));
-    })    ;
+    });
     setComprehensionFrames(dash);
     return dash;
-  }
+  };
 
   useEffect(() => {
     getFrames();
@@ -180,87 +200,88 @@ const GenerateComponent = () => {
     getPanels();
     getpList();
     getfList();
+    getVisualizations();
   }, []);
 
   const filename = "generated_dashboard";
   const fileData = JSON.stringify(dash);
   const blob = new Blob([fileData], { type: "text/plain" });
-  
+
   const [mainPanel, setMainPanel] = useState();
   const [comprehensionFrames, setComprehensionFrames] = useState([]);
   const [dashMeta, setDashMeta] = useState({
-    "annotations": {
-      "list": [
+    annotations: {
+      list: [
         {
-          "builtIn": 1,
-          "datasource": "-- Grafana --",
-          "enable": true,
-          "hide": true,
-          "iconColor": "rgba(0, 211, 255, 1)",
-          "name": "Annotations & Alerts",
-          "type": "dashboard"
-        }
-      ]
+          builtIn: 1,
+          datasource: "-- Grafana --",
+          enable: true,
+          hide: true,
+          iconColor: "rgba(0, 211, 255, 1)",
+          name: "Annotations & Alerts",
+          type: "dashboard",
+        },
+      ],
     },
-    "editable": true,
-    "gnetId": null,
-    "graphTooltip": 0,
-    "links": [],
-    "panels": [],
-    "schemaVersion": 30,
-    "style": "dark",
-    "tags": [],
-    "templating": {
-      "list": []
+    editable: true,
+    gnetId: null,
+    graphTooltip: 0,
+    links: [],
+    panels: [],
+    schemaVersion: 30,
+    style: "dark",
+    tags: [],
+    templating: {
+      list: [],
     },
-    "time": {
-      "from": "now-6h",
-      "to": "now"
+    time: {
+      from: "now-6h",
+      to: "now",
     },
-    "timepicker": {},
-    "timezone": "",
-    "title": "LAD Studio",
-    "uid": shortid.generate(),
-    "version": 2
+    timepicker: {},
+    timezone: "",
+    title: "LAD Studio",
+    uid: shortid.generate(),
+    version: 2,
   });
 
   const [file, setFile] = useState();
 
   const generateMeta = () => {
     setDashMeta({
-      "annotations": {
-        "list": [
+      annotations: {
+        list: [
           {
-            "builtIn": 1,
-            "datasource": "-- Grafana --",
-            "enable": true,
-            "hide": true,
-            "iconColor": "rgba(0, 211, 255, 1)",
-            "name": "Annotations & Alerts",
-            "type": "dashboard"
-          }
-        ]
+            builtIn: 1,
+            datasource: "-- Grafana --",
+            enable: true,
+            hide: true,
+            iconColor: "rgba(0, 211, 255, 1)",
+            name: "Annotations & Alerts",
+            type: "dashboard",
+          },
+        ],
       },
-      "editable": true,
-      "gnetId": null,
-      "graphTooltip": 0,
-      "links": [],
-      "panels": [],
-      "schemaVersion": 30,
-      "style": "dark",
-      "tags": [],
-      "templating": {
-        "list": []
+      editable: true,
+      gnetId: null,
+      graphTooltip: 0,
+      links: [],
+      panels: [],
+      schemaVersion: 30,
+      style: "dark",
+      tags: [],
+      templating: {
+        list: [],
       },
-      "time": {
-        "from": "now-6h",
-        "to": "now"
+      time: {
+        from: "now-6h",
+        to: "now",
       },
-      "timepicker": {},
-      "timezone": "",
-      "title": "LAD Studio",
-      "uid": shortid.generate(),
-      "version": 2
+      timepicker: {},
+      timezone: "",
+      title: "LAD Studio",
+      uid: shortid.generate(),
+      version: 2,
     });
   };
 
@@ -296,11 +317,54 @@ const GenerateComponent = () => {
     };
   };
   const generateBarChart = () => {
-    const l =comprehensionFrames.length + 1
-    const frame = BarChartPanel({id:l});
+    const l = comprehensionFrames.length + 1;
+    const frame = BarChartPanel({ id: l });
     setComprehensionFrames(comprehensionFrames.concat(frame));
   };
-  
+
+  const charting = (params) => {
+    let res = [];
+   /*  BarChartPanel
+HBarChartPanel
+lineChart
+tableChart
+pieChart */
+    switch (params.type) {
+      case "Heatmap": {
+        res = tableChart({
+          id: params.id,
+          title: params.title,
+          gridPos: params.gridPos,
+        });
+        break;
+      }
+      case "Barchart": {
+        res = BarChartPanel({
+          id: params.id,
+          title: params.title,
+          gridPos: params.gridPos,
+        });
+        break;
+      }
+      case "Histogram": {
+        res = lineChart({
+          id: params.id,
+          title: params.title,
+          gridPos: params.gridPos,
+        });
+        break;
+      }
+      case "Pie chart": {
+        res = pieChart({
+          id: params.id,
+          title: params.title,
+          gridPos: params.gridPos,
+        });
+        break;
+      }
+    }
+    return res;
+  };
 
   const generateJsonStructure = () => {
     //   generateMainFrame();
