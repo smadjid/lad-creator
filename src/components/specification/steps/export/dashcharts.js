@@ -399,7 +399,7 @@ export const tableChart = (props) => {
         metricColumn: "none",
         rawQuery: true,
         rawSql:
-          'SELECT Time(timestamp)  as \'Hour\', SUBSTRING(content, 1, 20) as \'Act.\',\nSUBSTRING(name, 1, 20) as \'Tool\',\nTIME_FORMAT(dur, "%H:%i:%s") as "Duration"\nFROM logs\nWHERE\n   log_type = "keystrokes" and activity_class=\'Information-Documentation\'\norder by timestamp',
+          'SELECT Time(timestamp)  as \'Hour\', SUBSTRING(content, 1, 20) as \'Act.\',\nSUBSTRING(name, 1, 20) as \'Tool\',\nTIME_FORMAT(dur, "%H:%i:%s") as "Duration"\nFROM logs\nWHERE\n   log_type = "keystrokes" andactivity_class=\'Information-Documentation\'\norder by timestamp',
         refId: "A",
         select: [
           [

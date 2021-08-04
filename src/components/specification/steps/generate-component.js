@@ -415,6 +415,7 @@ pieChart */
   return (
     <div className="  row">
       <div className="col-md-4 card-header ">
+      <h5>For debugging</h5>
         <h6>
           Current frames{" "}
           <button
@@ -432,7 +433,6 @@ pieChart */
           })}
         </ol>
         <h6>Add</h6>
-        <Button onClick={generateBarChart}>sample barchart</Button>
         <Button onClick={generateBarChart}>sample barchart</Button>
       </div>
       <div className="col-md-8">
