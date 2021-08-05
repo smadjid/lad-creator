@@ -27,7 +27,9 @@ const FrameComprehension = (props) => {
 
   const getFrames = () => {
     axios.get("http://localhost:3001/frames").then((res) => {
-      setFrames(res.data);
+      let results = res.data;
+      if (ladContext.Sample) results = results.filter((r)=>r.sample == ladContext.Sample);
+      setFrames(results)
     });
   };
   useEffect(() => {
@@ -42,12 +44,12 @@ const FrameComprehension = (props) => {
     const element ={
       level:props.level + 1,
       class:newFrameData.type,
-      title:newFrameData.title
+      title:newFrameData.title,
+      sample: ladContext.Sample
     }
 
     axios.post("http://localhost:3001/frames", element).then((res) => {console.log(res);
-        getFrames()
-        
+        getFrames()        
       });
 
     
@@ -205,6 +207,7 @@ const FrameComprehension = (props) => {
             level={f.level}
             class={f.class}
             title={f.title}
+            sample={ladContext.Sample}
             onUpdate={getFrames}
           /><br/></>)
           })}

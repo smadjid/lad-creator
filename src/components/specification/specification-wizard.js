@@ -88,12 +88,12 @@ function SpecificationWizard(props) {
       isDone: false,
       component: secondaryFrameComponent,
     },
-    {
+   /*  {
       key: "fifthStep",
       label: "Interface config",
       isDone: false,
       component: interfaceConfigComponent,
-    },
+    }, */
     {
       key: "finalStep",
       label: "LAD Generation",
@@ -193,6 +193,16 @@ function SpecificationWizard(props) {
                                 <h6 className="my-0">Dashboard Title</h6>
                                 <small className="text-muted">
                                   {dashboardStructure.Title}
+                                </small>
+                              </div>
+                              <span className="text-muted">(X)</span>
+                            </li>
+                            
+                            <li className="list-group-item d-flex justify-content-between lh-sm">
+                              <div>
+                                <h6 className="my-0">Sample data</h6>
+                                <small className="text-muted">
+                                  {dashboardStructure.Sample}
                                 </small>
                               </div>
                               <span className="text-muted">(X)</span>

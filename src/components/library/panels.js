@@ -1,5 +1,4 @@
 import "./library-view.css";
-
 import React, { useState, useEffect } from "react";
 import Actions from "./panels_lib/panel_actions";
 import axios from "axios";
@@ -8,6 +7,7 @@ import {
   EditRounded,
   HighlightOffRounded,
 } from "@material-ui/icons";
+import { FormControl, MenuItem, InputLabel, Select } from "@material-ui/core";
 
 export const PanelContext = React.createContext();
 
@@ -16,13 +16,17 @@ function Panels() {
   const [visualizations, setVisualizations] = useState([]);
   const [indicators, setIndicators] = useState([]);
 
+  const [sample, setSample] = useState("at41");
+  const handleSetSample = (e) => {
+    setSample(e.target.value);
+  };
+
   const [showModal, setShowModal] = useState(false);
 
-  
   const [currentPanel, setCurrentPanel] = useState();
   const [currentIndicator, setCurrentIndicator] = useState();
   const [currentVisualization, setCurrentVisualization] = useState();
-  
+
   const panelContext = [
     currentPanel,
     setCurrentPanel,
@@ -31,7 +35,7 @@ function Panels() {
     currentVisualization,
     setCurrentVisualization,
     indicators,
-    visualizations
+    visualizations,
   ];
 
   const [creationMode, setCreationMode] = useState(true);
@@ -41,14 +45,15 @@ function Panels() {
   };
 
   const handleModalSave = () => {
-
-    setCurrentPanel({...currentPanel,visualization_id:currentVisualization.id});
+    setCurrentPanel({
+      ...currentPanel,
+      visualization_id: currentVisualization.id,
+    });
 
     let element = currentPanel;
-    element.visualization_id=currentVisualization.id;
-    element.indicator_id=currentIndicator.id;
-    console.log(element);
-     
+    element.visualization_id = currentVisualization.id;
+    element.indicator_id = currentIndicator.id;
+
     if (creationMode)
       axios.post("http://localhost:3001/panels", element).then(() => {
         setPanels([
@@ -71,6 +76,8 @@ function Panels() {
                   description: item.description,
                   visualization_id: item.visualization_id,
                   indicator_id: item.indicator_id,
+                  request: item.request,
+                  sample: sample,
                 }
               : item;
           })
@@ -133,25 +140,22 @@ function Panels() {
     return img;
   };
 
-  const fetchVizElement = (id) =>{
-      
-      if(typeof id === 'undefined') return{title:null,chart:null};
-      else{
-          let elt = visualizations.find(x  => x.id === id) 
-          if(elt) return elt
-          else return{title:null,chart:null};
-      }
-  }
-
-  const fetchIndElement = (id) =>{
-      
-    if(typeof id === 'undefined') return;
-    else{
-        let elt = indicators.find(x  => x.id === id) 
-        if(elt) return elt.title;
+  const fetchVizElement = (id) => {
+    if (typeof id === "undefined") return { title: null, chart: null };
+    else {
+      let elt = visualizations.find((x) => x.id === id);
+      if (elt) return elt;
+      else return { title: null, chart: null };
     }
-}
+  };
 
+  const fetchIndElement = (id) => {
+    if (typeof id === "undefined") return;
+    else {
+      let elt = indicators.find((x) => x.id === id);
+      if (elt) return elt.title;
+    }
+  };
 
   const CreateNewPanel = () => {
     const item = {
@@ -159,6 +163,8 @@ function Panels() {
       description: "Description",
       visualization_id: null,
       indicator_id: null,
+      request: null,
+      sample: sample,
     };
     setCurrentIndicator(indicators[0]);
     setCurrentVisualization(visualizations[0]);
@@ -170,18 +176,16 @@ function Panels() {
     return;
   };
   const EditPanel = (item) => {
-    
-    indicators.map((elt)=>{
-        if(elt.id == item.indicator_id) setCurrentIndicator(elt)
+    indicators.map((elt) => {
+      if (elt.id == item.indicator_id) setCurrentIndicator(elt);
     });
 
-
-    visualizations.map((elt)=>{
-        if(elt.id == item.visualization_id) setCurrentVisualization(elt)
+    visualizations.map((elt) => {
+      if (elt.id == item.visualization_id) setCurrentVisualization(elt);
     });
 
     setCurrentPanel(item);
-    
+
     setCreationMode(false);
     setShowModal(true);
   };
@@ -199,9 +203,34 @@ function Panels() {
       />
 
       <div>
-        <button className="btn btn-success" onClick={CreateNewPanel}>
-          <AddBoxRounded /> &nbsp; New panel type
-        </button>
+        <table className="table table-striped ">
+          <thead>
+            <tr>
+              <td>
+                <FormControl>
+                  <InputLabel id="activation_action" style={{ color: "white" }}>
+                    Use case data
+                  </InputLabel>
+                  <Select
+                    style={{ color: "white" }}
+                    labelId="usecase_data"
+                    id="demo-controlled-open-select"
+                    value={sample}
+                    onChange={handleSetSample}
+                  >
+                    <MenuItem value="at41">AT 41</MenuItem>
+                    <MenuItem value="lada">LADA</MenuItem>
+                  </Select>
+                </FormControl>
+              </td>
+              <td>
+                <button className="btn btn-success" onClick={CreateNewPanel}>
+                  <AddBoxRounded /> &nbsp; New simple panel
+                </button>
+              </td>
+            </tr>
+          </thead>
+        </table>
       </div>
       <table className="table table-bordered table-hover table-dark table-striped text-md-start">
         <thead>
@@ -215,36 +244,45 @@ function Panels() {
           </tr>
         </thead>
         <tbody>
-          {panels.map((item) => {
-            return (
-              <tr key={item.id}>
-                <th scope="row">{item.id}</th>
-                <td>{item.title}</td>
-                <td>{fetchIndElement(item.indicator_id)}</td>
-                <td> <i>{fetchVizElement(item.visualization_id).title}</i>
-                  <div className="chart_box">                  
-                    <img alt="Chart" src={decodeChart(fetchVizElement(item.visualization_id).chart)} />
-                  </div>
-                </td>
-                <td>{item.description}</td>
+          {panels
+            .filter((i) => i.sample == sample)
+            .map((item) => {
+              return (
+                <tr key={item.id}>
+                  <th scope="row">{item.id}</th>
+                  <td>{item.title}</td>
+                  <td>{fetchIndElement(item.indicator_id)}</td>
+                  <td>
+                    {" "}
+                    <i>{fetchVizElement(item.visualization_id).title}</i>
+                    <div className="chart_box">
+                      <img
+                        alt="Chart"
+                        src={decodeChart(
+                          fetchVizElement(item.visualization_id).chart
+                        )}
+                      />
+                    </div>
+                  </td>
+                  <td>{item.description}</td>
 
-                <td>
-                  <button
-                    className="btn btn-sm btn-outline-primary"
-                    onClick={() => EditPanel(item)}
-                  >
-                    <EditRounded />
-                  </button>
-                  <button
-                    className="btn btn-sm btn-outline-danger"
-                    onClick={() => deletePanel(item.id)}
-                  >
-                    <HighlightOffRounded />
-                  </button>
-                </td>
-              </tr>
-            );
-          })}
+                  <td>
+                    <button
+                      className="btn btn-sm btn-outline-primary"
+                      onClick={() => EditPanel(item)}
+                    >
+                      <EditRounded />
+                    </button>
+                    <button
+                      className="btn btn-sm btn-outline-danger"
+                      onClick={() => deletePanel(item.id)}
+                    >
+                      <HighlightOffRounded />
+                    </button>
+                  </td>
+                </tr>
+              );
+            })}
         </tbody>
       </table>
     </PanelContext.Provider>

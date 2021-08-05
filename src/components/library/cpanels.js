@@ -1,6 +1,5 @@
 import "./library-view.css";
 import React, { useState, useEffect } from "react";
-import Panels from "./panels";
 import Actions from "./panels_lib/cpanel_actions";
 import axios from "axios";
 import Collapsible from "react-collapsible";
@@ -8,14 +7,13 @@ import {
   AddBoxRounded,
   DeleteForever,
   EditRounded,
-  HighlightOff,
   HighlightOffRounded,
   KeyboardArrowDown,
   Loupe,
-  RemoveCircle,
 } from "@material-ui/icons";
 import CPanelItem from "./panels_lib/cpanel_items";
-import { InfoCircle, InfoCircleFill } from "react-bootstrap-icons";
+import { InfoCircleFill } from "react-bootstrap-icons";
+import { FormControl, MenuItem, InputLabel, Select } from "@material-ui/core";
 
 export const CPanelContext = React.createContext();
 
@@ -31,7 +29,11 @@ function CPanels() {
   const [pList, setpList] = useState();
   const [visualizations, setVisualizations] = useState();
   const [indicators, setIndicators] = useState();
-
+  
+  const [sample, setSample] = useState('at41');
+  const handleSetSample = (e) =>{
+    setSample(e.target.value);
+  }
   const cpanelContext = [
     currentCPanel,
     setCurrentCPanel,
@@ -92,6 +94,7 @@ function CPanels() {
                   id: item.id,
                   title: item.title,
                   description: item.description,
+                  sample: sample
                 }
               : item;
           })
@@ -260,6 +263,7 @@ function CPanels() {
     const item = {
       title: "NewPanel",
       description: "Description",
+      sample: sample
     };
     setCurrentCPanel(item);
     setCreationMode(true);
@@ -301,15 +305,41 @@ function CPanels() {
         mode="Creation"
         cpanels={cpanels}
         setCPanels={setCPanels}
+        sample={sample}
         updateDisplay={updateDisplay}
         onClose={handleItemModalClose}
         onSave={handleItemModalSave}
       />
 
       <div>
-        <button className="btn btn-success" onClick={CreateNewCPanel}>
-          <AddBoxRounded /> &nbsp; New Composite Panel Type
-        </button>
+      <table className="table table-striped ">
+          <thead>
+            <tr>
+              <td>
+                <FormControl>
+                  <InputLabel id="activation_action" style={{ color: "white" }}>
+                    Use case data
+                  </InputLabel>
+                  <Select
+                    style={{ color: "white" }}
+                    labelId="usecase_data"
+                    id="demo-controlled-open-select"
+                    value={sample}
+                    onChange={handleSetSample}
+                  >
+                    <MenuItem value="at41">AT 41</MenuItem>
+                    <MenuItem value="lada">LADA</MenuItem>
+                  </Select>
+                </FormControl>
+              </td>
+              <td>
+                <button className="btn btn-success" onClick={CreateNewCPanel}>
+                  <AddBoxRounded /> &nbsp; New composite panel
+                </button>
+              </td>
+            </tr>
+          </thead>
+        </table>
       </div>
       <table className="table table-bordered table-hover table-dark table-striped text-md-start">
         <thead>
@@ -322,7 +352,10 @@ function CPanels() {
           </tr>
         </thead>
         <tbody>
-          {cpanels.map((item) => {
+          {
+            cpanels
+            .filter((i) => i.sample == sample)
+            .map((item) => {
             return (
               <tr key={item.id}>
                 <th scope="row">{item.id}</th>

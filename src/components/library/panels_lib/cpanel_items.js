@@ -19,8 +19,6 @@ const CPanelItem = (props) => {
     indicators,
   ] = useContext(CPanelContext);
 
-  const [currentVisualization, setCurrentVisualization] = useState();
-  const [currentIndicator, setCurrentIndicator] = useState();
 
   const getPanElement = (i) => {
     panels.map((item) => {
@@ -93,7 +91,7 @@ const CPanelItem = (props) => {
               <tbody>
                 <tr>
                   <td>
-                    <b>Select a panel to insert</b>
+                    <b>Select a panel from to insert</b> 
                   </td>
                   <td>
                     <select
@@ -101,7 +99,7 @@ const CPanelItem = (props) => {
                       name="panel"
                       onChange={(e) => getPanElement(e.target.value)}
                     >
-                      {panels.map((item) => {
+                      {panels.filter((i)=>i.sample===props.sample).map((item) => {
                         return <option value={item.id}>{item.title}</option>;
                       })}
                     </select>

@@ -1,12 +1,21 @@
-import React, { useState } from "react";
-
+import React, { useState, useContext } from "react";
+import { AppContext } from "../specification-wizard";
 
 const ContextDescription = (props) => {
+  const [ladContext, setLadContext] = useContext(AppContext);
   
 
   const [learningContext, setLearningContext] = useState("Institutional LMS");
   const handleLearningContext = (e) => {
     setLearningContext(e.target.value);
+  };
+
+  const [dataSample, setDataSample] = useState("at41");
+  const handleDataSample = (e) => {
+    setDataSample(e.target.value);
+    setLadContext((prevState) => {
+      return { ...prevState, Sample:e.target.value };
+    });
   };
   const [institution, setInstitution] = useState("moodle");
   const handleInstitution = (e) => {
@@ -66,6 +75,22 @@ const ContextDescription = (props) => {
           <h3>Learning context</h3>
           <panel>Decsribe the learning context and your role within</panel>
           <hr className="my-1" />
+        </div>
+        <div className="col-md-3 mt-2 ">
+        <label for="country" className="form-label">
+            Sample Data for this Dashboard
+          </label>
+          <select
+            className="form-select"
+            id="sample"
+            placeholder="Data sample"
+            value={dataSample}
+            onChange={handleDataSample}
+            required
+          >
+            <option value="at41">AT 41</option>
+            <option value="lada">LADA</option>
+          </select>
         </div>
 
         <div className="col-md-8 mt-2 ">

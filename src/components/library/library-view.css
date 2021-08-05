@@ -81,7 +81,8 @@
 
 input, textarea, select {
   padding: 0.6rem;
-  width: 300px;
+  /* width: 300px; */
+  width: 90%;
   margin-bottom: 1rem;
 }
 

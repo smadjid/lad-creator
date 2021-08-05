@@ -69,12 +69,16 @@ const FrameComponent = (props) => {
 
   const getPanels = () => {
     axios.get("http://localhost:3001/panels").then((res) => {
-      setPanels(res.data);
+      let results = res.data;
+      if (props.sample) results = results.filter((r)=>r.sample == props.sample);
+      setPanels(results);
     });
   };
   const getCPanels = () => {
     axios.get("http://localhost:3001/cpanels").then((res) => {
-      setCPanels(res.data);
+      let results = res.data;
+      if (props.sample) results = results.filter((r)=>r.sample == props.sample);
+      setCPanels(results);
     });
   };
   const getCPanelItems = (item) => {
@@ -252,7 +256,7 @@ const FrameComponent = (props) => {
               
                 <Card className="transition-config">
                   <Card.Header className="dark-white d-flex justify-content-between">
-                    <h6>Panels that compose the frame support</h6>
+                    <h6>Panels that compose the frame support</h6> 
                     <DropdownButton
                       variant="secondary"
                       menuVariant="dark"

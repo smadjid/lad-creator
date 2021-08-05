@@ -134,6 +134,22 @@ const Actions = (props) => {
                     </td>
                   </tr>
                   <tr>
+                  <td>Request</td>
+                  <td>
+                  <textarea
+                        type="text"
+                        placeholder="SQL request..."
+                        value={currentPanel.request}
+                        onChange={(e) =>
+                          setCurrentPanel({
+                            ...currentPanel,
+                            request: e.target.value,
+                          })
+                        }
+                        name="request"
+                        required
+                      />
+                  </td>
                   
                   </tr>
                 </tbody>

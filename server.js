@@ -164,11 +164,11 @@ app.post("/panels", (req, res) => {
 
 app.put("/panels", (req, res) => {
   const updateQuery =
-    "UPDATE panels SET title = ?,  description = ?, indicator_id = ?, visualization_id = ? WHERE id = ?";
+    "UPDATE panels SET title = ?,  description = ?, indicator_id = ?, visualization_id = ?, request = ? WHERE id = ?";
   db.query(
     updateQuery,
     [req.body.title, req.body.description, 
-      req.body.indicator_id, req.body.visualization_id,req.body.id],
+      req.body.indicator_id, req.body.visualization_id, req.body.request, req.body.id],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -251,10 +251,10 @@ app.post("/cpanels", (req, res) => {
 
 app.put("/cpanels", (req, res) => {
   const updateQuery =
-    "UPDATE cpanels SET title = ?,  description = ? WHERE id = ?";
+    "UPDATE cpanels SET title = ?,  description = ?, sample = ? WHERE id = ?";
   db.query(
     updateQuery,
-    [req.body.title, req.body.description,  req.body.id],
+    [req.body.title, req.body.description, req.body.sample, req.body.id],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -314,7 +314,8 @@ app.delete("/flist/:id", (req, res) => {
   );
 });
 app.get("/frames", (req, res) => {
-  db.query("SELECT * FROM frames", (err, result) => {
+  const getQuery = "SELECT * FROM frames";
+  db.query(getQuery, (err, result) => {
     if (err) {
       console.log(err);
     } else {

@@ -12,20 +12,18 @@ import axios from "axios";
 
 const GenerateComponent = () => {
   const [ladContext, setLadContext] = useContext(AppContext);
-  const [currentFrame, setCurrentFrame] = useState();
   const [frames, setFrames] = useState([]);
-  const [structure, setStructure] = useState([]);
-
   const [panels, setPanels] = useState([]);
   const [cpanels, setCPanels] = useState([]);
   const [pList, setpList] = useState();
-  const [currentPanel, setCurrentPanel] = useState();
   const [fList, setfList] = useState();
   const [visualizations, setVisualizations] = useState([]);
 
   const getFrames = () => {
     axios.get("http://localhost:3001/frames").then((res) => {
-      setFrames(res.data);
+      let results = res.data;
+      if (ladContext.Sample) results = results.filter((r)=>r.sample == ladContext.Sample);
+      setFrames(results);
     });
   };
   const getPanels = () => {
@@ -115,6 +113,7 @@ const GenerateComponent = () => {
         title: getPanByID(panel.panel_id).title,
         gridPos: gridPos,
         type: viz,
+        rawSql: getPanByID(panel.panel_id).request
       });
       panels = panels.concat(panRes);
     });
@@ -323,6 +322,7 @@ const GenerateComponent = () => {
   };
 
   const charting = (params) => {
+    console.log(params)
     let res = [];
    /*  BarChartPanel
 HBarChartPanel
@@ -335,6 +335,7 @@ pieChart */
           id: params.id,
           title: params.title,
           gridPos: params.gridPos,
+          rawSql: params.rawSql
         });
         break;
       }
@@ -343,6 +344,7 @@ pieChart */
           id: params.id,
           title: params.title,
           gridPos: params.gridPos,
+          rawSql: params.rawSql
         });
         break;
       }
@@ -351,6 +353,7 @@ pieChart */
           id: params.id,
           title: params.title,
           gridPos: params.gridPos,
+          rawSql: params.rawSql
         });
         break;
       }
@@ -359,6 +362,7 @@ pieChart */
           id: params.id,
           title: params.title,
           gridPos: params.gridPos,
+          rawSql: params.rawSql
         });
         break;
       }

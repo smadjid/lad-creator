@@ -1,5 +1,5 @@
 export const BarChartPanel = (props) => {
-  //console.log(props.gridPos);
+  const rawSql = props.rawSql ? props.rawSql: 'SELECT name as Nom, count(*) as NB, now() as time\nFROM logs\nWHERE\nactivity_class = "Système" \ngroup by name\norder by 2 desc\nlimit 5';
   let json = {
     datasource: null,
     fieldConfig: {
@@ -60,8 +60,7 @@ export const BarChartPanel = (props) => {
         group: [],
         metricColumn: "none",
         rawQuery: true,
-        rawSql:
-          'SELECT name as Nom, count(*) as NB, now() as time\nFROM logs\nWHERE\nactivity_class = "Système" \ngroup by name\norder by 2 desc\nlimit 5',
+        rawSql: rawSql,
         refId: "A",
         select: [
           [
@@ -91,7 +90,7 @@ export const BarChartPanel = (props) => {
 };
 
 export const HBarChartPanel = (props) => {
-  //console.log(props.gridPos);
+  const rawSql = props.rawSql ? props.rawSql: 'SELECT SUBSTRING(name, 1, 40) as name, count(*) as total , now() as time\nFROM logs\nWHERE\n  $__timeFilter(timestamp) and log_type = "url"  and  \ngroup by name\norder by 2 desc\nlimit 5';
   let json = {
     id: props.id,
     gridPos: props.gridPos,
@@ -139,8 +138,7 @@ export const HBarChartPanel = (props) => {
         group: [],
         metricColumn: "none",
         rawQuery: true,
-        rawSql:
-          'SELECT SUBSTRING(name, 1, 40) as name, count(*) as total , now() as time\nFROM logs\nWHERE\n  $__timeFilter(timestamp) and log_type = "url"  and  \ngroup by name\norder by 2 desc\nlimit 5',
+        rawSql:rawSql,
         refId: "A",
         select: [
           [
@@ -186,6 +184,7 @@ export const HBarChartPanel = (props) => {
 };
 
 export const lineChart = (props) => {
+  const rawSq = props.rawSql ? props.rawSql:'SELECT\n  timestamp AS "time", count(*) nb_actions\nFROM logs\nWHERE\n  $__timeFilter(timestamp)\n  GROUP by time\nORDER BY timestamp';
   let json = {
     id: props.id,
     gridPos: props.gridPos,
@@ -262,8 +261,7 @@ export const lineChart = (props) => {
         group: [],
         metricColumn: "none",
         rawQuery: true,
-        rawSql:
-          'SELECT\n  timestamp AS "time", count(*) nb_actions\nFROM logs\nWHERE\n  $__timeFilter(timestamp)\n  GROUP by time\nORDER BY timestamp',
+        rawSql:rawSq,
         refId: "A",
         select: [
           [
@@ -293,6 +291,7 @@ export const lineChart = (props) => {
 };
 
 export const tableChart = (props) => {
+  const rawSql = props.rawSql ? props.rawSql: "SELECT Time(timestamp)  as 'Hour', SUBSTRING(content, 1, 20) as 'Act.', SUBSTRING(name, 1, 20) as 'Tool', TIME_FORMAT(dur, '%H:%i:%s') as 'Duration' FROM logs WHERE log_type = 'keystrokes' and activity_class='Information-Documentation' order by timestamp";
   let json = {
     id: props.id,
     gridPos: props.gridPos,
@@ -398,8 +397,7 @@ export const tableChart = (props) => {
         group: [],
         metricColumn: "none",
         rawQuery: true,
-        rawSql:
-          'SELECT Time(timestamp)  as \'Hour\', SUBSTRING(content, 1, 20) as \'Act.\',\nSUBSTRING(name, 1, 20) as \'Tool\',\nTIME_FORMAT(dur, "%H:%i:%s") as "Duration"\nFROM logs\nWHERE\n   log_type = "keystrokes" andactivity_class=\'Information-Documentation\'\norder by timestamp',
+        rawSql:rawSql,
         refId: "A",
         select: [
           [
@@ -467,6 +465,7 @@ export const tableChart = (props) => {
 };
 
 export const pieChart = (props) => {
+  const rawSql = props.rawSql ? props.rawSql: "SELECT st_name, count(*) \" \", now() as time\nFROM logs\nWHERE\nactivity_class = \"Système\" \ngroup by name\norder by 2 desc\nlimit 5";
   return {
     id: props.id,
     gridPos: props.gridPos,
@@ -515,7 +514,7 @@ export const pieChart = (props) => {
         "group": [],
         "metricColumn": "none",
         "rawQuery": true,
-        "rawSql": "SELECT st_name, count(*) \" \", now() as time\nFROM logs\nWHERE\nactivity_class = \"Système\" \ngroup by name\norder by 2 desc\nlimit 5",
+        "rawSql": rawSql,
         "refId": "A",
         "select": [
           [
