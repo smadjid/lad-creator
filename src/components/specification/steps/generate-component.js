@@ -18,7 +18,7 @@ import {
   textualGradChart,
   dotCompareChart,
   histLineChart,
-  stackedBarChart
+  stackedBarChart,
 } from "./export/dashcharts";
 import shortid from "shortid";
 import axios from "axios";
@@ -70,14 +70,16 @@ const GenerateComponent = () => {
     if (!fList) return [];
     if (!item) return [];
 
-    let composedElts = fList.filter((i) => i.frame_id === item && i.isComposite===1);
+    let composedElts = fList.filter(
+      (i) => i.frame_id === item && i.isComposite === 1
+    );
     let elementaryElt = [];
-    composedElts.map((e)=>{ 
-      let uElt = pList.filter((p)=>p.cpanel_id === e.panel_id);
+    composedElts.map((e) => {
+      let uElt = pList.filter((p) => p.cpanel_id === e.panel_id);
       elementaryElt = elementaryElt.concat(uElt);
-    })
-    
-    let elts = fList.filter((i) => i.frame_id === item && i.isComposite===0);
+    });
+
+    let elts = fList.filter((i) => i.frame_id === item && i.isComposite === 0);
     elts = elts.concat(elementaryElt);
 
     console.log(elts);
@@ -125,7 +127,7 @@ const GenerateComponent = () => {
     let panels = [];
     framePanels.map((panel) => {
       let viz = getVizByID(getPanByID(panel.panel_id).visualization_id).title;
-      
+
       let gridPos = {
         h: 10,
         w: width - 1,
@@ -141,9 +143,8 @@ const GenerateComponent = () => {
         rawSql: getPanByID(panel.panel_id).request,
       });
       panels = panels.concat(panRes);
-      
     });
-    
+
     let row = [
       {
         collapsed: true,
@@ -160,7 +161,7 @@ const GenerateComponent = () => {
         type: "row",
       },
     ];
-    console.log(row)
+    console.log(row);
     //  const chart = BarChartPanel({id:frame.id+20});
     //setComprehensionFrames(comprehensionFrames.concat(row));
     return row;
@@ -352,97 +353,57 @@ const GenerateComponent = () => {
   const charting = (params) => {
     //console.log(params);
     let res = [];
+    const fields = {
+      id: params.id,
+      title: params.title,
+      gridPos: params.gridPos,
+      rawSql: params.rawSql,
+    };
+
+    
     switch (params.type) {
       case "Heatmap": {
-        res = tableHeatChart({
-          id: params.id,
-          title: params.title,
-          gridPos: params.gridPos,
-          rawSql: params.rawSql,
-        });
+        res = tableHeatChart(fields);
         break;
       }
       case "Table": {
-        res = tableChart({
-          id: params.id,
-          title: params.title,
-          gridPos: params.gridPos,
-          rawSql: params.rawSql,
-        });
+        res = tableChart(fields);
         break;
       }
       case "Barchart": {
-        res = BarChartPanel({
-          id: params.id,
-          title: params.title,
-          gridPos: params.gridPos,
-          rawSql: params.rawSql,
-        });
+        res = BarChartPanel(fields);
         break;
       }
       case "Histogram": {
-        res = histoChart({
-          id: params.id,
-          title: params.title,
-          gridPos: params.gridPos,
-          rawSql: params.rawSql,
-        });
+        res = histoChart(fields);
         break;
       }
       case "Pie chart": {
-        res = pieChart({
-          id: params.id,
-          title: params.title,
-          gridPos: params.gridPos,
-          rawSql: params.rawSql,
-        });
+        res = pieChart(fields);
         break;
       }
       case "Gauge": {
-        res = gaugeChart({
-          id: params.id,
-          title: params.title,
-          gridPos: params.gridPos,
-          rawSql: params.rawSql,
-        });
+        res = gaugeChart(fields);
         break;
       }
       case "TextualGrad": {
-        res = textualGradChart({
-          id: params.id,
-          title: params.title,
-          gridPos: params.gridPos,
-          rawSql: params.rawSql,
-        });
+        res = textualGradChart(fields);
         break;
       }
       case "Correlogram": {
-        res = dotCompareChart({
-          id: params.id,
-          title: params.title,
-          gridPos: params.gridPos,
-          rawSql: params.rawSql,
-        });
+        res = dotCompareChart(fields);
         break;
       }
       case "Line chart": {
-        res = histLineChart({
-          id: params.id,
-          title: params.title,
-          gridPos: params.gridPos,
-          rawSql: params.rawSql,
-        });
+        res = histLineChart(fields);
         break;
       }
-      case "Stacked area chart":{
-        res = stackedBarChart({
-          id: params.id,
-          title: params.title,
-          gridPos: params.gridPos,
-          rawSql: params.rawSql,
-        });
+      case "Stacked area chart": {
+        res = stackedBarChart(fields);
         break;
       }
+      default:
+        res = {};
     }
     return res;
   };
@@ -495,43 +456,16 @@ const GenerateComponent = () => {
   };
   return (
     <div className="  row">
-      <div className="col-md-4 card-header ">
-        <h5>For debugging</h5>
-        <h6>
-          Current frames{" "}
-          <button
-            role="button"
-            onClick={() => {
-              return setComprehensionFrames([]);
-            }}
-          >
-            reset
-          </button>
-        </h6>
-        <ol>
-          {comprehensionFrames.map((f) => {
-            return <li>{f.type}</li>;
-          })}
-        </ol>
-        <h6>Add</h6>
-        <Button onClick={generateBarChart}>sample barchart</Button>
-      </div>
-      <div className="col-md-8">
+      
+      <div className="col-md-11">
         <div className="bg-secondary card-header d-flex flex-row ">
-          <div className="p-2 col-sm-6">Dashboard JSon structure</div>
-          <div className="p-2 text-right col-sm-3">
-            <span
-              className="btn btn-primary btn-sm "
-              onClick={generateJsonStructure}
-            >
-              Generate the structure
-            </span>
+          <div className="p-2 col-sm-8">Dashboard JSon structure</div>
+          
+          <div className='p-2 text-right col-sm-4 btn-group'>
+            <button className="btn btn-primary btn-sm " onClick={generateJsonStructure}>Generate the structure</button>
+            <button className="btn btn-success btn-sm " onClick={saveJSonFile}>Save the dashboard</button>
           </div>
-          <div className="p-2 text-right col-sm-3">
-            <span className="btn btn-success btn-sm " onClick={saveJSonFile}>
-              Save the dashboard
-            </span>
-          </div>
+          
         </div>
         <div className="card-body bg-light">
           <ReactJson src={file} collapsible view="dual" enableClipboard />
