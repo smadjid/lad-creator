@@ -6,25 +6,27 @@ const path = require("path");
 const multer = require("multer");
 
 const storage = multer.diskStorage({
-  destination: (req, file, cb)=>{
-    cb(null,"./");
+  destination: (req, file, cb) => {
+    cb(null, "./");
   },
-  filename: function(req, file, cb){
-    const ext = file.mimetype.split('/')[1];
+  filename: function (req, file, cb) {
+    const ext = file.mimetype.split("/")[1];
     cb(null, `upload/${file.originalname}-${Date.now()}.${ext}`);
-  }
+  },
 });
-const upload  = multer({
-  storage: storage
+const upload = multer({
+  storage: storage,
 });
 
 const app = express();
 app.use(express.json()); // parses incoming requests with JSON payloads
-app.use(cors({
-  origin:true,
-  methods:["GET", "POST", "PUT", "DELETE"],
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
 
 //serve react build files
 app.use(express.static(path.join(__dirname, "build")));
@@ -152,7 +154,7 @@ app.get("/panels", (req, res) => {
 });
 
 app.post("/panels", (req, res) => {
-  const insertQuery = "INSERT INTO panels SET ?"; 
+  const insertQuery = "INSERT INTO panels SET ?";
   db.query(insertQuery, req.body, (err, result) => {
     if (err) {
       console.log(err);
@@ -167,8 +169,14 @@ app.put("/panels", (req, res) => {
     "UPDATE panels SET title = ?,  description = ?, indicator_id = ?, visualization_id = ?, request = ? WHERE id = ?";
   db.query(
     updateQuery,
-    [req.body.title, req.body.description, 
-      req.body.indicator_id, req.body.visualization_id, req.body.request, req.body.id],
+    [
+      req.body.title,
+      req.body.description,
+      req.body.indicator_id,
+      req.body.visualization_id,
+      req.body.request,
+      req.body.id,
+    ],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -180,17 +188,13 @@ app.put("/panels", (req, res) => {
 });
 
 app.delete("/panels/:id", (req, res) => {
-  db.query(
-    "DELETE FROM panels WHERE id = ?",
-    req.params.id,
-    (err, result) => {
-      if (err) {
-        console.log(err);
-      } else {
-        res.send(result);
-      }
+  db.query("DELETE FROM panels WHERE id = ?", req.params.id, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(result);
     }
-  );
+  });
 });
 
 app.get("/plist", (req, res) => {
@@ -204,7 +208,7 @@ app.get("/plist", (req, res) => {
 });
 
 app.post("/plist", (req, res) => {
-  const insertQuery = "INSERT INTO plist SET ?"; 
+  const insertQuery = "INSERT INTO plist SET ?";
   db.query(insertQuery, req.body, (err, result) => {
     if (err) {
       console.log(err);
@@ -215,17 +219,13 @@ app.post("/plist", (req, res) => {
 });
 
 app.delete("/plist/:id", (req, res) => {
-  db.query(
-    "DELETE FROM plist WHERE id = ?",
-    req.params.id,
-    (err, result) => {
-      if (err) {
-        console.log(err);
-      } else {
-        res.send(result);
-      }
+  db.query("DELETE FROM plist WHERE id = ?", req.params.id, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(result);
     }
-  );
+  });
 });
 
 app.get("/cpanels", (req, res) => {
@@ -239,7 +239,7 @@ app.get("/cpanels", (req, res) => {
 });
 
 app.post("/cpanels", (req, res) => {
-  const insertQuery = "INSERT INTO cpanels SET ?"; 
+  const insertQuery = "INSERT INTO cpanels SET ?";
   db.query(insertQuery, req.body, (err, result) => {
     if (err) {
       console.log(err);
@@ -266,17 +266,13 @@ app.put("/cpanels", (req, res) => {
 });
 
 app.delete("/cpanels/:id", (req, res) => {
-  db.query(
-    "DELETE FROM cpanels WHERE id = ?",
-    req.params.id,
-    (err, result) => {
-      if (err) {
-        console.log(err);
-      } else {
-        res.send(result);
-      }
+  db.query("DELETE FROM cpanels WHERE id = ?", req.params.id, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(result);
     }
-  );
+  });
 });
 
 app.get("/flist", (req, res) => {
@@ -290,7 +286,7 @@ app.get("/flist", (req, res) => {
 });
 
 app.post("/flist", (req, res) => {
-  const insertQuery = "INSERT INTO flist SET ?"; 
+  const insertQuery = "INSERT INTO flist SET ?";
   db.query(insertQuery, req.body, (err, result) => {
     if (err) {
       console.log(err);
@@ -301,17 +297,13 @@ app.post("/flist", (req, res) => {
 });
 
 app.delete("/flist/:id", (req, res) => {
-  db.query(
-    "DELETE FROM flist WHERE id = ?",
-    req.params.id,
-    (err, result) => {
-      if (err) {
-        console.log(err);
-      } else {
-        res.send(result);
-      }
+  db.query("DELETE FROM flist WHERE id = ?", req.params.id, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(result);
     }
-  );
+  });
 });
 app.get("/frames", (req, res) => {
   const getQuery = "SELECT * FROM frames";
@@ -326,22 +318,22 @@ app.get("/frames", (req, res) => {
 
 app.post("/frames", (req, res) => {
   const insertQuery = "INSERT INTO frames SET ?";
-  const last = "SELECT LAST_INSERT_ID();"
+  const last = "SELECT LAST_INSERT_ID();";
 
   db.query(insertQuery, req.body, (err, result) => {
     if (err) {
       console.log(err);
     } else {
-      
       db.query(last, (err, r) => {
-        if (err) {console.log(err);} 
-        else {res.send(r);console.log(r)}
+        if (err) {
+          console.log(err);
+        } else {
+          res.send(r);
+          console.log(r);
+        }
       });
-      
     }
   });
-
- 
 });
 
 app.put("/frames", (req, res) => {
@@ -361,17 +353,13 @@ app.put("/frames", (req, res) => {
 });
 
 app.delete("/frames/:id", (req, res) => {
-  db.query(
-    "DELETE FROM frames WHERE id = ?",
-    req.params.id,
-    (err, result) => {
-      if (err) {
-        console.log(err);
-      } else {
-        res.send(result);
-      }
+  db.query("DELETE FROM frames WHERE id = ?", req.params.id, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(result);
     }
-  );
+  });
 });
 
 app.get("/visualizations", (req, res) => {
@@ -384,10 +372,9 @@ app.get("/visualizations", (req, res) => {
   });
 });
 
-app.post("/visualizations",  function(req, res) { 
-  
+app.post("/visualizations", function (req, res) {
   const insertQuery = "INSERT INTO visualizations SET ?";
-  
+
   db.query(insertQuery, req.body, (err, result) => {
     if (err) {
       console.log(err);
@@ -398,17 +385,17 @@ app.post("/visualizations",  function(req, res) {
 });
 
 app.put("/visualizations", (req, res) => {
-  chart = req.body.chart
-  
-  if(chart!==null)
-  if(typeof req.body.chart !=='string'){
-    const { data } = chart;
-    chart = new Buffer.from(data).toString("ascii");
-  }
-  console.log(typeof chart);
+  chart = req.body.chart;
+
+  if (chart !== null)
+    if (typeof req.body.chart !== "string") {
+      const { data } = chart;
+      chart = new Buffer.from(data).toString("ascii");
+    }
+
   const updateQuery =
     "UPDATE visualizations SET description = ?, rating = ?, chart = ? WHERE id = ?";
-    
+
   db.query(
     updateQuery,
     [req.body.description, req.body.rating, chart, req.body.id],

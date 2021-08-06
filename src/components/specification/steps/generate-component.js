@@ -6,7 +6,19 @@ import { AppContext } from "../specification-wizard";
 
 import "./generate-component.css";
 import { Button } from "react-bootstrap";
-import { BarChartPanel, HBarChartPanel,lineChart,tableChart,pieChart } from "./export/dashcharts";
+import {
+  BarChartPanel,
+  HBarChartPanel,
+  lineChart,
+  histoChart,
+  tableChart,
+  tableHeatChart,
+  pieChart,
+  gaugeChart,
+  textualGradChart,
+  dotCompareChart,
+  histLineChart
+} from "./export/dashcharts";
 import shortid from "shortid";
 import axios from "axios";
 
@@ -22,7 +34,8 @@ const GenerateComponent = () => {
   const getFrames = () => {
     axios.get("http://localhost:3001/frames").then((res) => {
       let results = res.data;
-      if (ladContext.Sample) results = results.filter((r)=>r.sample == ladContext.Sample);
+      if (ladContext.Sample)
+        results = results.filter((r) => r.sample == ladContext.Sample);
       setFrames(results);
     });
   };
@@ -56,7 +69,17 @@ const GenerateComponent = () => {
     if (!fList) return [];
     if (!item) return [];
 
-    let elts = fList.filter((i) => i.frame_id === item);
+    let composedElts = fList.filter((i) => i.frame_id === item && i.isComposite===1);
+    let elementaryElt = [];
+    composedElts.map((e)=>{ 
+      let uElt = pList.filter((p)=>p.cpanel_id === e.panel_id);
+      elementaryElt = elementaryElt.concat(uElt);
+    })
+    
+    let elts = fList.filter((i) => i.frame_id === item && i.isComposite===0);
+    elts = elts.concat(elementaryElt);
+
+    console.log(elts);
 
     return elts;
   };
@@ -101,6 +124,7 @@ const GenerateComponent = () => {
     let panels = [];
     framePanels.map((panel) => {
       let viz = getVizByID(getPanByID(panel.panel_id).visualization_id).title;
+      
       let gridPos = {
         h: 10,
         w: width - 1,
@@ -113,10 +137,12 @@ const GenerateComponent = () => {
         title: getPanByID(panel.panel_id).title,
         gridPos: gridPos,
         type: viz,
-        rawSql: getPanByID(panel.panel_id).request
+        rawSql: getPanByID(panel.panel_id).request,
       });
       panels = panels.concat(panRes);
+      
     });
+    
     let row = [
       {
         collapsed: true,
@@ -133,6 +159,7 @@ const GenerateComponent = () => {
         type: "row",
       },
     ];
+    console.log(row)
     //  const chart = BarChartPanel({id:frame.id+20});
     //setComprehensionFrames(comprehensionFrames.concat(row));
     return row;
@@ -234,12 +261,12 @@ const GenerateComponent = () => {
       list: [],
     },
     time: {
-      from: "now-6h",
-      to: "now",
+      from: "2010-01-28T22:00:00.000Z",
+      to: "2021-04-28T22:00:00.000Z",
     },
     timepicker: {},
     timezone: "",
-    title: "LAD Studio",
+    title: "LADA",
     uid: shortid.generate(),
     version: 2,
   });
@@ -322,20 +349,24 @@ const GenerateComponent = () => {
   };
 
   const charting = (params) => {
-    console.log(params)
+    //console.log(params);
     let res = [];
-   /*  BarChartPanel
-HBarChartPanel
-lineChart
-tableChart
-pieChart */
     switch (params.type) {
       case "Heatmap": {
+        res = tableHeatChart({
+          id: params.id,
+          title: params.title,
+          gridPos: params.gridPos,
+          rawSql: params.rawSql,
+        });
+        break;
+      }
+      case "Table": {
         res = tableChart({
           id: params.id,
           title: params.title,
           gridPos: params.gridPos,
-          rawSql: params.rawSql
+          rawSql: params.rawSql,
         });
         break;
       }
@@ -344,16 +375,16 @@ pieChart */
           id: params.id,
           title: params.title,
           gridPos: params.gridPos,
-          rawSql: params.rawSql
+          rawSql: params.rawSql,
         });
         break;
       }
       case "Histogram": {
-        res = lineChart({
+        res = histoChart({
           id: params.id,
           title: params.title,
           gridPos: params.gridPos,
-          rawSql: params.rawSql
+          rawSql: params.rawSql,
         });
         break;
       }
@@ -362,7 +393,43 @@ pieChart */
           id: params.id,
           title: params.title,
           gridPos: params.gridPos,
-          rawSql: params.rawSql
+          rawSql: params.rawSql,
+        });
+        break;
+      }
+      case "Gauge": {
+        res = gaugeChart({
+          id: params.id,
+          title: params.title,
+          gridPos: params.gridPos,
+          rawSql: params.rawSql,
+        });
+        break;
+      }
+      case "TextualGrad": {
+        res = textualGradChart({
+          id: params.id,
+          title: params.title,
+          gridPos: params.gridPos,
+          rawSql: params.rawSql,
+        });
+        break;
+      }
+      case "Correlogram": {
+        res = dotCompareChart({
+          id: params.id,
+          title: params.title,
+          gridPos: params.gridPos,
+          rawSql: params.rawSql,
+        });
+        break;
+      }
+      case "Line chart": {
+        res = histLineChart({
+          id: params.id,
+          title: params.title,
+          gridPos: params.gridPos,
+          rawSql: params.rawSql,
         });
         break;
       }
@@ -419,7 +486,7 @@ pieChart */
   return (
     <div className="  row">
       <div className="col-md-4 card-header ">
-      <h5>For debugging</h5>
+        <h5>For debugging</h5>
         <h6>
           Current frames{" "}
           <button

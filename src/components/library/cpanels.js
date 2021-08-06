@@ -375,6 +375,8 @@ function CPanels() {
                   <br />
                   <table className="table table-bordered">
                     {getCPanelItems(item).map((i) => {
+                      let pan = getPanByID(i.panel_id);
+                      if(pan)
                       return (
                         <tr
                           key={i.id}

@@ -22,6 +22,7 @@ function Visualizations() {
   };
 
   const handleModalSave = () => {
+    console.log(currentElement);
     if (creationMode)
       axios
         .post("http://localhost:3001/visualizations", currentElement)
