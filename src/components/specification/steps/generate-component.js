@@ -17,7 +17,8 @@ import {
   gaugeChart,
   textualGradChart,
   dotCompareChart,
-  histLineChart
+  histLineChart,
+  stackedBarChart
 } from "./export/dashcharts";
 import shortid from "shortid";
 import axios from "axios";
@@ -426,6 +427,15 @@ const GenerateComponent = () => {
       }
       case "Line chart": {
         res = histLineChart({
+          id: params.id,
+          title: params.title,
+          gridPos: params.gridPos,
+          rawSql: params.rawSql,
+        });
+        break;
+      }
+      case "Stacked area chart":{
+        res = stackedBarChart({
           id: params.id,
           title: params.title,
           gridPos: params.gridPos,

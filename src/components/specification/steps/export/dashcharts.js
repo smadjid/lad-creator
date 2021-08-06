@@ -1300,3 +1300,97 @@ export const histLineChart = (props) => {
       "datasource": null
     }
 }
+
+export const stackedBarChart = (props) => {
+  const rawSql = props.rawSql
+    ? props.rawSql
+    : "SELECT title, student_skills, similar_student_skills, course_skills FROM lada_student_courses";
+  return {
+    id: props.id,
+    gridPos: props.gridPos,
+    "title": props.title,
+  "type": "barchart",
+  "pluginVersion": "8.0.5",
+  "targets": [
+    {
+      "format": "table",
+      "group": [],
+      "metricColumn": "none",
+      "rawQuery": true,
+      "rawSql": rawSql,
+      "refId": "A",
+      "select": [
+        [
+          {
+            "params": [
+              "id"
+            ],
+            "type": "column"
+          }
+        ]
+      ],
+      "table": "devices",
+      "timeColumn": "time",
+      "timeColumnType": "timestamp",
+      "where": [
+        {
+          "name": "$__timeFilter",
+          "params": [],
+          "type": "macro"
+        }
+      ]
+    }
+  ],
+  "options": {
+    "orientation": "auto",
+    "showValue": "auto",
+    "groupWidth": 0.63,
+    "barWidth": 0.72,
+    "tooltip": {
+      "mode": "single"
+    },
+    "legend": {
+      "displayMode": "table",
+      "placement": "bottom",
+      "calcs": []
+    },
+    "text": {}
+  },
+  "fieldConfig": {
+    "defaults": {
+      "custom": {
+        "lineWidth": 1,
+        "fillOpacity": 80,
+        "gradientMode": "none",
+        "axisPlacement": "auto",
+        "axisLabel": "",
+        "axisSoftMin": 0,
+        "hideFrom": {
+          "tooltip": false,
+          "viz": false,
+          "legend": false
+        }
+      },
+      "color": {
+        "mode": "palette-classic"
+      },
+      "thresholds": {
+        "mode": "absolute",
+        "steps": [
+          {
+            "value": null,
+            "color": "green"
+          },
+          {
+            "value": 80,
+            "color": "red"
+          }
+        ]
+      },
+      "mappings": []
+    },
+    "overrides": []
+  },
+  "datasource": null
+}
+}
