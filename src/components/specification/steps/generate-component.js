@@ -22,6 +22,7 @@ import {
 } from "./export/dashcharts";
 import shortid from "shortid";
 import axios from "axios";
+import ToGrafana from "./export/to-grafana";
 
 const GenerateComponent = () => {
   const [ladContext, setLadContext] = useContext(AppContext);
@@ -31,6 +32,7 @@ const GenerateComponent = () => {
   const [pList, setpList] = useState();
   const [fList, setfList] = useState();
   const [visualizations, setVisualizations] = useState([]);
+  const [showGrafanaDlg, setShowGrafanaDlg]= useState(false);
 
   const getFrames = () => {
     axios.get("http://localhost:3001/frames").then((res) => {
@@ -268,9 +270,9 @@ const GenerateComponent = () => {
     },
     timepicker: {},
     timezone: "",
-    title: "LADA",
+    title: "LADATEST",
     uid: shortid.generate(),
-    version: 2,
+    version: 1,
   });
 
   const [file, setFile] = useState();
@@ -454,19 +456,25 @@ const GenerateComponent = () => {
     var file = new File(["Hello, world!"], " ");
     //FileSaver.saveAs(file);
   };
+  const loadToGrafana = () =>{
+    setShowGrafanaDlg(true);
+    return 0;
+  }
   return (
     <div className="  row">
       
       <div className="col-md-11">
         <div className="bg-secondary card-header d-flex flex-row ">
-          <div className="p-2 col-sm-8">Dashboard JSon structure</div>
+          <div className="p-2 col-sm-6">Dashboard JSon structure</div>
           
-          <div className='p-2 text-right col-sm-4 btn-group'>
-            <button className="btn btn-primary btn-sm " onClick={generateJsonStructure}>Generate the structure</button>
-            <button className="btn btn-success btn-sm " onClick={saveJSonFile}>Save the dashboard</button>
+          <div className='p-2 text-right col-sm-6 btn-group'>
+            <button className="btn btn-danger btn-sm " onClick={generateJsonStructure}>Generate</button>
+            <button className="btn btn-primary btn-sm " onClick={saveJSonFile}>JSON Download</button>
+            <button className="btn btn-success btn-sm " onClick={loadToGrafana}>Save to <b>Grafana</b></button>
           </div>
-          
         </div>
+        <ToGrafana data={file} show={showGrafanaDlg} handleHide={()=>{setShowGrafanaDlg(false);}} />
+        
         <div className="card-body bg-light">
           <ReactJson src={file} collapsible view="dual" enableClipboard />
         </div>
