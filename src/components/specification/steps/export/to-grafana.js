@@ -4,8 +4,7 @@ import { Button } from "react-bootstrap";
 import axios from "axios";
 
 const ToGrafana = (props) =>{
-    // curl -H "Authorization: Bearer eyJrIjoiMjBJckFNWUwydTBhaFRyN1hjQThVWTRHUTZTSUlyMW0iLCJuIjoibGFkc3R1ZGlvIiwiaWQiOjF9" http://localhost/api/dashboards/home
-    let key = "eyJrIjoiSWV4bktIMEp4MEdySmd2VU9Sbkl0V1VOWFZlbXVEWjEiLCJuIjoiSyIsImlkIjoxfQ==";
+    let key = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
     let instanceURL = "http://localhost:3000/api"
     const sendRequest = () =>{
       console.log(props.data)
@@ -14,9 +13,7 @@ const ToGrafana = (props) =>{
             headers: { 
                 'Content-Type': 'application/json' ,
                 'Accept': 'application/json' ,
-                'Authorization' : 'Bearer eyJrIjoiSWV4bktIMEp4MEdySmd2VU9Sbkl0V1VOWFZlbXVEWjEiLCJuIjoiSyIsImlkIjoxfQ==',
-                'Access-Control-Allow-Origin': "*",
-                'Access-Control-Allow-Credentials': 'true',
+                'Authorization' : 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
             }
         }).then((res)=>{
             console.log(res)
