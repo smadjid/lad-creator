@@ -4,14 +4,12 @@ import * as Icon from "react-bootstrap-icons";
 import "./specification-wizard.css";
 import ContextDescription from "./steps/context-description";
 import DecisionDescription from "./steps/decision-description";
-import IndicatorChooser from "./steps/indicator-chooser";
 import FramePerception from "./steps/frames/frame-perception";
 import FrameComprehension from "./steps/frames/frame-comprehension";
 import GenerateComponent from "./steps/generate-component";
-import InterfaceComponent from "./steps/interface-component";
-import dash from "../../data/template_dash.json";
 import { Button, OverlayTrigger, Popover } from "react-bootstrap";
 import { AssignmentSharp, Bookmarks } from "@material-ui/icons";
+import SpecificationActions from "./specification-actions";
 
 export const GlobalInterfaceContext = React.createContext();
 
@@ -47,19 +45,19 @@ const finalComponent = () => {
   return <GenerateComponent />;
 };
 
-function SpecificationWizard(props) {
+function ModificationWizard(props) {
   const [globalLayout, setGlobalLayout] = useState([{id: 0, layout:[]}]);
-  const globalInterfaceContext = [globalLayout, setGlobalLayout];
+  const [dashboardID,setDashboardID]=useState(null);
 
   const [dashboardStructure, setDashboardStructure] = useState({
     Title: "LAD Title",
-    workspace:props.workspace,
     mainFrame: { indicator: "Indicator", graphic: "Graph" },
     comprehensionFrames: [],
     context: {},
     metaLAD: { title: "LAD Title", version: 0.1 },
   });
 
+  
   const [steps, setSteps] = useState([
     {
       key: "firstStep",
@@ -85,12 +83,6 @@ function SpecificationWizard(props) {
       isDone: false,
       component: secondaryFrameComponent,
     },
-   /*  {
-      key: "fifthStep",
-      label: "Interface config",
-      isDone: false,
-      component: interfaceConfigComponent,
-    }, */
     {
       key: "finalStep",
       label: "LAD Generation",
@@ -101,9 +93,8 @@ function SpecificationWizard(props) {
 
   const [activeStep, setActiveStep] = useState(steps[0]);
 
-  const saveActiveStep = () => {
-    console.log(activeStep.component);
-  };
+  
+  
   const handleNext = () => {
     window.scrollTo(0, 0);
     if (steps[steps.length - 1].key === activeStep.key) {
@@ -117,7 +108,7 @@ function SpecificationWizard(props) {
         return x;
       })
     );
-    saveActiveStep(steps[index]);
+    
     setActiveStep(steps[index + 1]);
   };
 
@@ -153,6 +144,10 @@ function SpecificationWizard(props) {
   };
 
   const ladContext = [dashboardStructure, setDashboardStructure];
+
+  return(<SpecificationActions show={true}/>);
+
+  return(<h3>No Dashboard found!</h3>);
   return (
     <AppContext.Provider value={ladContext}>
       <div className="SpecificationWizard">
@@ -199,7 +194,7 @@ function SpecificationWizard(props) {
                               <div>
                                 <h6 className="my-0">Sample data</h6>
                                 <small className="text-muted">
-                                  {dashboardStructure.workspace}
+                                  {dashboardStructure.Sample}
                                 </small>
                               </div>
                               <span className="text-muted">(X)</span>
@@ -327,4 +322,4 @@ function SpecificationWizard(props) {
   );
 }
 
-export default SpecificationWizard;
+export default ModificationWizard;

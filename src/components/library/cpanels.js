@@ -317,15 +317,15 @@ function CPanels() {
             <tr>
               <td>
                 <FormControl>
-                  <InputLabel id="activation_action" style={{ color: "white" }}>
+                  <InputLabel  style={{ color: "white" }}>
                     Use case data
                   </InputLabel>
                   <Select
                     style={{ color: "white" }}
                     labelId="usecase_data"
                     id="demo-controlled-open-select"
-                    value={sample}
-                    onChange={handleSetSample}
+                 //   value={sample}
+                  //  onChange={handleSetSample}
                   >
                     <MenuItem value="at41">AT 41</MenuItem>
                     <MenuItem value="lada">LADA</MenuItem>

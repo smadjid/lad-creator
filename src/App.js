@@ -23,7 +23,7 @@ function App() {
       </main>
     <footer>
         <p>
-          The <em>LAD Studio</em> tool is part of the{" "}
+          The <em>LADStudio</em> tool is part of the{" "}
           <a href="http://padlad.github.io/">PadLAD project</a>
         </p>
     </footer>

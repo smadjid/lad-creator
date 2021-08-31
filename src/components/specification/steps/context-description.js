@@ -85,7 +85,7 @@ const ContextDescription = (props) => {
             id="sample"
             placeholder="Data sample"
             value={dataSample}
-            onChange={handleDataSample}
+          //  onChange={handleDataSample}
             required
           >
             <option value="at41">AT 41</option>

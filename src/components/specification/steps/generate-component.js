@@ -84,8 +84,6 @@ const GenerateComponent = () => {
     let elts = fList.filter((i) => i.frame_id === item && i.isComposite === 0);
     elts = elts.concat(elementaryElt);
 
-    console.log(elts);
-
     return elts;
   };
   const getPanByID = (id, isComposite) => {
@@ -163,7 +161,6 @@ const GenerateComponent = () => {
         type: "row",
       },
     ];
-    console.log(row);
     //  const chart = BarChartPanel({id:frame.id+20});
     //setComprehensionFrames(comprehensionFrames.concat(row));
     return row;
@@ -271,8 +268,7 @@ const GenerateComponent = () => {
     timepicker: {},
     timezone: "",
     title: "LADATEST",
-    uid: shortid.generate(),
-    version: 1,
+    id:null
   });
 
   const [file, setFile] = useState();
@@ -309,9 +305,8 @@ const GenerateComponent = () => {
       },
       timepicker: {},
       timezone: "",
-      title: "LAD Studio",
-      uid: shortid.generate(),
-      version: 2,
+      title: "LADStudio",
+      id:null
     });
   };
 
@@ -331,26 +326,7 @@ const GenerateComponent = () => {
     });
   };
 
-  const generateOneFrame = (data) => {
-    return {
-      type: data.graphic,
-      title: data.framename,
-      gridPos: {
-        x: 0,
-        y: 0,
-        w: 12,
-        h: 9,
-      },
-      id: data.id,
-      mode: "markdown",
-      content: "# title",
-    };
-  };
-  const generateBarChart = () => {
-    const l = comprehensionFrames.length + 1;
-    const frame = BarChartPanel({ id: l });
-    setComprehensionFrames(comprehensionFrames.concat(frame));
-  };
+  
 
   const charting = (params) => {
     //console.log(params);
@@ -456,6 +432,12 @@ const GenerateComponent = () => {
     var file = new File(["Hello, world!"], " ");
     //FileSaver.saveAs(file);
   };
+
+  const saveSpecification= () =>{
+    setShowGrafanaDlg(true);
+    return 0;
+  }
+
   const loadToGrafana = () =>{
     setShowGrafanaDlg(true);
     return 0;

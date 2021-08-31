@@ -11,7 +11,7 @@ import {
 
 export const IndicatorContext = React.createContext();
 
-function Indicators() {
+function Indicators(props) {
   const [indicators, setIndicators] = useState([]);
 
   const [showModal, setShowModal] = useState(false);

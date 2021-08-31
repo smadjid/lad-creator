@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Sidebar from "./sidebar";
 import Decisions from "./decisions";
 import Frames from "./frames";
@@ -13,11 +13,11 @@ import "./library-view.css"
 import Panels from "./panels";
 import CPanels from "./cpanels";
 import Scenario from "./scenario";
+import { CMainContext } from "../main-dash";
 
-function LibraryView() {
+const LibraryView=(props)=> {
   function onLeave(){
-    window.location.href = "/";
-    
+    window.location.href = "/";    
 
   }
   function onClick(e, item) {
@@ -87,7 +87,8 @@ function LibraryView() {
   ];
 
   const [displayItem, setDdisplayItem]=useState();
-
+  const [workspace, setWorkspace] = useContext(CMainContext);
+  
   return (
     <div className="row container-fluid">     
       <div className="col-md-2"> <Sidebar items={items} /> </div>
@@ -96,22 +97,22 @@ function LibraryView() {
         <Decisions /> 
       }
       {displayItem === 'frames' &&
-        <Frames /> 
+        <Frames workspace={workspace} /> 
       }
       {displayItem === 'panels' &&
-        <Panels /> 
+        <Panels workspace={workspace}/> 
       }
       {displayItem === 'cpanels' &&
-        <CPanels /> 
+        <CPanels workspace={workspace}/> 
       }
       {displayItem === 'indicators' &&
-        <Indicators /> 
+        <Indicators workspace={workspace}/> 
       }
       {displayItem === 'visualizations' &&
-        <Visualizations  /> 
+        <Visualizations  workspace={workspace}/> 
       }
       {displayItem === 'scenario' &&
-        <Scenario />
+        <Scenario workspace={workspace}/>
       }
       </div>
     </div>

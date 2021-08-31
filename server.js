@@ -31,6 +31,7 @@ app.use(
 //serve react build files
 app.use(express.static(path.join(__dirname, "build")));
 
+
 //create connection to database
 const db = mysql.createPool({
   host: process.env.DB_HOST,
