@@ -7,10 +7,13 @@ import uniqid from "uniqid";
 
 import { AppContext } from "../../specification-wizard";
 import axios from "axios";
-import { DoubleArrow } from "@material-ui/icons";
+import { DoubleArrow, PlayForWorkRounded } from "@material-ui/icons";
+import { CMainContext } from "../../../main-dash";
+import { PlusCircle } from "react-bootstrap-icons";
 
 const FrameComprehension = (props) => {
   const [ladContext, setLadContext] = useContext(AppContext);
+  const [workspace, setWorkspace] = useContext(CMainContext);
   const [frames, setFrames] = useState([]);
 
   const [frameComponents, setFrameComponents] = useState([]);
@@ -28,7 +31,8 @@ const FrameComprehension = (props) => {
   const getFrames = () => {
     axios.get("http://localhost:3001/frames").then((res) => {
       let results = res.data;
-      if (ladContext.Sample) results = results.filter((r)=>r.sample == ladContext.Sample);
+      results = results.filter((r)=>r.ws_id === workspace);
+      console.log(results)
       setFrames(results)
     });
   };
@@ -48,8 +52,10 @@ const FrameComprehension = (props) => {
       sample: ladContext.Sample
     }
 
-    axios.post("http://localhost:3001/frames", element).then((res) => {console.log(res);
-        getFrames()        
+    axios.post("http://localhost:3001/frames", element).then((res) => { 
+      let results = res.data;
+      results = results.filter((r)=>r.ws_id === workspace);
+      setFrames(results)
       });
 
     
@@ -118,7 +124,11 @@ const FrameComprehension = (props) => {
     <form className="needs-validation" novalidate>
     <div className="align-middle f_buttons">
           <span className="btn btn-secondary" onClick={handleShow}>
-            Associate a new frame support <DoubleArrow/>
+          <PlayForWorkRounded/> Import a frame support from Library
+          </span>
+          {'    '}
+          <span className="btn btn-secondary" onClick={handleShow}>
+          <PlusCircle/> Create a new frame support 
           </span>
           <div>
             <Modal
@@ -175,7 +185,7 @@ const FrameComprehension = (props) => {
                       <option>(Other)</option>
                     </select>
                     <small className="form-text text-muted">
-                      Short description of the slected item
+                      Short description of the selected item
                     </small>
                     <div>
                       <panel>{newFrameData.description}</panel>

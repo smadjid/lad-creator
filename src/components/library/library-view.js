@@ -52,13 +52,17 @@ const LibraryView=(props)=> {
     "divider",
     {
       name: "panels",
-      label: "Panels",
+      label: "Simple Panels",
       Icon: SettingsIcon,
-      items: [
-        { name: "panels", label: "Simple Panels", onClick}, 
-        { name: "cpanels", label: "Composite panels", onClick }
-      ]
+      onClick,
     },
+    "divider",
+    {
+      name: "cpanels",
+      label: "Composite Panels",
+      Icon: SettingsIcon,
+      onClick,
+    },    
     "divider",
     {
       name: "frames",

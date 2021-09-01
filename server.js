@@ -144,6 +144,26 @@ app.delete("/indicators/:id", (req, res) => {
   );
 });
 
+app.get("/wss", (req, res) => {
+  db.query("SELECT * FROM workspaces", (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(result);
+    }
+  });
+});
+app.post("/wss", (req, res) => {
+  const insertQuery = "INSERT INTO workspaces SET ?";
+  db.query(insertQuery, req.body, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send("WS Added to Database");
+    }
+  });
+});
+
 app.get("/panels", (req, res) => {
   db.query("SELECT * FROM panels", (err, result) => {
     if (err) {

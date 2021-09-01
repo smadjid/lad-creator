@@ -14,7 +14,9 @@ import FrameItem from "./frames_lib/frame_items";
 
 export const FrameContext = React.createContext();
 
-function Frames() {
+function Frames(props) {
+  const ws = props.workspace;
+
   const [frames, setFrames] = useState([]);
   const [panels, setPanels] = useState([]);
   const [cpanels, setCPanels] = useState([]);
@@ -25,12 +27,6 @@ function Frames() {
   const [currentFrame, setCurrentFrame] = useState();
   const [currentPanel, setCurrentPanel] = useState();
   const [fList, setfList] = useState();
-
-  const [currentElement, setCurrentElement] = useState({
-    title: "initi",
-    description: "to be provided",
-    chart: null,
-  });
 
   const [compositeMode, setCompositeMode] = useState(false);
 
@@ -46,6 +42,7 @@ function Frames() {
   ];
 
   const [creationMode, setCreationMode] = useState(true);
+
 
   const handleModalClose = () => {
     setShowModal(false);
@@ -120,7 +117,8 @@ function Frames() {
 
   const getFrames = () => {
     axios.get("http://localhost:3001/frames").then((res) => {
-      setFrames(res.data);
+      setFrames(res.data.filter((i) => i.ws_id == ws));
+      
     });
   };
   const getFrameItems = (item) => {
@@ -165,13 +163,13 @@ function Frames() {
 
   const getPanels = () => {
     axios.get("http://localhost:3001/panels").then((res) => {
-      setPanels(res.data);
+      setPanels(res.data.filter((i) => i.ws_id == ws));
     });
   };
 
   const getCPanels = () => {
     axios.get("http://localhost:3001/cpanels").then((res) => {
-      setCPanels(res.data);
+      setCPanels(res.data.filter((i) => i.ws_id == ws));
     });
   };
 
@@ -226,6 +224,7 @@ function Frames() {
     const item = {
       title: "NewFrame",
       description: "Description",
+      ws_id:ws
     };
     setCurrentFrame(item);
     setCreationMode(true);

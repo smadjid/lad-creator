@@ -17,7 +17,7 @@ import { FormControl, MenuItem, InputLabel, Select } from "@material-ui/core";
 
 export const CPanelContext = React.createContext();
 
-function CPanels() {
+function CPanels(props) {
   const [cpanels, setCPanels] = useState([]);
   const [panels, setPanels] = useState([]);
 
@@ -30,9 +30,10 @@ function CPanels() {
   const [visualizations, setVisualizations] = useState();
   const [indicators, setIndicators] = useState();
   
-  const [sample, setSample] = useState('at41');
+  const ws = props.workspace;
+  //const [sample, setSample] = useState('at41');
   const handleSetSample = (e) =>{
-    setSample(e.target.value);
+  //  setSample(e.target.value);
   }
   const cpanelContext = [
     currentCPanel,
@@ -94,7 +95,7 @@ function CPanels() {
                   id: item.id,
                   title: item.title,
                   description: item.description,
-                  sample: sample
+                  ws_id: ws
                 }
               : item;
           })
@@ -263,7 +264,7 @@ function CPanels() {
     const item = {
       title: "NewPanel",
       description: "Description",
-      sample: sample
+      ws_id: ws
     };
     setCurrentCPanel(item);
     setCreationMode(true);
@@ -305,7 +306,7 @@ function CPanels() {
         mode="Creation"
         cpanels={cpanels}
         setCPanels={setCPanels}
-        sample={sample}
+        ws_id={ws}
         updateDisplay={updateDisplay}
         onClose={handleItemModalClose}
         onSave={handleItemModalSave}
@@ -315,23 +316,7 @@ function CPanels() {
       <table className="table table-striped ">
           <thead>
             <tr>
-              <td>
-                <FormControl>
-                  <InputLabel  style={{ color: "white" }}>
-                    Use case data
-                  </InputLabel>
-                  <Select
-                    style={{ color: "white" }}
-                    labelId="usecase_data"
-                    id="demo-controlled-open-select"
-                 //   value={sample}
-                  //  onChange={handleSetSample}
-                  >
-                    <MenuItem value="at41">AT 41</MenuItem>
-                    <MenuItem value="lada">LADA</MenuItem>
-                  </Select>
-                </FormControl>
-              </td>
+              
               <td>
                 <button className="btn btn-success" onClick={CreateNewCPanel}>
                   <AddBoxRounded /> &nbsp; New composite panel
@@ -354,7 +339,7 @@ function CPanels() {
         <tbody>
           {
             cpanels
-            .filter((i) => i.sample == sample)
+            .filter((i) => i.ws_id == ws)
             .map((item) => {
             return (
               <tr key={item.id}>

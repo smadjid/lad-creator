@@ -4,16 +4,13 @@ import * as Icon from "react-bootstrap-icons";
 import "./specification-wizard.css";
 import ContextDescription from "./steps/context-description";
 import DecisionDescription from "./steps/decision-description";
-import IndicatorChooser from "./steps/indicator-chooser";
 import FramePerception from "./steps/frames/frame-perception";
 import FrameComprehension from "./steps/frames/frame-comprehension";
 import GenerateComponent from "./steps/generate-component";
-import InterfaceComponent from "./steps/interface-component";
-import dash from "../../data/template_dash.json";
-import { Button, OverlayTrigger, Popover } from "react-bootstrap";
-import { AssignmentSharp, Bookmarks } from "@material-ui/icons";
+import {  OverlayTrigger, Popover } from "react-bootstrap";
+import { AssignmentSharp } from "@material-ui/icons";
 
-export const GlobalInterfaceContext = React.createContext();
+
 
 export const AppContext = React.createContext();
 
@@ -30,7 +27,7 @@ const secondaryFrameComponent = () => {
   return (
     <div>
       <div class="form-group row">
-        <h3>Fine-grainded analysis of the situation</h3>
+        <h3>Fine-grained analysis of the situation</h3>
         <panel>
           Build the process that can help you build an accurate understanding of
           the situation at hand
@@ -47,13 +44,18 @@ const finalComponent = () => {
   return <GenerateComponent />;
 };
 
-function SpecificationWizard(props) {
-  const [globalLayout, setGlobalLayout] = useState([{id: 0, layout:[]}]);
-  const globalInterfaceContext = [globalLayout, setGlobalLayout];
-
+function SpecificationWizard(props) {  
   const [dashboardStructure, setDashboardStructure] = useState({
     Title: "LAD Title",
     workspace:props.workspace,
+    meta:{
+      learnv:'Institutional LMS', 
+      lms:'moodle',
+      lmsdesc:'',
+      role:'teacher',
+      to:'',
+      by:'',
+    },
     mainFrame: { indicator: "Indicator", graphic: "Graph" },
     comprehensionFrames: [],
     context: {},

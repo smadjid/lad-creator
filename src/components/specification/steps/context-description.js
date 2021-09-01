@@ -5,33 +5,37 @@ const ContextDescription = (props) => {
   const [ladContext, setLadContext] = useContext(AppContext);
   
 
-  const [learningContext, setLearningContext] = useState("Institutional LMS");
+  //const [learningContext, setLearningContext] = useState("Institutional LMS");
   const handleLearningContext = (e) => {
-    setLearningContext(e.target.value);
-  };
-
-  const [dataSample, setDataSample] = useState("at41");
-  const handleDataSample = (e) => {
-    setDataSample(e.target.value);
     setLadContext((prevState) => {
-      return { ...prevState, Sample:e.target.value };
+      return { ...prevState, meta:{...ladContext.meta,learnv:e.target.value} };
     });
   };
-  const [institution, setInstitution] = useState("moodle");
-  const handleInstitution = (e) => {
-    setInstitution(e.target.value);
+  const handleLMS = (e) => {
+    setLadContext((prevState) => {
+      return { ...prevState, meta:{...ladContext.meta,lms:e.target.value} };
+    });
+  };
+  const handleLMSDesc = (e) => {
+    setLadContext((prevState) => {
+      return { ...prevState, meta:{...ladContext.meta,lmsdesc:e.target.value} };
+    });
+  };
+  const handleRole = (e) => {
+    setLadContext((prevState) => {
+      return { ...prevState, meta:{...ladContext.meta,role:e.target.value} };
+    });
   };
 
   const displayDetails = () => {
-    switch (learningContext) {
+    switch (ladContext.meta.learnv) {
       case "Institutional LMS":
         return (
           <select
             className="form-select"
             id="country"
-            placeholder="Your role"
-            value={institution}
-            onChange={handleInstitution}
+            value={ladContext.meta.lms}
+            onChange={handleLMS}
             required
           >
             <option value="moodle">Moodle</option>
@@ -60,9 +64,9 @@ const ContextDescription = (props) => {
           <textarea
             type="text"
             className="form-control"
-            id="lastName"
             placeholder="Provide a short description"
-            value="" 
+            value={ladContext.meta.lmsdesc} 
+            onChange={handleLMSDesc}
           ></textarea>
         );
     }
@@ -70,38 +74,19 @@ const ContextDescription = (props) => {
 
   return (
     
-      <form className="needs-validation" novalidate>
-        <div class="form-group row">
+      <form className="row" novalidate>
+        <div class="form-group col-6">
           <h3>Learning context</h3>
           <panel>Decsribe the learning context and your role within</panel>
           <hr className="my-1" />
-        </div>
-        <div className="col-md-3 mt-2 ">
-        <label for="country" className="form-label">
-            Sample Data for this Dashboard
-          </label>
-          <select
-            className="form-select"
-            id="sample"
-            placeholder="Data sample"
-            value={dataSample}
-          //  onChange={handleDataSample}
-            required
-          >
-            <option value="at41">AT 41</option>
-            <option value="lada">LADA</option>
-          </select>
-        </div>
 
         <div className="col-md-8 mt-2 ">
           <label for="country" className="form-label">
             Type of learning environment
           </label>
           <select
-            className="form-select"
-            id="country"
-            placeholder="Your role"
-            value={learningContext}
+            className="form-select"            
+            value={ladContext.meta.learnv} 
             onChange={handleLearningContext}
             required
           >
@@ -129,9 +114,8 @@ const ContextDescription = (props) => {
           </label>
           <select
             className="form-select"
-            id="role"
-            placeholder="Your role"
-            required
+            value={ladContext.meta.role}
+           onChange={handleRole}
           >
             <option value="teacher">Teacher - (in charge of the course)</option>
             <option value="tutor">Tutor - (...)</option>
@@ -151,26 +135,26 @@ const ContextDescription = (props) => {
             ></textarea>
           </div>
         </div>
-        <hr className="my-4" />
-        <div class="form-group row">
+        </div>
+        
+        <div class="form-group col-6">
           <h3>Dashboard use context</h3>
           <panel>
             Decsribe the context where the dashoard is meant to be used
           </panel>
           <hr className="my-1" />
-        </div>
+        
 
         <div className="col-md-8 mt-2 ">
           <label for="use" className="form-label">
-            The dashboard is maint to be used by
+            The dashboard will be used by
           </label>
           <div class="form-check">
             <input
               className="form-check-input"
               type="checkbox"
               name="use"
-              id="use1"
-              value="learner"
+              value={ladContext.meta.to}
             />
             <label className="form-check-label" for="use1">
               Learners
@@ -209,7 +193,7 @@ const ContextDescription = (props) => {
 
         <div className="col-md-8 mt-2 ">
           <label for="use" className="form-label">
-            The dashboard is maint to be used in
+            The dashboard will be used
           </label>
           <div class="form-check">
             <input
@@ -238,7 +222,7 @@ const ContextDescription = (props) => {
 
           <hr className="my-3" />
         </div>
-        
+        </div>
       </form>
     
   );

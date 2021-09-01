@@ -11,14 +11,16 @@ import { FormControl, MenuItem, InputLabel, Select } from "@material-ui/core";
 
 export const PanelContext = React.createContext();
 
-function Panels() {
+function Panels(props) {
   const [panels, setPanels] = useState([]);
   const [visualizations, setVisualizations] = useState([]);
   const [indicators, setIndicators] = useState([]);
 
-  const [sample, setSample] = useState("at41");
+  //const [sample, setSample] = useState("at41");
+  
+  const ws = props.workspace;
   const handleSetSample = (e) => {
-    setSample(e.target.value);
+    //setSample(e.target.value);
   };
 
   const [showModal, setShowModal] = useState(false);
@@ -77,7 +79,7 @@ function Panels() {
                   visualization_id: item.visualization_id,
                   indicator_id: item.indicator_id,
                   request: item.request,
-                  sample: sample,
+                  ws_id: ws,
                 }
               : item;
           })
@@ -164,7 +166,7 @@ function Panels() {
       visualization_id: null,
       indicator_id: null,
       request: null,
-      sample: sample,
+      ws_id: ws,
     };
     setCurrentIndicator(indicators[0]);
     setCurrentVisualization(visualizations[0]);
@@ -206,8 +208,8 @@ function Panels() {
         <table className="table table-striped ">
           <thead>
             <tr>
-              <td>
-                <FormControl>
+             {/* <td>
+                 <FormControl>
                   <InputLabel id="activation_action" style={{ color: "white" }}>
                     Use case data
                   </InputLabel>
@@ -221,8 +223,8 @@ function Panels() {
                     <MenuItem value="at41">AT 41</MenuItem>
                     <MenuItem value="lada">LADA</MenuItem>
                   </Select>
-                </FormControl>
-              </td>
+                </FormControl> 
+              </td>*/}
               <td>
                 <button className="btn btn-success" onClick={CreateNewPanel}>
                   <AddBoxRounded /> &nbsp; New simple panel
@@ -245,7 +247,7 @@ function Panels() {
         </thead>
         <tbody>
           {panels
-            .filter((i) => i.sample == sample)
+            .filter((i) => i.ws_id == ws)
             .map((item) => {
               return (
                 <tr key={item.id}>
