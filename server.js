@@ -339,7 +339,7 @@ app.get("/frames", (req, res) => {
 
 app.post("/frames", (req, res) => {
   const insertQuery = "INSERT INTO frames SET ?";
-  const last = "SELECT LAST_INSERT_ID();";
+  const last = "SELECT max(id) from frames;";
 
   db.query(insertQuery, req.body, (err, result) => {
     if (err) {

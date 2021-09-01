@@ -5,6 +5,7 @@ import PanelComponent from "./panel-component";
 import axios from "axios";
 import {
   ArrowForwardIos,
+  Clear,
   DeleteForever,
   DoubleArrow,
   ExpandLess,
@@ -187,6 +188,14 @@ const FrameComponent = (props) => {
       : (i = 1);
     updateDisplay();
   };
+
+  const removeFrame = () => {
+    let i = 0;
+    window.confirm("Are you sure you want to remove this frame?")
+      ? props.onRemove()
+      : (i = 1);
+  };
+
   const handleItemModalClose = () => {
     setShowItemModal(false);
   };
@@ -218,6 +227,7 @@ const FrameComponent = (props) => {
         isComposite={compositeMode}
         setFrames={setFrames}
         updateDisplay={updateDisplay}
+        removeFrame={removeFrame}
         onClose={handleItemModalClose}
         onSave={handleItemModalSave}
       />
@@ -242,9 +252,16 @@ const FrameComponent = (props) => {
             &nbsp;
             <span
               className="btn btn-sm btn-outline-light"
+              onClick={removeFrame}
+            >
+              <Clear /> Remove 
+            </span>
+            &nbsp;
+            <span
+              className="btn btn-sm btn-danger"
               onClick={deleteFrame}
             >
-              <DeleteForever /> Delete
+              <DeleteForever /> Delete from Library
             </span>
           </div>
         </div>

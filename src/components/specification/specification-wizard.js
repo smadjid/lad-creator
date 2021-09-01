@@ -58,6 +58,7 @@ function SpecificationWizard(props) {
     },
     mainFrame: { indicator: "Indicator", graphic: "Graph" },
     comprehensionFrames: [],
+    frames: [],
     context: {},
     metaLAD: { title: "LAD Title", version: 0.1 },
   });
