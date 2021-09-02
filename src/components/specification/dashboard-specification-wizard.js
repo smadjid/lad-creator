@@ -31,12 +31,7 @@ const finalComponent = () => {
 };
 
 function DashboardSpecificationWizard(props) {
-  const [dashboardStructure, setDashboardStructure]=useState({
-    context:{},
-    referenceFrame:{},
-    comprehensionFrames:[],
-    metaLAD:[]    
-  });
+  
   const wsteps =
     [
       {name: 'Step 1', component: <ContextDescription />},

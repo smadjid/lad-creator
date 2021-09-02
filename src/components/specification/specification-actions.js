@@ -12,12 +12,13 @@ const SpecificationActions = (props) => {
 
 
   const getSpecs = () => {
-    axios.get("http://localhost:3001/dashspec").then((res) => {
+    axios.get("http://localhost:3001/ladstudiospecs").then((res) => {
+      console.log(res.data);
       setAllSpecs(res.data);
     });
   };
 
-  //useEffect(() => {getSpecs}, []);
+  useEffect(() => {getSpecs()}, []);
 
   
   
@@ -37,10 +38,11 @@ const SpecificationActions = (props) => {
               <Modal.Title>Select a dashboard specification to load</Modal.Title>
             </Modal.Header>
             <Modal.Body>
+            <h4 className='text-light'>Specifications defined within the current Workspace</h4>
               <table className="table table-dark">
                 <tbody>
                 <tr>
-                    <td>Specification ID</td>
+                    <td>Specification Titre</td>
                     <td>
                       <select
                         className="formselect"
@@ -52,9 +54,8 @@ const SpecificationActions = (props) => {
                         name="class"
                         required
                       >
-                      <option value="Perception">NO Spec</option>
-                     { allSpecs.map((item) => {
-                        return(<option value="Perception">Perception</option>)
+                      { allSpecs.map((item) => {
+                        return(<option value={item.id}>{item.title}</option>)
                       })}
                         
                       </select>
@@ -69,7 +70,7 @@ const SpecificationActions = (props) => {
                       <textarea
                         type="text"
                         placeholder="Description..."
-                       
+                       disabled
                         name="description"
                         required
                       />
@@ -86,7 +87,7 @@ const SpecificationActions = (props) => {
                 type="button"
                 size="sm"
                 variant="secondary"
-          //      onClick={props.onClose}
+                onClick={props.onClose}
               >
                 Cancel
               </Button>
@@ -94,7 +95,7 @@ const SpecificationActions = (props) => {
                 type="submit"
                 size="sm"
                 variant="secondary"
-           //     onClick={props.onSave}
+                onClick={props.onSave(5)}
               >
                 Load
               </Button>

@@ -326,6 +326,88 @@ app.delete("/flist/:id", (req, res) => {
     }
   });
 });
+/*****************************/
+/* LAD STUDIO SPECIFICATION */
+app.get("/ladstudiospecs", (req, res) => {
+  const getQuery = "SELECT * FROM ladstudiospecs";
+  db.query(getQuery, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(result);
+    }
+  });
+});
+
+app.post("/ladstudiospecs", (req, res) => {
+  const insertQuery = "INSERT INTO ladstudiospecs SET ?";
+  const last = "SELECT max(id) from ladstudiospecs;";
+
+  db.query(insertQuery, req.body, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      db.query(last, (err, r) => {
+        if (err) {
+          console.log(err);
+        } else {
+          res.send(r);
+          console.log(r);
+        }
+      });
+    }
+  });
+});
+
+app.put("/ladstudiospecs", (req, res) => {
+  const updateQuery =
+    "UPDATE ladstudiospecs SET title = ?, description = ?";
+  db.query(
+    updateQuery,
+    [req.body.title, req.body.description, req.body.id],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+/////////// SPEC FRAMES
+app.get("/specframes", (req, res) => {
+  const getQuery = "SELECT * FROM dash_frame_list";
+  db.query(getQuery, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(result);
+    }
+  });
+});
+
+app.post("/specframes", (req, res) => {
+  const insertQuery = "INSERT INTO dash_frame_list SET ?";
+  const last = "SELECT max(id) from dash_frame_list;";
+
+  db.query(insertQuery, req.body, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      db.query(last, (err, r) => {
+        if (err) {
+          console.log(err);
+        } else {
+          res.send(r);
+          console.log(r);
+        }
+      });
+    }
+  });
+});
+
+
+/*******************************/
 app.get("/frames", (req, res) => {
   const getQuery = "SELECT * FROM frames";
   db.query(getQuery, (err, result) => {

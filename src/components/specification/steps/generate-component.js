@@ -5,7 +5,7 @@ import dash from "../../../data/template_dash.json";
 import { AppContext } from "../specification-wizard";
 
 import "./generate-component.css";
-import { Button } from "react-bootstrap";
+import { Button, ButtonGroup, Dropdown, DropdownButton } from "react-bootstrap";
 import {
   BarChartPanel,
   HBarChartPanel,
@@ -23,25 +23,23 @@ import {
 import shortid from "shortid";
 import axios from "axios";
 import ToGrafana from "./export/to-grafana";
+import {
+  ArrowForwardIos,
+  CloudDownload,
+  DoubleArrow,
+  PostAdd,
+} from "@material-ui/icons";
+import { BarChart } from "react-bootstrap-icons";
 
 const GenerateComponent = () => {
   const [ladContext, setLadContext] = useContext(AppContext);
-  const [frames, setFrames] = useState([]);
   const [panels, setPanels] = useState([]);
   const [cpanels, setCPanels] = useState([]);
   const [pList, setpList] = useState();
   const [fList, setfList] = useState();
   const [visualizations, setVisualizations] = useState([]);
-  const [showGrafanaDlg, setShowGrafanaDlg]= useState(false);
+  const [showGrafanaDlg, setShowGrafanaDlg] = useState(false);
 
-  const getFrames = () => {
-    axios.get("http://localhost:3001/frames").then((res) => {
-      let results = res.data;
-      if (ladContext.Sample)
-        results = results.filter((r) => r.sample == ladContext.Sample);
-      setFrames(results);
-    });
-  };
   const getPanels = () => {
     axios.get("http://localhost:3001/panels").then((res) => {
       setPanels(res.data);
@@ -214,7 +212,8 @@ const GenerateComponent = () => {
     // const title = generateTitle(frame.title);
     //  const struct = generateRow(frame);
     let dash = [];
-    frames.map((frame) => {
+    ladContext.frames.map((frame) => {
+      alert(frame.title);
       dash = dash.concat(generateRow(frame));
     });
     setComprehensionFrames(dash);
@@ -222,7 +221,6 @@ const GenerateComponent = () => {
   };
 
   useEffect(() => {
-    getFrames();
     getCPanels();
     getPanels();
     getpList();
@@ -268,7 +266,7 @@ const GenerateComponent = () => {
     timepicker: {},
     timezone: "",
     title: "LADATEST",
-    id:null
+    id: null,
   });
 
   const [file, setFile] = useState();
@@ -306,7 +304,7 @@ const GenerateComponent = () => {
       timepicker: {},
       timezone: "",
       title: "LADStudio",
-      id:null
+      id: null,
     });
   };
 
@@ -326,8 +324,6 @@ const GenerateComponent = () => {
     });
   };
 
-  
-
   const charting = (params) => {
     //console.log(params);
     let res = [];
@@ -338,7 +334,6 @@ const GenerateComponent = () => {
       rawSql: params.rawSql,
     };
 
-    
     switch (params.type) {
       case "Heatmap": {
         res = tableHeatChart(fields);
@@ -385,7 +380,7 @@ const GenerateComponent = () => {
     }
     return res;
   };
-
+  
   const generateJsonStructure = () => {
     //   generateMainFrame();
     let dash = generateDashStructure();
@@ -428,35 +423,73 @@ const GenerateComponent = () => {
     link.download = `${filename}.json`;
     link.href = url;
     link.click();
-
-    var file = new File(["Hello, world!"], " ");
-    //FileSaver.saveAs(file);
   };
 
-  const saveSpecification= () =>{
+  const loadToGrafana = () => {
+    generateJsonStructure();
     setShowGrafanaDlg(true);
-    return 0;
   }
 
-  const loadToGrafana = () =>{
-    setShowGrafanaDlg(true);
+  const saveSpecification = () => {
+    console.log(ladContext)
+    const dash={
+      title:ladContext.title,
+      description:ladContext.description,
+      learv: ladContext.meta.learv,
+      lms: ladContext.meta.lms,
+      role: ladContext.meta.role,
+      to: ladContext.meta.to,
+      ws_id: ladContext.workspace
+    };
+    axios.post("http://localhost:3001/ladstudiospecs",dash).then((res) => {
+      let results = res.data;
+      let eltId = Object.values(results[0])[0];
+      ladContext.frames.map((frame)=>{
+        axios.post("http://localhost:3001/specframes",{spec_id:eltId, frame_id:frame.id})
+
+      })
+    });
+    
     return 0;
-  }
+  };
+
+  
   return (
     <div className="  row">
-      
       <div className="col-md-11">
         <div className="bg-secondary card-header d-flex flex-row ">
-          <div className="p-2 col-sm-6">Dashboard JSon structure</div>
-          
-          <div className='p-2 text-right col-sm-6 btn-group'>
-            <button className="btn btn-danger btn-sm " onClick={generateJsonStructure}>Generate</button>
-            <button className="btn btn-primary btn-sm " onClick={saveJSonFile}>JSON Download</button>
-            <button className="btn btn-success btn-sm " onClick={loadToGrafana}>Save to <b>Grafana</b></button>
+          <div className=" col-8">Dashboard JSon structure</div>
+          <div className="text-right col-4">
+          <ButtonGroup>
+            <Button size='sm' onClick={saveSpecification}>Save Specification</Button>
+            <Button size='sm' onClick={generateJsonStructure}>Generate JSON</Button>
+
+            <DropdownButton
+              as={ButtonGroup}
+              size='sm'
+              title={
+                <>
+                  <span className="p-2">
+                    Export <PostAdd />
+                  </span>{" "}
+                </>
+              }
+              id="bg-nested-dropdown"
+            >
+              <Dropdown.Item eventKey="1" onClick={saveJSonFile}><CloudDownload /> JSON Download</Dropdown.Item>
+              <Dropdown.Item eventKey="2" onClick={loadToGrafana}><BarChart /> Save to <b>Grafana</b></Dropdown.Item>
+            </DropdownButton>
+          </ButtonGroup>
           </div>
-        </div>
-        <ToGrafana data={file} show={showGrafanaDlg} handleHide={()=>{setShowGrafanaDlg(false);}} />
-        
+          </div>
+          <ToGrafana
+            data={file}
+            show={showGrafanaDlg}
+            handleHide={() => {
+              setShowGrafanaDlg(false);
+            }}
+          />
+
         <div className="card-body bg-light">
           <ReactJson src={file} collapsible view="dual" enableClipboard />
         </div>

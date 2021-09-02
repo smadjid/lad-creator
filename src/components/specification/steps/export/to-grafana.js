@@ -9,11 +9,10 @@ const ToGrafana = (props) => {
   // curl -H "Authorization: Bearer eyJrIjoiMjBJckFNWUwydTBhaFRyN1hjQThVWTRHUTZTSUlyMW0iLCJuIjoibGFkc3R1ZGlvIiwiaWQiOjF9" http://localhost/api/dashboards/home
   // local key
   const [instanceKey, setInstanceKey] = useState(
-    "eyJrIjoieHFYemhpZk1vQTRnaXVYY0NRRFVLYmhCTGdKdWprVEEiLCJuIjoiayIsImlkIjoxfQ=="
+   // "eyJrIjoieHFYemhpZk1vQTRnaXVYY0NRRFVLYmhCTGdKdWprVEEiLCJuIjoiayIsImlkIjoxfQ=="
   );
   // PADLAD key
-  //const [instanceKey, setInstanceKey] = "eyJrIjoieHFYemhpZk1vQTRnaXVYY0NRRFVLYmhCTGdKdWprVEEiLCJuIjoiayIsImlkIjoxfQ=="
-  //const [instanceURL, setInstanceURL] = useState("http://localhost/api/dashboards/uid/BfjC9X8Mk");
+  
   const [instanceURL, setInstanceURL] = useState("http://localhost");
   const [queryStatus, setQueryStatus] = useState("Ready");
   const [dashboardURL, setDashboardURL] = useState();
@@ -25,7 +24,7 @@ const ToGrafana = (props) => {
     let dashboard = {
       dashboard: props.data,
     };
-    dashboard.dashboard.title = ladContext.Title;
+    dashboard.dashboard.title = ladContext.title;
 
     dashboard = JSON.stringify(dashboard);
 
@@ -78,10 +77,10 @@ const ToGrafana = (props) => {
                   type="text"
                   placeholder="Title"
                   name="title"
-                  value={ladContext.Title}
+                  value={ladContext.title}
                   onChange={(v) => {
                     setLadContext((prevState) => {
-                      return { ...prevState, Title: v.data };
+                      return { ...prevState, title: v.data };
                     });
                   }}
                   required

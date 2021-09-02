@@ -17,7 +17,7 @@ const DecisionDescription = (props) => {
   };
   const updateLadContext = (e) => {
     setLadContext((prevState) => {
-      return { ...prevState, Title: e.target.value };
+      return { ...prevState, title: e.target.value };
     });
   };
 
@@ -35,7 +35,7 @@ const DecisionDescription = (props) => {
             class="form-control"
             aria-label="Sizing example input"
             placeholder="A short title"
-            value={ladContext.Title}
+            value={ladContext.title}
             onChange={updateLadContext}
             aria-describedby="inputGroup-sizing-sm"
           />

@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import * as Icon from "react-bootstrap-icons";
+import {  OverlayTrigger, Popover } from "react-bootstrap";
+import { AssignmentSharp } from "@material-ui/icons";
 
 import "./specification-wizard.css";
 import ContextDescription from "./steps/context-description";
@@ -7,8 +9,8 @@ import DecisionDescription from "./steps/decision-description";
 import FramePerception from "./steps/frames/frame-perception";
 import FrameComprehension from "./steps/frames/frame-comprehension";
 import GenerateComponent from "./steps/generate-component";
-import {  OverlayTrigger, Popover } from "react-bootstrap";
-import { AssignmentSharp } from "@material-ui/icons";
+import SpecificationActions from "./specification-actions";
+
 
 
 
@@ -45,23 +47,29 @@ const finalComponent = () => {
 };
 
 function SpecificationWizard(props) {  
+  
   const [dashboardStructure, setDashboardStructure] = useState({
-    Title: "LAD Title",
-    workspace:props.workspace,
-    meta:{
-      learnv:'Institutional LMS', 
-      lms:'moodle',
-      lmsdesc:'',
-      role:'teacher',
-      to:'',
-      by:'',
-    },
-    mainFrame: { indicator: "Indicator", graphic: "Graph" },
-    comprehensionFrames: [],
-    frames: [],
-    context: {},
-    metaLAD: { title: "LAD Title", version: 0.1 },
-  });
+      title: "LAD Title",
+      description:"A LAD Specification",
+      workspace:props.workspace,
+      meta:{
+        learnv:'Institutional LMS', 
+        lms:'moodle',
+        lmsdesc:'',
+        role:'teacher',
+        to:'',
+        by:'',
+      },
+      mainFrame: { indicator: "Indicator", graphic: "Graph" },
+      comprehensionFrames: [],
+      frames: [],
+      context: {}
+    });
+
+    const ladContext = [dashboardStructure, setDashboardStructure];
+
+    const [showSpecList, setShowSpecList] = useState(true);
+    if(props.mode==='load') setShowSpecList(true);
 
   const [steps, setSteps] = useState([
     {
@@ -155,10 +163,15 @@ function SpecificationWizard(props) {
     return;
   };
 
-  const ladContext = [dashboardStructure, setDashboardStructure];
+  const loadSpecification = (specId) =>{
+alert(specId)
+  }
+
+  
   return (
     <AppContext.Provider value={ladContext}>
-      <div className="SpecificationWizard">
+      <SpecificationActions show={showSpecList} onClose={()=>{setShowSpecList(false)}} onSave={(spec)=>{loadSpecification(spec)}}/>
+      <div className="SpecificationWizard" >
         <div className="box">
           <div className="steps">
             <ul className="nav">
@@ -192,7 +205,7 @@ function SpecificationWizard(props) {
                               <div>
                                 <h6 className="my-0">Dashboard Title</h6>
                                 <small className="text-muted">
-                                  {dashboardStructure.Title}
+                                  {dashboardStructure.title}
                                 </small>
                               </div>
                               <span className="text-muted">(X)</span>

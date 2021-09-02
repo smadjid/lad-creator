@@ -7,11 +7,10 @@ import DecisionDescription from "./steps/decision-description";
 import FramePerception from "./steps/frames/frame-perception";
 import FrameComprehension from "./steps/frames/frame-comprehension";
 import GenerateComponent from "./steps/generate-component";
-import { Button, OverlayTrigger, Popover } from "react-bootstrap";
-import { AssignmentSharp, Bookmarks } from "@material-ui/icons";
-import SpecificationActions from "./specification-actions";
+import {  OverlayTrigger, Popover } from "react-bootstrap";
+import { AssignmentSharp } from "@material-ui/icons";
 
-export const GlobalInterfaceContext = React.createContext();
+
 
 export const AppContext = React.createContext();
 
@@ -28,7 +27,7 @@ const secondaryFrameComponent = () => {
   return (
     <div>
       <div class="form-group row">
-        <h3>Fine-grainded analysis of the situation</h3>
+        <h3>Fine-grained analysis of the situation</h3>
         <panel>
           Build the process that can help you build an accurate understanding of
           the situation at hand
@@ -45,19 +44,25 @@ const finalComponent = () => {
   return <GenerateComponent />;
 };
 
-function ModificationWizard(props) {
-  const [globalLayout, setGlobalLayout] = useState([{id: 0, layout:[]}]);
-  const [dashboardID,setDashboardID]=useState(null);
-
+function ModificationWizard(props) {  
   const [dashboardStructure, setDashboardStructure] = useState({
-    Title: "LAD Title",
+    title: "LAD Title",
+    description:"A LAD Specification",
+    workspace:props.workspace,
+    meta:{
+      learnv:'Institutional LMS', 
+      lms:'moodle',
+      lmsdesc:'',
+      role:'teacher',
+      to:'',
+      by:'',
+    },
     mainFrame: { indicator: "Indicator", graphic: "Graph" },
     comprehensionFrames: [],
-    context: {},
-    metaLAD: { title: "LAD Title", version: 0.1 },
+    frames: [],
+    context: {}
   });
 
-  
   const [steps, setSteps] = useState([
     {
       key: "firstStep",
@@ -83,6 +88,12 @@ function ModificationWizard(props) {
       isDone: false,
       component: secondaryFrameComponent,
     },
+   /*  {
+      key: "fifthStep",
+      label: "Interface config",
+      isDone: false,
+      component: interfaceConfigComponent,
+    }, */
     {
       key: "finalStep",
       label: "LAD Generation",
@@ -93,8 +104,9 @@ function ModificationWizard(props) {
 
   const [activeStep, setActiveStep] = useState(steps[0]);
 
-  
-  
+  const saveActiveStep = () => {
+    console.log(activeStep.component);
+  };
   const handleNext = () => {
     window.scrollTo(0, 0);
     if (steps[steps.length - 1].key === activeStep.key) {
@@ -108,7 +120,7 @@ function ModificationWizard(props) {
         return x;
       })
     );
-    
+    saveActiveStep(steps[index]);
     setActiveStep(steps[index + 1]);
   };
 
@@ -144,10 +156,6 @@ function ModificationWizard(props) {
   };
 
   const ladContext = [dashboardStructure, setDashboardStructure];
-
-  return(<SpecificationActions show={true}/>);
-
-  return(<h3>No Dashboard found!</h3>);
   return (
     <AppContext.Provider value={ladContext}>
       <div className="SpecificationWizard">
@@ -184,7 +192,7 @@ function ModificationWizard(props) {
                               <div>
                                 <h6 className="my-0">Dashboard Title</h6>
                                 <small className="text-muted">
-                                  {dashboardStructure.Title}
+                                  {dashboardStructure.title}
                                 </small>
                               </div>
                               <span className="text-muted">(X)</span>
@@ -194,7 +202,7 @@ function ModificationWizard(props) {
                               <div>
                                 <h6 className="my-0">Sample data</h6>
                                 <small className="text-muted">
-                                  {dashboardStructure.Sample}
+                                  {dashboardStructure.workspace}
                                 </small>
                               </div>
                               <span className="text-muted">(X)</span>
