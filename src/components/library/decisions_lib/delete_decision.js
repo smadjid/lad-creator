@@ -3,9 +3,10 @@ import React from "react";
 import axios from "axios";
 
 export default function Delete(props) {
+  const { REACT_APP_BASE_API } = process.env;
   const deleteDecision = () => {
     axios
-      .delete(`http://localhost:3001/decisions/${props.id}`)
+      .delete(`${REACT_APP_BASE_API}decisions/${props.id}`)
       .then((res) => {
         props.setDecisions(
           props.decisions.filter((item) => {

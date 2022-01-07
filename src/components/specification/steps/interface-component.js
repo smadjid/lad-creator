@@ -15,7 +15,7 @@ import { GlobalInterfaceContext } from "../specification-wizard";
 
 
 const InterfaceComponent = (props) => {
-  
+  const { REACT_APP_BASE_API } = process.env;
   const [showModal, setShowModal] = useState(false);
   const [currentFrame, setCurrentFrame] = useState();
   const [sidebarFrames, setSidebarFrames] = useState([]);
@@ -61,7 +61,7 @@ const InterfaceComponent = (props) => {
 
   const [frames, setFrames] = useState([]);
   const getFrames = () => {
-    axios.get("http://localhost:3001/frames").then((res) => {
+    axios.get(REACT_APP_BASE_API+"frames").then((res) => {
       setFrames(res.data);
       generateSidebarItems(res.data);
     });

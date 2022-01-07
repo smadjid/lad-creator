@@ -19,6 +19,7 @@ import { FormControl, MenuItem, Select, InputLabel } from "@material-ui/core";
 export const FrameContext = React.createContext();
 
 const FrameComponent = (props) => {
+  const { REACT_APP_BASE_API } = process.env;
   const [frames, setFrames] = useState([]);
   const [panels, setPanels] = useState([]);
   const [cpanels, setCPanels] = useState([]);
@@ -42,19 +43,15 @@ const FrameComponent = (props) => {
     cpanels,
   ];
 
-  const [creationMode, setCreationMode] = useState(true);
+  
   const [compositeMode, setCompositeMode] = useState(false);
   const [showItemModal, setShowItemModal] = useState(false);
 
-  const handleChange = (ev) => {
-    setCurrentElement(ev);
-    console.log(currentElement);
-  };
-
+  
   const [position, setPosition] = useState("");
 
   const getFrames = () => {
-    axios.get("http://localhost:3001/frames").then((res) => {
+    axios.get(REACT_APP_BASE_API+"frames").then((res) => {
       setFrames(res.data);
     });
   };
@@ -64,19 +61,18 @@ const FrameComponent = (props) => {
 
     let elts = fList.filter((i) => i.frame_id === item);
 
-    //console.log(elts);
     return elts;
   };
 
   const getPanels = () => {
-    axios.get("http://localhost:3001/panels").then((res) => {
+    axios.get(REACT_APP_BASE_API+"panels").then((res) => {
       let results = res.data;
       if (props.sample) results = results.filter((r)=>r.sample == props.sample);
       setPanels(results);
     });
   };
   const getCPanels = () => {
-    axios.get("http://localhost:3001/cpanels").then((res) => {
+    axios.get(REACT_APP_BASE_API+"cpanels").then((res) => {
       let results = res.data;
       if (props.sample) results = results.filter((r)=>r.sample == props.sample);
       setCPanels(results);
@@ -90,7 +86,7 @@ const FrameComponent = (props) => {
   };
 
   const getpList = () => {
-    axios.get("http://localhost:3001/plist").then((res) => {
+    axios.get(REACT_APP_BASE_API+"plist").then((res) => {
       setpList(res.data);
     });
   };
@@ -122,7 +118,7 @@ const FrameComponent = (props) => {
   const dropCPanItem = (id) => {
     let i = 0;
     window.confirm("Are you sure you want to delete this panel?")
-      ? axios.delete(`http://localhost:3001/flist/${id}`).then((res) => {
+      ? axios.delete(`${REACT_APP_BASE_API}flist/${id}`).then((res) => {
           setfList(
             fList.filter((item) => {
               return item.id !== id;
@@ -133,7 +129,7 @@ const FrameComponent = (props) => {
   };
 
   const getfList = () => {
-    axios.get("http://localhost:3001/flist").then((res) => {
+    axios.get(REACT_APP_BASE_API+"flist").then((res) => {
       setfList(res.data);
     });
   };
@@ -180,8 +176,8 @@ const FrameComponent = (props) => {
   };
   const deleteFrame = () => {
     let i = 0;
-    window.confirm("Are you sure you want to delete this frame?")
-      ? axios.delete(`http://localhost:3001/frames/${props.id}`).then((res) => {
+    window.confirm("Are you sure you want to delete this screen?")
+      ? axios.delete(`${REACT_APP_BASE_API}frames/${props.id}`).then((res) => {
           props.onUpdate();
           i = 0;
         })
@@ -191,7 +187,7 @@ const FrameComponent = (props) => {
 
   const removeFrame = () => {
     let i = 0;
-    window.confirm("Are you sure you want to remove this frame?")
+    window.confirm("Are you sure you want to remove this screen?")
       ? props.onRemove()
       : (i = 1);
   };
@@ -209,7 +205,7 @@ const FrameComponent = (props) => {
       frame_id: props.id,
       panel_id: currentPanel.id,
     };
-    axios.post("http://localhost:3001/flist", flist).then(() => {
+    axios.post(REACT_APP_BASE_API+"flist", flist).then(() => {
       updateDisplay();
     });
 
@@ -237,7 +233,7 @@ const FrameComponent = (props) => {
           <div>
             {" "}
             <span class="badge bg-success">
-              <i>{props.class} Frame</i>
+              <i>{props.class} Screen</i>
             </span>
             <b> {props.title}</b>
           </div>
@@ -331,7 +327,7 @@ const FrameComponent = (props) => {
               <Card className="col-md-5 bg-light transition-config">
               
                 <Card.Header className="dark-white">
-                  <h6>Transition into this frame support </h6>
+                  <h6>Transition into this screen </h6>
                 </Card.Header>
                 <Card.Body className="col-md-12">
                   <div className="row">
@@ -340,7 +336,7 @@ const FrameComponent = (props) => {
                     
                       <Card className=" text-dark bg-light mb-3">
                         <Card.Header>
-                          Activation from the reference frame
+                          Activation from the reference screen
                         </Card.Header>
                         <Card.Body>
                           <FormControl>
@@ -368,7 +364,7 @@ const FrameComponent = (props) => {
                       </Card>
                       <Card className=" text-dark bg-light mb-3">
                         <Card.Header>
-                          Display of the this frame
+                          Display of this screen
                         </Card.Header>
                         <Card.Body>
                           <FormControl>
@@ -398,7 +394,7 @@ const FrameComponent = (props) => {
                     </div>
                     <div className="col-md-6">
                       <Card className="text-dark bg-light mb-3">
-                        <Card.Header>Position relative to the reference frame</Card.Header>
+                        <Card.Header>Position relative to the reference screen</Card.Header>
 
                         <Card.Body>
                         <FormControl>

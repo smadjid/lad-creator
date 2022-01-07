@@ -12,6 +12,7 @@ import { CMainContext } from "../../../main-dash";
 import { PlusCircle } from "react-bootstrap-icons";
 
 const FrameComprehension = (props) => {
+  const { REACT_APP_BASE_API } = process.env;
   const [ladContext, setLadContext] = useContext(AppContext);
   const [workspace, setWorkspace] = useContext(CMainContext);
   const [frames, setFrames] = useState([]);
@@ -20,7 +21,7 @@ const FrameComprehension = (props) => {
   const [showNewFrame, setShowNewFrame] = useState(false);
   const [showLoadFrame, setShowLoadFrame] = useState(false);
   const [newFrameData, setNewFrameData] = useState({
-    title: "New Frame",
+    title: "New Screen",
     type: "Elaboration",
     level: 0,
     description: "",
@@ -33,17 +34,15 @@ const FrameComprehension = (props) => {
   const createNewFrame = () => setShowNewFrame(true);
 
   const getFrames = () => {
-    axios.get("http://localhost:3001/frames").then((res) => {
+    axios.get(REACT_APP_BASE_API+"frames").then((res) => {
       let results = res.data;
-      results = results.filter((r) => r.ws_id === workspace);      
+      results = results.filter((r) => r.ws_id === workspace);
       setFrames(results);
       /* let existingframes = ladContext.frames;
       results = existingframes.filter(cf => {
         let arr = frames.filter(f => f.id === cf.id)
         return !(arr.length === 0)
       }); */
-      
-
     });
   };
   useEffect(() => {
@@ -51,7 +50,7 @@ const FrameComprehension = (props) => {
   }, []);
   const handleLoadFrame = (id) => {
     const element = frames.filter((f) => f.id === id);
-     setLadContext((prevState) => {
+    setLadContext((prevState) => {
       return { ...prevState, frames: ladContext.frames.concat(element) };
     });
   };
@@ -65,15 +64,15 @@ const FrameComprehension = (props) => {
       class: newFrameData.type,
       title: newFrameData.title,
       sample: ladContext.Sample,
-      ws_id: workspace
+      ws_id: workspace,
     };
 
-    axios.post("http://localhost:3001/frames", element).then((res) => {
+    axios.post(REACT_APP_BASE_API+"frames", element).then((res) => {
       let results = res.data;
       let eltId = Object.values(results[0])[0];
       results = results.filter((r) => r.ws_id === workspace);
       setFrames(results);
-      element.id=eltId;
+      element.id = eltId;
 
       setLadContext((prevState) => {
         return { ...prevState, frames: ladContext.frames.concat(element) };
@@ -92,8 +91,7 @@ const FrameComprehension = (props) => {
       return { ...prevState, [type]: ev.target.value };
     });
   };
- 
-  
+
   const updateDialogDataDescription = (ev) => {
     let description = "";
     switch (ev.target.value) {
@@ -128,24 +126,24 @@ const FrameComprehension = (props) => {
     });
   };
 
-  const removeFrame = (id) =>{
-    
-
+  const removeFrame = (id) => {
     setLadContext((prevState) => {
-      return { ...prevState, frames: ladContext.frames.filter((q) => q.id !== id)};
+      return {
+        ...prevState,
+        frames: ladContext.frames.filter((q) => q.id !== id),
+      };
     });
-
-  }
+  };
 
   return (
     <form className="needs-validation" novalidate>
       <div className="align-middle f_buttons">
         <span className="btn btn-secondary" onClick={showExistingFrames}>
-          <PlayForWorkRounded /> Import a frame support from Library
+          <PlayForWorkRounded /> Import a screen from Library
         </span>
         {"    "}
         <span className="btn btn-secondary" onClick={createNewFrame}>
-          <PlusCircle /> Create a new frame support
+          <PlusCircle /> Create a new screen
         </span>
         <div>
           <Modal
@@ -160,17 +158,17 @@ const FrameComprehension = (props) => {
             centered
           >
             <Modal.Header>
-              <Modal.Title>Configure the frame</Modal.Title>
+              <Modal.Title>Configure the screen</Modal.Title>
             </Modal.Header>
             <Modal.Body>
               <form>
                 <div className="form-group">
-                  <strong for="frameTitle">Frame name</strong>
+                  <strong for="frameTitle">Screen name</strong>
                   <input
                     type="text"
                     className="form-control"
                     id="frameTitle"
-                    placeholder="Enter a title for the new frame"
+                    placeholder="Enter a title for the new screen"
                     value={newFrameData.title}
                     onChange={(e) => updateDialogData("title", e)}
                     required
@@ -182,7 +180,7 @@ const FrameComprehension = (props) => {
 
                 <div className="form-group">
                   <strong for="select_relation">
-                    Relation to the original frame
+                    Relation to the original screen
                   </strong>
                   <select
                     className="form-control"
@@ -237,7 +235,7 @@ const FrameComprehension = (props) => {
             centered
           >
             <Modal.Header>
-              <Modal.Title>Select and load a frame</Modal.Title>
+              <Modal.Title>Select and load a screen</Modal.Title>
             </Modal.Header>
             <Modal.Body>
               <table className="table table-bordered table-hover table-dark table-striped text-md-start">
@@ -255,27 +253,33 @@ const FrameComprehension = (props) => {
                         <td>{f.title}</td>
                         <td>{f.description}</td>
                         <td>
-                        { ladContext.frames.filter((e) => e.id === f.id).length?
-                          <>
-                          <em> </em>
-                          <Button
-                              type="submit"
-                              size="sm"
-                              variant="danger"
-                              onClick={()=>{return handleLoadFrame(f.id)}}
-                            >
-                              Insert another instance
-                            </Button></>:
-                          <Button
+                          {ladContext.frames.filter((e) => e.id === f.id)
+                            .length ? (
+                            <>
+                              <em> </em>
+                              <Button
+                                type="submit"
+                                size="sm"
+                                variant="danger"
+                                onClick={() => {
+                                  return handleLoadFrame(f.id);
+                                }}
+                              >
+                                Insert another instance
+                              </Button>
+                            </>
+                          ) : (
+                            <Button
                               type="submit"
                               size="sm"
                               variant="primary"
-                              onClick={()=>{return handleLoadFrame(f.id)}}
+                              onClick={() => {
+                                return handleLoadFrame(f.id);
+                              }}
                             >
                               Insert an instance
                             </Button>
-                            
-                        }
+                          )}
                         </td>
                       </tr>
                     );
@@ -284,7 +288,6 @@ const FrameComprehension = (props) => {
               </table>
             </Modal.Body>
             <Modal.Footer>
-            
               <Button onClick={handleCloseLoad} size="sm" variant="secondary">
                 Close
               </Button>
@@ -304,14 +307,13 @@ const FrameComprehension = (props) => {
                   title={f.title}
                   sample={ladContext.Sample}
                   onUpdate={getFrames}
-                  onRemove={()=>removeFrame(f.id)}
+                  onRemove={() => removeFrame(f.id)}
                 />
                 <br />
               </>
             );
           })}
         </div>
-        <hr />
       </div>
     </form>
   );

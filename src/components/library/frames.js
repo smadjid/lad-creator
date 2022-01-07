@@ -16,6 +16,7 @@ export const FrameContext = React.createContext();
 
 function Frames(props) {
   const ws = props.workspace;
+  const { REACT_APP_BASE_API } = process.env;
 
   const [frames, setFrames] = useState([]);
   const [panels, setPanels] = useState([]);
@@ -58,7 +59,7 @@ function Frames(props) {
       frame_id: currentFrame.id,
       panel_id: currentPanel.id,
     };
-    axios.post("http://localhost:3001/flist", flist).then(() => {
+    axios.post(REACT_APP_BASE_API+"flist", flist).then(() => {
       updateDisplay();
     });
 
@@ -70,7 +71,7 @@ function Frames(props) {
     let element = currentFrame;
     //return;
     if (creationMode)
-      axios.post("http://localhost:3001/frames", element).then(() => {
+      axios.post(REACT_APP_BASE_API+"frames", element).then(() => {
         setFrames([
           ...frames,
           {
@@ -82,7 +83,7 @@ function Frames(props) {
         updateDisplay();
       });
     else
-      axios.put("http://localhost:3001/frames", element).then((res) => {
+      axios.put(REACT_APP_BASE_API+"frames", element).then((res) => {
         setFrames(
           frames.map((item) => {
             return item.id === element.id
@@ -103,8 +104,8 @@ function Frames(props) {
   };
 
   const deleteFrame = (id) => {
-    window.confirm("Are you sure you want to delete this type of frame?")
-      ? axios.delete(`http://localhost:3001/frames/${id}`).then((res) => {
+    window.confirm("Are you sure you want to delete this type of screen?")
+      ? axios.delete(`${REACT_APP_BASE_API}frames/${id}`).then((res) => {
           setFrames(
             frames.filter((item) => {
               return item.id !== id;
@@ -116,7 +117,7 @@ function Frames(props) {
   };
 
   const getFrames = () => {
-    axios.get("http://localhost:3001/frames").then((res) => {
+    axios.get(REACT_APP_BASE_API+"frames").then((res) => {
       setFrames(res.data.filter((i) => i.ws_id == ws));
       
     });
@@ -151,7 +152,7 @@ function Frames(props) {
   const dropCPanItem = (id) => {
     let i = 0;
     window.confirm("Are you sure you want to delete this panel?")
-      ? axios.delete(`http://localhost:3001/flist/${id}`).then((res) => {
+      ? axios.delete(`${REACT_APP_BASE_API}flist/${id}`).then((res) => {
           setfList(
             fList.filter((item) => {
               return item.id !== id;
@@ -162,19 +163,19 @@ function Frames(props) {
   };
 
   const getPanels = () => {
-    axios.get("http://localhost:3001/panels").then((res) => {
+    axios.get(REACT_APP_BASE_API+"panels").then((res) => {
       setPanels(res.data.filter((i) => i.ws_id == ws));
     });
   };
 
   const getCPanels = () => {
-    axios.get("http://localhost:3001/cpanels").then((res) => {
+    axios.get(REACT_APP_BASE_API+"cpanels").then((res) => {
       setCPanels(res.data.filter((i) => i.ws_id == ws));
     });
   };
 
   const getfList = () => {
-    axios.get("http://localhost:3001/flist").then((res) => {
+    axios.get(REACT_APP_BASE_API+"flist").then((res) => {
       setfList(res.data);
     });
   };
@@ -222,8 +223,8 @@ function Frames(props) {
 
   const CreateNewFrame = () => {
     const item = {
-      title: "NewFrame",
-      description: "Description",
+      title: "NewScreen",
+      description: "Screen Description",
       ws_id:ws
     };
     setCurrentFrame(item);
@@ -265,13 +266,13 @@ function Frames(props) {
 
       <div>
         <button className="btn btn-success" onClick={CreateNewFrame}>
-          <AddBoxRounded /> &nbsp; New Frame Type
+          <AddBoxRounded /> &nbsp; New Screen
         </button>
       </div>
       <table className="table table-bordered table-hover table-dark table-striped text-md-start">
         <thead>
           <tr>
-            <th scope="col">#</th>
+            {/* <th scope="col">#</th> */}
             <th scope="col">Title</th>
             <th scope="col">Class</th>
             <th scope="col">Description</th>
@@ -283,7 +284,7 @@ function Frames(props) {
           {frames.map((item) => {
             return (
               <tr key={item.id}>
-                <th scope="row">{item.id}</th>
+                {/* <th scope="row">{item.id}</th> */}
                 <td>
                   <h6>{item.title}</h6>
                 </td>

@@ -46,7 +46,7 @@ const Actions = (props) => {
                     <td>
                       <input
                         type="text"
-                        placeholder="Frame Title"
+                        placeholder="Screen Title"
                         onChange={(e) =>
                           setCurrentFrame({
                             ...currentFrame,

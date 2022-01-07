@@ -23,6 +23,15 @@
   }
 }
 
+html {
+  height: 100%; 
+}
+
+body {
+  background-color: #1e2b41;
+  height: 100%; 
+}
+
 .App-header {
   background-color: #26282c;
   box-shadow:  0 5px 5px -2px rgb(0 0 0 / 20%);
@@ -48,15 +57,29 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+
+  position: absolute;
+    height: 90%;
+    width: 100%;
 }
 
 footer {
   /*background-color: #282c34;*/
+  position: fixed;
+  bottom: 0;
+  text-align: center;
    flex-direction: column;
    /*align-items: center;*/
    justify-content: center;
    font-size: calc(10px + 2vmin);
    color: white;
+ }
+ footer p{
+   width: 100%;
+   text-align: center;
+   right: 0;
+    left: 0;
+    font-size: calc(12px);
  }
 
 .App-link {

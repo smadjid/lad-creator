@@ -18,6 +18,7 @@ import { FormControl, MenuItem, InputLabel, Select } from "@material-ui/core";
 export const CPanelContext = React.createContext();
 
 function CPanels(props) {
+  const { REACT_APP_BASE_API } = process.env;
   const [cpanels, setCPanels] = useState([]);
   const [panels, setPanels] = useState([]);
 
@@ -62,7 +63,7 @@ function CPanels(props) {
       cpanel_id: currentCPanel.id,
       panel_id: currentPanel.id,
     };
-    axios.post("http://localhost:3001/plist", plist).then(() => {
+    axios.post(REACT_APP_BASE_API+"plist", plist).then(() => {
       updateDisplay();
     });
 
@@ -75,7 +76,7 @@ function CPanels(props) {
 
     //return;
     if (creationMode)
-      axios.post("http://localhost:3001/cpanels", element).then(() => {
+      axios.post(REACT_APP_BASE_API+"cpanels", element).then(() => {
         setCPanels([
           ...cpanels,
           {
@@ -87,7 +88,7 @@ function CPanels(props) {
         updateDisplay();
       });
     else
-      axios.put("http://localhost:3001/cpanels", element).then((res) => {
+      axios.put(REACT_APP_BASE_API+"cpanels", element).then((res) => {
         setCPanels(
           cpanels.map((item) => {
             return item.id === element.id
@@ -109,7 +110,7 @@ function CPanels(props) {
 
   const deleteCPanel = (id) => {
     window.confirm("Are you sure you want to delete this type of cpanel?")
-      ? axios.delete(`http://localhost:3001/cpanels/${id}`).then((res) => {
+      ? axios.delete(`${REACT_APP_BASE_API}${id}`).then((res) => {
           setCPanels(
             cpanels.filter((item) => {
               return item.id !== id;
@@ -121,7 +122,7 @@ function CPanels(props) {
   };
 
   const getCPanels = () => {
-    axios.get("http://localhost:3001/cpanels").then((res) => {
+    axios.get(REACT_APP_BASE_API+"cpanels").then((res) => {
       setCPanels(res.data);
     });
   };
@@ -190,7 +191,7 @@ function CPanels(props) {
   const dropCPanItem = (id) => {
     let i = 0;
     window.confirm("Are you sure you want to delete this simple panel?")
-      ? axios.delete(`http://localhost:3001/plist/${id}`).then((res) => {
+      ? axios.delete(`${REACT_APP_BASE_API}/plist/${id}`).then((res) => {
           setpList(
             pList.filter((item) => {
               return item.id !== id;
@@ -201,24 +202,24 @@ function CPanels(props) {
   };
 
   const getPanels = () => {
-    axios.get("http://localhost:3001/panels").then((res) => {
-      setPanels(res.data);
+    axios.get(REACT_APP_BASE_API+"panels").then((res) => {
+      setPanels(res.data); console.log(res.data)
     });
   };
 
   const getpList = () => {
-    axios.get("http://localhost:3001/plist").then((res) => {
+    axios.get(REACT_APP_BASE_API+"plist").then((res) => {
       setpList(res.data);
     });
   };
 
   const getIndicators = () => {
-    axios.get("http://localhost:3001/indicators").then((res) => {
+    axios.get(REACT_APP_BASE_API+"indicators").then((res) => {
       setIndicators(res.data);
     });
   };
   const getVisualizations = () => {
-    axios.get("http://localhost:3001/visualizations").then((res) => {
+    axios.get(REACT_APP_BASE_API+"visualizations").then((res) => {
       setVisualizations(res.data);
     });
   };
@@ -329,7 +330,7 @@ function CPanels(props) {
       <table className="table table-bordered table-hover table-dark table-striped text-md-start">
         <thead>
           <tr>
-            <th scope="col">#</th>
+            {/* <th scope="col">#</th> */}
             <th scope="col">Title</th>
             <th scope="col">Description</th>
             <th scope="col">Panels</th>

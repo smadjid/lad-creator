@@ -11,25 +11,29 @@ import {
   TextField,
 } from "@material-ui/core";
 import axios from "axios";
-import { Alert } from "bootstrap";
 import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import * as Icon from "react-bootstrap-icons";
 import LibraryView from "./library/library-view";
 import "./main-dash.css";
-import ModificationWizard from "./specification/modification-wizard";
+
+
 
 import SpecificationWizard from "./specification/specification-wizard";
+require("dotenv").config();
 
 export const CMainContext = React.createContext();
 
 const MainDash = (props) => {
   const [WSs, setWSs] = useState([]);
-
+  const { REACT_APP_BASE_API } = process.env;
   const getWSs = () => {
-    axios.get("http://localhost:3001/wss").then((res) => {
+    
+    console.log( process.env)
+    axios.get(REACT_APP_BASE_API+"wss").then((res) => {
       setWSs(res.data);
-      console.log(res.data);
+      console.log(process.env.REACT_APP_WS_URL);
+      
     });
   };
 
@@ -40,6 +44,7 @@ const MainDash = (props) => {
   const craftLADComponent = () => {
     return (
       <SpecificationWizard
+        update={false}
         workspace={workspace}
         onCloseWizard={() => {
           setActiveStep(steps[0]);
@@ -50,7 +55,9 @@ const MainDash = (props) => {
 
   const editLADComponent = () => {
     return (
-      <ModificationWizard
+      <SpecificationWizard
+        update={true}
+        workspace={workspace}
         onCloseWizard={() => {
           setActiveStep(steps[0]);
         }}
@@ -149,7 +156,7 @@ const MainDash = (props) => {
   };
 
   const loadGrafana = () => {
-    window.location.href = "/grafana";
+    window.location.href = "../grafana/";
   };
 
   const [workspace, setWorkspace] = React.useState(1);
@@ -177,7 +184,9 @@ const MainDash = (props) => {
         title:newWSName,
      //   description:'Description of the WS'
       }
-      axios.post("http://localhost:3001/wss", element).then(() => {
+      const { REACT_APP_BASE_API } = process.env;
+      
+      axios.post(REACT_APP_BASE_API+"wss", element).then(() => {
         getWSs();
         setOpen(false);
       setNewWSName("");

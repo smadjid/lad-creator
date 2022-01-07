@@ -90,7 +90,7 @@ specification-wizard {
 .box .step-component {
   padding: 2px;
   padding-top: 20px;
-  min-height: 200px;
+  min-height: 90%;
   /*display: flex;*/
  text-align: left;
  font-size: medium;
@@ -98,19 +98,12 @@ specification-wizard {
 
 .box .btn-component {
   display: flex;
-  justify-content: space-between;
+  text-align: right;
 }
 
 .specification-footer {
   background-color: #22313f45;
 }
-
-
-
-
-
-
-
 
 .list {
   border: 1px solid blue;
@@ -134,3 +127,5 @@ specification-wizard {
   .MuiFormControl-root{
     width:90%;
   }
+
+  

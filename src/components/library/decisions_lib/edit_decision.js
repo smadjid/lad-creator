@@ -11,7 +11,8 @@ export default function Edit(props) {
   };
 
   const updateDecision = (data) => {
-    axios.put("http://localhost:3001/decisions", data).then((res) => {
+    const { REACT_APP_BASE_API } = process.env;
+    axios.put(REACT_APP_BASE_API+"decisions", data).then((res) => {
       props.setDecisions(
         props.decisions.map((item) => {
           return item.id === props.id

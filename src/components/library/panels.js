@@ -7,17 +7,15 @@ import {
   EditRounded,
   HighlightOffRounded,
 } from "@material-ui/icons";
-import { FormControl, MenuItem, InputLabel, Select } from "@material-ui/core";
 
 export const PanelContext = React.createContext();
 
 function Panels(props) {
+  const { REACT_APP_BASE_API } = process.env;
   const [panels, setPanels] = useState([]);
   const [visualizations, setVisualizations] = useState([]);
   const [indicators, setIndicators] = useState([]);
 
-  //const [sample, setSample] = useState("at41");
-  
   const ws = props.workspace;
   const handleSetSample = (e) => {
     //setSample(e.target.value);
@@ -57,7 +55,7 @@ function Panels(props) {
     element.indicator_id = currentIndicator.id;
 
     if (creationMode)
-      axios.post("http://localhost:3001/panels", element).then(() => {
+      axios.post(REACT_APP_BASE_API+"panels", element).then(() => {
         setPanels([
           ...panels,
           {
@@ -68,7 +66,7 @@ function Panels(props) {
         updateDisplay();
       });
     else
-      axios.put("http://localhost:3001/panels", element).then((res) => {
+      axios.put(REACT_APP_BASE_API+"panels", element).then((res) => {
         setPanels(
           panels.map((item) => {
             return item.id === element.id
@@ -93,7 +91,7 @@ function Panels(props) {
 
   const deletePanel = (id) => {
     window.confirm("Are you sure you want to delete this type of panel?")
-      ? axios.delete(`http://localhost:3001/panels/${id}`).then((res) => {
+      ? axios.delete(`${REACT_APP_BASE_API}panels/${id}`).then((res) => {
           setPanels(
             panels.filter((item) => {
               return item.id !== id;
@@ -105,18 +103,18 @@ function Panels(props) {
   };
 
   const getPanels = () => {
-    axios.get("http://localhost:3001/panels").then((res) => {
+    axios.get(REACT_APP_BASE_API+"panels").then((res) => {
       setPanels(res.data);
     });
   };
 
   const getVisualizations = () => {
-    axios.get("http://localhost:3001/visualizations").then((res) => {
+    axios.get(REACT_APP_BASE_API+"visualizations").then((res) => {
       setVisualizations(res.data);
     });
   };
   const getIndicators = () => {
-    axios.get("http://localhost:3001/indicators").then((res) => {
+    axios.get(REACT_APP_BASE_API+"indicators").then((res) => {
       setIndicators(res.data);
     });
   };
@@ -237,7 +235,7 @@ function Panels(props) {
       <table className="table table-bordered table-hover table-dark table-striped text-md-start">
         <thead>
           <tr>
-            <th scope="col">#</th>
+            {/* <th scope="col">#</th> */}
             <th scope="col">Title</th>
             <th scope="col">Indicator</th>
             <th scope="col">Representation</th>
@@ -251,7 +249,7 @@ function Panels(props) {
             .map((item) => {
               return (
                 <tr key={item.id}>
-                  <th scope="row">{item.id}</th>
+                  {/* <th scope="row">{item.id}</th> */}
                   <td>{item.title}</td>
                   <td>{fetchIndElement(item.indicator_id)}</td>
                   <td>

@@ -15,8 +15,8 @@ const Scenario = (props) => {
 
   const CreateNewFrame = () => {
     const item = {
-      title: "NewFrame",
-      description: "Description",
+      title: "NewScreen",
+      description: "Screen Description",
     };
     setCurrentFrame(item);
     // setCreationMode(true);
@@ -99,7 +99,7 @@ const Scenario = (props) => {
                   className="btn btn-outline-success"
                   onClick={CreateNewFrame}
                 >
-                  <AddBoxRounded /> &nbsp; Insert a frame
+                  <AddBoxRounded /> &nbsp; Insert a screen
                 </button>
               </div>
             </Card.Body>
@@ -119,7 +119,7 @@ const Scenario = (props) => {
                 className="btn btn-outline-success"
                 onClick={CreateNewFrame}
               >
-                <AddBoxRounded /> &nbsp; Insert a frame
+                <AddBoxRounded /> &nbsp; Insert a screen
               </button>
             </Card.Body>
           </Accordion.Collapse>
@@ -138,7 +138,7 @@ const Scenario = (props) => {
                 className="btn btn-outline-success"
                 onClick={CreateNewFrame}
               >
-                <AddBoxRounded /> &nbsp; Insert a frame
+                <AddBoxRounded /> &nbsp; Insert a screen
               </button>
             </Card.Body>
           </Accordion.Collapse>

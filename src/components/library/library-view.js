@@ -14,6 +14,7 @@ import Panels from "./panels";
 import CPanels from "./cpanels";
 import Scenario from "./scenario";
 import { CMainContext } from "../main-dash";
+import logo from "../../logo.png";
 
 const LibraryView=(props)=> {
   function onLeave(){
@@ -66,7 +67,7 @@ const LibraryView=(props)=> {
     "divider",
     {
       name: "frames",
-      label: "Frames",
+      label: "Screens",
       Icon: SettingsIcon,
       onClick,
     /*  items: [
@@ -90,7 +91,7 @@ const LibraryView=(props)=> {
         
   ];
 
-  const [displayItem, setDdisplayItem]=useState();
+  const [displayItem, setDdisplayItem]=useState('welcome');
   const [workspace, setWorkspace] = useContext(CMainContext);
   
   return (
@@ -99,6 +100,19 @@ const LibraryView=(props)=> {
       <div className="col-md-10 library-items">
       {displayItem === 'decisions' &&
         <Decisions /> 
+      }
+      {displayItem === 'welcome' &&
+        <>
+        <h3>LADStudio Library</h3>
+        <hr/>
+        <p className="h5">This library allows you to explore the dashboard elements you defined directly from within it, or through crafting dashboards.</p>
+        <div className="row justify-content-center">
+        <div className="col-6"><img src={logo} width="100%" className="p-3" alt="logo" /></div>
+        
+        </div>
+        
+        
+        </> 
       }
       {displayItem === 'frames' &&
         <Frames workspace={workspace} /> 

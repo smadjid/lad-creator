@@ -12,6 +12,7 @@ import {
 export const IndicatorContext = React.createContext();
 
 function Indicators(props) {
+  const { REACT_APP_BASE_API } = process.env;
   const [indicators, setIndicators] = useState([]);
 
   const [showModal, setShowModal] = useState(false);
@@ -23,7 +24,7 @@ function Indicators(props) {
   const handleModalSave = () => {
     if (creationMode)
       axios
-        .post("http://localhost:3001/indicators", currentElement)
+        .post(REACT_APP_BASE_API+"indicators", currentElement)
         .then(() => {
           setIndicators([
             ...indicators,
@@ -36,7 +37,7 @@ function Indicators(props) {
         });
     else
       axios
-        .put("http://localhost:3001/indicators", currentElement)
+        .put(REACT_APP_BASE_API+"indicators", currentElement)
         .then((res) => {
           setIndicators(
             indicators.map((item) => {
@@ -62,7 +63,7 @@ function Indicators(props) {
       "Are you sure you want to delete this type of indicators?"
     )
       ? axios
-          .delete(`http://localhost:3001/indicators/${id}`)
+          .delete(`${REACT_APP_BASE_API}indicators/${id}`)
           .then((res) => {
             setIndicators(
               indicators.filter((item) => {
@@ -75,7 +76,7 @@ function Indicators(props) {
   };
 
   const getIndicators = () => {
-    axios.get("http://localhost:3001/indicators").then((res) => {
+    axios.get(REACT_APP_BASE_API+"indicators").then((res) => {
       setIndicators(res.data);
     });
   };
@@ -132,7 +133,7 @@ function Indicators(props) {
       <table className="table table-bordered table-hover table-dark table-striped text-md-start">
         <thead>
           <tr>
-            <th scope="col">#</th>
+            {/* <th scope="col">#</th> */}
             <th scope="col">Name</th>
             <th scope="col">Class</th>
             <th scope="col">Description</th>
@@ -143,7 +144,7 @@ function Indicators(props) {
           {indicators.map((item) => {
             return (
               <tr key={item.id}>
-                <th scope="row">{item.id}</th>
+                {/* <th scope="row">{item.id}</th> */}
                 <td>{item.title}</td>
                 <td>{item.class}</td>               
                 <td>{item.description}</td>

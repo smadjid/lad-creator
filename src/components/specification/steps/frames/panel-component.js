@@ -12,6 +12,7 @@ import Collapsible from "react-collapsible";
 import ChartComponent from "./chart-component";
 
 const PanelComponent = (props) => {
+  const { REACT_APP_BASE_API } = process.env;
   const [indicators, setIndicators] = useState([]);
   const [visualizations, setVisualizations] = useState([]);
   const [panels, setPanels] = useState([]);
@@ -25,12 +26,12 @@ const PanelComponent = (props) => {
   });
 
   const getPanels = () => {
-    axios.get("http://localhost:3001/panels").then((res) => {
+    axios.get(REACT_APP_BASE_API+"panels").then((res) => {
       setPanels(res.data);
     });
   };
   const getCPanels = () => {
-    axios.get("http://localhost:3001/cpanels").then((res) => {
+    axios.get(REACT_APP_BASE_API+"cpanels").then((res) => {
       setCPanels(res.data);
     });
   };
@@ -43,19 +44,19 @@ const PanelComponent = (props) => {
   };
 
   const getpList = () => {
-    axios.get("http://localhost:3001/plist").then((res) => {
+    axios.get(REACT_APP_BASE_API+"plist").then((res) => {
       setpList(res.data);
     });
   };
 
   const getIndicators = () => {
-    axios.get("http://localhost:3001/indicators").then((res) => {
+    axios.get(REACT_APP_BASE_API+"indicators").then((res) => {
       setIndicators(res.data);
     });
   };
 
   const getVisualizations = () => {
-    axios.get("http://localhost:3001/visualizations").then((res) => {
+    axios.get(REACT_APP_BASE_API+"visualizations").then((res) => {
       setVisualizations(res.data);
     });
   };

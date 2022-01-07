@@ -1,5 +1,5 @@
 const express = require("express");
-const mysql = require("mysql2");
+const mysql = require("mysql");
 require("dotenv").config();
 const cors = require("cors");
 const path = require("path");
@@ -524,9 +524,9 @@ app.delete("/api/visualizations/:id", (req, res) => {
     }
   );
 });
-/*app.get("/*", (req, res) => {
+app.get("/*", (req, res) => {
   res.sendFile(path.join(__dirname, "build", "index.html"));
-});*/
+});
 
 const listener = app.listen(process.env.PORT || 3001, () => {
   console.log("App is listening on port " + listener.address().port);

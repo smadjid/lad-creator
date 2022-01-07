@@ -472,6 +472,56 @@ export const tableHeatChart = (props) => {
   return json;
 };
 
+export const radarChart = (props) =>{
+  const rawSql = props.rawSql
+    ? props.rawSql
+    : "SELECT title, student_skills, course_skills \nFROM lada_student_courses\nlimit 5";
+  return{
+    id: props.id,
+    gridPos: props.gridPos,
+    "title": props.title,
+      "type": "smadjid-radar-panel",
+      "targets": [
+        {
+          "refId": "A",
+          "format": "table",
+          "timeColumn": "time",
+          "metricColumn": "none",
+          "group": [],
+          "where": [
+            {
+              "type": "macro",
+              "name": "$__timeFilter",
+              "params": []
+            }
+          ],
+          "select": [
+            [
+              {
+                "type": "column",
+                "params": [
+                  "id"
+                ]
+              }
+            ]
+          ],
+          "rawQuery": true,
+          "rawSql": rawSql,
+          "table": "devices",
+          "timeColumnType": "timestamp"
+        }
+      ],
+      "options": {
+        "text": "Default value !!!",
+        "showSeriesCount": false,
+        "seriesCountSize": "sm",
+        "color": "red",
+        "theme": "red"
+      },
+      "datasource": null
+    }
+  
+}
 export const tableChart = (props) => {
   const rawSql = props.rawSql
     ? props.rawSql

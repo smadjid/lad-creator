@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import * as Icon from "react-bootstrap-icons";
 import {  OverlayTrigger, Popover } from "react-bootstrap";
 import { AssignmentSharp } from "@material-ui/icons";
@@ -10,7 +10,8 @@ import FramePerception from "./steps/frames/frame-perception";
 import FrameComprehension from "./steps/frames/frame-comprehension";
 import GenerateComponent from "./steps/generate-component";
 import SpecificationActions from "./specification-actions";
-
+import { Button, ButtonGroup } from "react-bootstrap";
+import { CMainContext } from "../main-dash";
 
 
 
@@ -23,7 +24,21 @@ const decisionComponent = () => {
   return <DecisionDescription />;
 };
 const mainFrameComponent = () => {
-  return <FramePerception />;
+  
+  return (
+    <div>
+      <div class="form-group row">
+        <h3>Screen supporting perception of the situation in hand</h3>
+        <panel>
+          Build the process that can help you build an accurate understanding of
+          the situation at hand
+        </panel>
+        <hr className="my-1" />
+      </div>
+      <FramePerception />
+    </div>
+  );
+  
 };
 const secondaryFrameComponent = () => {
   return (
@@ -47,11 +62,13 @@ const finalComponent = () => {
 };
 
 function SpecificationWizard(props) {  
-  
+  const [workspace, setWorkspace] = useContext(CMainContext);
+  console.log(workspace)
   const [dashboardStructure, setDashboardStructure] = useState({
+     id: 0, //important
       title: "LAD Title",
       description:"A LAD Specification",
-      workspace:props.workspace,
+      workspace:workspace,
       meta:{
         learnv:'Institutional LMS', 
         lms:'moodle',
@@ -60,7 +77,7 @@ function SpecificationWizard(props) {
         to:'',
         by:'',
       },
-      mainFrame: { indicator: "Indicator", graphic: "Graph" },
+      mainFrame:  null,
       comprehensionFrames: [],
       frames: [],
       context: {}
@@ -69,7 +86,6 @@ function SpecificationWizard(props) {
     const ladContext = [dashboardStructure, setDashboardStructure];
 
     const [showSpecList, setShowSpecList] = useState(true);
-    if(props.mode==='load') setShowSpecList(true);
 
   const [steps, setSteps] = useState([
     {
@@ -116,7 +132,7 @@ function SpecificationWizard(props) {
     console.log(activeStep.component);
   };
   const handleNext = () => {
-    window.scrollTo(0, 0);
+    //window.scrollTo(0, 0);
     if (steps[steps.length - 1].key === activeStep.key) {
       alert("You have completed the generation process...");
       return;
@@ -133,7 +149,7 @@ function SpecificationWizard(props) {
   };
 
   const handleBack = () => {
-    window.scrollTo(0, 0);
+    //window.scrollTo(0, 0);
     const index = steps.findIndex((x) => x.key === activeStep.key);
     if (index === 0) return;
 
@@ -147,7 +163,7 @@ function SpecificationWizard(props) {
   };
 
   const activateStep = (i) => {
-    window.scrollTo(0, 0);
+    //window.scrollTo(0, 0);
 
     setSteps((prevStep) =>
       prevStep.map((x) => {
@@ -164,17 +180,19 @@ function SpecificationWizard(props) {
   };
 
   const loadSpecification = (specId) =>{
-alert(specId)
+console.log(specId)
   }
 
   
-  return (
+  return ( 
     <AppContext.Provider value={ladContext}>
-      <SpecificationActions show={showSpecList} onClose={()=>{setShowSpecList(false)}} onSave={(spec)=>{loadSpecification(spec)}}/>
-      <div className="SpecificationWizard" >
-        <div className="box">
+     {props.update?<SpecificationActions show={showSpecList}  onClose={()=>{setShowSpecList(false)}} onSave={(spec)=>{loadSpecification(spec)}}/>: ' '}
+      <div className="SpecificationWizard h-100" >
+     
+        <div className="box h-100">
+        
           <div className="steps">
-            <ul className="nav">
+            <ul className="nav cols col-11">
               {steps.map((step, i) => {
                 return (
                   <li
@@ -190,11 +208,29 @@ alert(specId)
                   </li>
                 );
               })}
+              <ButtonGroup style={{position:'absolute', right:'10px', display: "block", padding: 10 }}>
               
-              <div style={{position:'absolute', right:'10px', display: "block", padding: 10 }}>
-                  <OverlayTrigger
+                <Button size='sm' variant='outline-light' onClick={handleBack}
+                    disabled={steps[0].key === activeStep.key}><Icon.SkipBackwardCircle /> &nbsp;&nbsp;Back</Button>
+                <Button size='sm' variant='outline-light' onClick={handleNext}>{steps[steps.length - 1].key !== activeStep.key
+                      ? "Next    "
+                      : "Generate"}{" "}
+                    <Icon.SkipForwardCircle /></Button>
+                <Button size='sm' variant='danger' onClick={handlClose}><Icon.XCircle /> &nbsp;&nbsp;Close</Button>
+               </ButtonGroup>
+            <div>
+        
+                </div>
+            </ul>
+          </div>
+          <div className="step-component h-100">
+            <div className="container-fluid h-100">
+             <div className='d-flex justify-content-end'>
+               
+               <OverlayTrigger
                     placement="bottom"
                     rootCloseEvent="mousedown"
+                    className='btn-outline-light'
                     trigger="click"
                     overlay={
                       <Popover>
@@ -225,7 +261,7 @@ alert(specId)
                               <div>
                                 <h6 className="my-0">Reference Indicator</h6>
                                 <small className="text-muted">
-                                  {dashboardStructure.mainFrame.indicator}
+                                  {/* {dashboardStructure.mainFrame.indicator} */}
                                 </small>
                               </div>
                               <span className="text-muted">(X)</span>
@@ -234,10 +270,10 @@ alert(specId)
                             <li className="list-group-item d-flex justify-content-between lh-sm">
                               <div>
                                 <h6 className="my-0">
-                                  Reference Frame graphic
+                                  Reference Screen graphic
                                 </h6>
                                 <small className="text-muted">
-                                  {dashboardStructure.mainFrame.graphic}
+                                  {/* {dashboardStructure.mainFrame.graphic} */}
                                 </small>
                               </div>
                               <span className="text-muted">(X)</span>
@@ -283,60 +319,22 @@ alert(specId)
                         </Popover.Content>
                       </Popover>
                     }
-                  >
-                    
-                    <AssignmentSharp role='button'/>
+                  > 
+                    <span style={{textAlign:'right'}} role='button' >Summary<AssignmentSharp role='button' color='white'/></span>
                   </OverlayTrigger>
-                </div>
-            </ul>
-          </div>
-          <div className="step-component">
-            <div className="container-fluid row">
-              {activeStep.component()}
-
+                  </div>
                
                
-            </div>
-          </div>
-
-          <div className="specification-footer">
-            <div className="btn-component">
-              <button
-                type="button"
-                className="btn btn-outline-light"
-                onClick={handlClose}
-              >
-                <Icon.XCircle /> &nbsp;&nbsp;Close wizard
-              </button>
-
-              <div className="btn-component">
-                <button
-                  type="button"
-                  className="btn btn-outline-light"
-                  onClick={handleBack}
-                  disabled={steps[0].key === activeStep.key}
-                >
-                  <Icon.SkipBackwardCircle /> &nbsp;&nbsp;Back
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-outline-light"
-                  value={
-                    steps[steps.length - 1].key !== activeStep.key
-                      ? "Next    "
-                      : "Close"
-                  }
-                  onClick={handleNext}
-                >
-                  &nbsp;&nbsp;
-                  {steps[steps.length - 1].key !== activeStep.key
-                    ? "Next    "
-                    : "Generate"}{" "}
-                  <Icon.SkipForwardCircle />
-                </button>
+              <div >
+              
+                {activeStep.component()}
+                <hr/>
               </div>
             </div>
+            
           </div>
+
+          
         </div>
       </div>
     </AppContext.Provider>

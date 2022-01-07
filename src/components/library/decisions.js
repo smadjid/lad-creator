@@ -1,6 +1,6 @@
 import "./library-view.css";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import AddDecision from "./decisions_lib/add_decision";
 import Edit from "./decisions_lib/edit_decision";
 import Delete from "./decisions_lib/delete_decision";
@@ -8,9 +8,9 @@ import axios from "axios";
 
 function Decisions() {
   const [decisions, setDecisions] = useState([]);
-
+  const { REACT_APP_BASE_API } = process.env;
   const getDecisions = () => {
-    axios.get("http://localhost:3001/decisions").then((res) => {
+    axios.get(REACT_APP_BASE_API+"decisions").then((res) => {
       setDecisions(res.data);
     });
   };

@@ -4,13 +4,14 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 
 export default function AddDecision(props) {
+  const { REACT_APP_BASE_API } = process.env;
   const { register, handleSubmit } = useForm();
   const onSubmit = (data) => {
     addDecision(data);
   };
 
   const addDecision = (data) => {
-    axios.post("http://localhost:3001/decisions", data).then(() => {
+    axios.post(REACT_APP_BASE_API+"decisions", data).then(() => {
       props.setDecisions([
         ...props.decisions,
         {

@@ -31,7 +31,7 @@ const FrameItemDlg = (props) => {
         >
           <Modal.Header>
             <Modal.Title>
-              {props.isComposite ? "Composite Frame -" : "Simple Frame -"}
+              {props.isComposite ? "Composite Screen -" : "Simple Screen -"}
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>

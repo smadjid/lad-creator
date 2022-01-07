@@ -3,10 +3,10 @@ import React, { useEffect, useState } from "react";
 import "./chart-component.css";
 
 const ChartComponent = (props) => {
-  
+  const { REACT_APP_BASE_API } = process.env;
   const [visualizations, setVisualizations] = useState();
   const getVisualizations = () => {
-    axios.get("http://localhost:3001/visualizations").then((res) => {
+    axios.get(REACT_APP_BASE_API+"visualizations").then((res) => {
       setVisualizations(res.data);
     });
   };

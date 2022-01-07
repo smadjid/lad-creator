@@ -25,7 +25,7 @@ const FrameReferenceOld = (props) => {
     <div class="row">
       <div class="form-group row">
         <div class="row">
-          <h3>Frame of reference for situation perception</h3>
+          <h3>Screen of reference for situation perception</h3>
           <panel>
             Decsribe what main indicators that allow you to perform your
             analysis and take the appropriate decision

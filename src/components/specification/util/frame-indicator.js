@@ -393,7 +393,7 @@ const FrameIndicator = (props) => {
         <h5>
           {" "}
           <span class="badge bg-success">
-            <i>{props.type} Frame</i>
+            <i>{props.type} Screen</i>
           </span>
           <b> {props.framename}</b> 
         </h5>
@@ -450,7 +450,7 @@ const FrameIndicator = (props) => {
           <Card.Body>
             <div>
               <Card className=" text-dark bg-light mb-3">
-                <Card.Header>Transition from the reference frame</Card.Header>
+                <Card.Header>Transition from the reference screen</Card.Header>
 
                 <Card.Body>
                   <div class="form-check">
@@ -506,7 +506,7 @@ const FrameIndicator = (props) => {
               </Card>
 
               <Card className="text-dark bg-light mb-3">
-                <Card.Header>Position of the frame</Card.Header>
+                <Card.Header>Position of the screen</Card.Header>
 
                 <Card.Body>
                   <select
@@ -515,13 +515,13 @@ const FrameIndicator = (props) => {
                     onChange={handlePositionChange}
                     value={position}
                   >
-                    <option value="right">Right of the reference frame</option>
-                    <option value="left">Left of the reference frame</option>
-                    <option value="above">Above of the reference frame</option>
+                    <option value="right">Right of the reference screen</option>
+                    <option value="left">Left of the reference screen</option>
+                    <option value="above">Above of the reference screen</option>
                     <option value="below">
-                      Under of the reference frame
+                      Under of the reference screen
                     </option>
-                    <option value="on">Replace the reference frame</option>
+                    <option value="on">Replace the reference screen</option>
                   </select>
                   <small className="form-text text-muted">
                     Short description of the slected item

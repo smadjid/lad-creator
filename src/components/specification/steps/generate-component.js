@@ -19,6 +19,7 @@ import {
   dotCompareChart,
   histLineChart,
   stackedBarChart,
+  radarChart
 } from "./export/dashcharts";
 import shortid from "shortid";
 import axios from "axios";
@@ -32,6 +33,7 @@ import {
 import { BarChart } from "react-bootstrap-icons";
 
 const GenerateComponent = () => {
+  const { REACT_APP_BASE_API } = process.env;
   const [ladContext, setLadContext] = useContext(AppContext);
   const [panels, setPanels] = useState([]);
   const [cpanels, setCPanels] = useState([]);
@@ -41,27 +43,27 @@ const GenerateComponent = () => {
   const [showGrafanaDlg, setShowGrafanaDlg] = useState(false);
 
   const getPanels = () => {
-    axios.get("http://localhost:3001/panels").then((res) => {
+    axios.get(REACT_APP_BASE_API+"panels").then((res) => {
       setPanels(res.data);
     });
   };
   const getCPanels = () => {
-    axios.get("http://localhost:3001/cpanels").then((res) => {
+    axios.get(REACT_APP_BASE_API+"cpanels").then((res) => {
       setCPanels(res.data);
     });
   };
   const getpList = () => {
-    axios.get("http://localhost:3001/plist").then((res) => {
+    axios.get(REACT_APP_BASE_API+"plist").then((res) => {
       setpList(res.data);
     });
   };
   const getfList = () => {
-    axios.get("http://localhost:3001/flist").then((res) => {
+    axios.get(REACT_APP_BASE_API+"flist").then((res) => {
       setfList(res.data);
     });
   };
   const getVisualizations = () => {
-    axios.get("http://localhost:3001/visualizations").then((res) => {
+    axios.get(REACT_APP_BASE_API+"visualizations").then((res) => {
       setVisualizations(res.data);
     });
   };
@@ -212,8 +214,10 @@ const GenerateComponent = () => {
     // const title = generateTitle(frame.title);
     //  const struct = generateRow(frame);
     let dash = [];
+    if(ladContext.mainFrame)
+    dash = dash.concat(generateRow(ladContext.mainFrame));
     ladContext.frames.map((frame) => {
-      alert(frame.title);
+      console.log(frame.title);
       dash = dash.concat(generateRow(frame));
     });
     setComprehensionFrames(dash);
@@ -333,8 +337,12 @@ const GenerateComponent = () => {
       gridPos: params.gridPos,
       rawSql: params.rawSql,
     };
-
+console.log(params.type)
     switch (params.type) {
+      case "Spider chart or Radar": {
+        res = radarChart(fields);
+        break;
+      }
       case "Heatmap": {
         res = tableHeatChart(fields);
         break;
@@ -431,6 +439,7 @@ const GenerateComponent = () => {
   }
 
   const saveSpecification = () => {
+    generateJsonStructure();
     console.log(ladContext)
     const dash={
       title:ladContext.title,
@@ -439,13 +448,14 @@ const GenerateComponent = () => {
       lms: ladContext.meta.lms,
       role: ladContext.meta.role,
       to: ladContext.meta.to,
-      ws_id: ladContext.workspace
+      ws_id: ladContext.workspace,
+      mf_id: ladContext.mainFrame?ladContext.mainFrame.id:null
     };
-    axios.post("http://localhost:3001/ladstudiospecs",dash).then((res) => {
+    axios.post(REACT_APP_BASE_API+"ladstudiospecs",dash).then((res) => {
       let results = res.data;
       let eltId = Object.values(results[0])[0];
       ladContext.frames.map((frame)=>{
-        axios.post("http://localhost:3001/specframes",{spec_id:eltId, frame_id:frame.id})
+        axios.post(REACT_APP_BASE_API+"specframes",{spec_id:eltId, frame_id:frame.id})
 
       })
     });
@@ -458,15 +468,16 @@ const GenerateComponent = () => {
     <div className="  row">
       <div className="col-md-11">
         <div className="bg-secondary card-header d-flex flex-row ">
-          <div className=" col-8">Dashboard JSon structure</div>
-          <div className="text-right col-4">
+          <div className=" col-7">Dashboard JSon structure</div>
+          <div className="d-flex justify-content-end col-5">
           <ButtonGroup>
-            <Button size='sm' onClick={saveSpecification}>Save Specification</Button>
-            <Button size='sm' onClick={generateJsonStructure}>Generate JSON</Button>
+            <Button variant='light' size='sm' onClick={saveSpecification}>Generate the dashboard</Button>
+       {/* <     <Button size='sm' onClick={generateJsonStructure}>Generate JSON</Button> */}
 
             <DropdownButton
               as={ButtonGroup}
               size='sm'
+              variant='light'
               title={
                 <>
                   <span className="p-2">

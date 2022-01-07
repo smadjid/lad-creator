@@ -1,3 +1,4 @@
+import React from "react";
 import MainDash from "./components/main-dash";
 import logo from "./logo.png";
 import labsticc from "./labsticc_logo.png";
@@ -21,12 +22,7 @@ function App() {
         <MainDash />
      
       </main>
-    <footer>
-        <p>
-          The <em>LADStudio</em> tool is part of the{" "}
-          <a href="http://padlad.github.io/">PadLAD project</a>
-        </p>
-    </footer>
+    
     </div>
   );
 }

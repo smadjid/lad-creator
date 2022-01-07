@@ -6,21 +6,14 @@ import { AppContext } from "../../specification-wizard";
 
 const ToGrafana = (props) => {
   const [ladContext, setLadContext] = useContext(AppContext);
-  // curl -H "Authorization: Bearer eyJrIjoiMjBJckFNWUwydTBhaFRyN1hjQThVWTRHUTZTSUlyMW0iLCJuIjoibGFkc3R1ZGlvIiwiaWQiOjF9" http://localhost/api/dashboards/home
-  // local key
-  const [instanceKey, setInstanceKey] = useState(
-   // "eyJrIjoieHFYemhpZk1vQTRnaXVYY0NRRFVLYmhCTGdKdWprVEEiLCJuIjoiayIsImlkIjoxfQ=="
-  );
-  // PADLAD key
-  
-  const [instanceURL, setInstanceURL] = useState("http://localhost");
+  const [instanceKey, setInstanceKey] = useState("");
+  const [instanceURL, setInstanceURL] = useState("");
   const [queryStatus, setQueryStatus] = useState("Ready");
   const [dashboardURL, setDashboardURL] = useState();
   const [successResult, setSuccessResult] = useState(false);
 
-  
   const sendRequest = () => {
-    console.log(ladContext);
+    
     let dashboard = {
       dashboard: props.data,
     };
@@ -33,11 +26,15 @@ const ToGrafana = (props) => {
       Accept: "application/json",
       Authorization: "Bearer " + instanceKey,
     };
-
+    console.log(instanceURL);
+    console.log(instanceKey); 
+    let domain = (new URL(instanceURL));console.log(domain.origin); 
     axios
       .post(instanceURL + "/api/dashboards/db", dashboard, { headers })
+     // .post("/api/dashboards/db", dashboard, { headers })
       .then((res) => {
-        setDashboardURL(instanceURL + res.data.url);
+        
+        setDashboardURL(domain.origin + res.data.url);
         setQueryStatus(
           "The dashboard is generated and integrated successfully"
         );
@@ -80,7 +77,7 @@ const ToGrafana = (props) => {
                   value={ladContext.title}
                   onChange={(v) => {
                     setLadContext((prevState) => {
-                      return { ...prevState, title: v.data };
+                      return { ...prevState, title: v.target.value };
                     });
                   }}
                   required
@@ -96,7 +93,7 @@ const ToGrafana = (props) => {
                   name="url"
                   value={instanceURL}
                   onChange={(v) => {
-                    setInstanceURL(v.data);
+                    setInstanceURL(v.target.value);
                   }}
                   required
                 />
@@ -111,7 +108,7 @@ const ToGrafana = (props) => {
                   name="auth_key"
                   value={instanceKey}
                   onChange={(v) => {
-                    setInstanceKey(v.data);
+                    setInstanceKey(v.target.value);
                   }}
                   required
                 />
@@ -137,7 +134,7 @@ const ToGrafana = (props) => {
           variant="secondary"
           onClick={props.handleHide}
         >
-          Cancel
+          Close
         </Button>
         <Button
           type="submit"

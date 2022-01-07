@@ -13,6 +13,7 @@ import DataTable from "../specification/util/data-table";
 export const VizContext = React.createContext();
 
 function Visualizations() {
+  const { REACT_APP_BASE_API } = process.env;
   const [visualizations, setVisualizations] = useState([]);
 
   const [showModal, setShowModal] = useState(false);
@@ -25,7 +26,7 @@ function Visualizations() {
     console.log(currentElement);
     if (creationMode)
       axios
-        .post("http://localhost:3001/visualizations", currentElement)
+        .post(REACT_APP_BASE_API+"visualizations", currentElement)
         .then(() => {
           setVisualizations([
             ...visualizations,
@@ -38,7 +39,7 @@ function Visualizations() {
         });
     else
       axios
-        .put("http://localhost:3001/visualizations", currentElement)
+        .put(REACT_APP_BASE_API+"visualizations", currentElement)
         .then((res) => {
           setVisualizations(
             visualizations.map((item) => {
@@ -65,7 +66,7 @@ function Visualizations() {
       "Are you sure you want to delete this type of visualization?"
     )
       ? axios
-          .delete(`http://localhost:3001/visualizations/${id}`)
+          .delete(`${REACT_APP_BASE_API}visualizations/${id}`)
           .then((res) => {
             setVisualizations(
               visualizations.filter((item) => {
@@ -78,7 +79,7 @@ function Visualizations() {
   };
 
   const getVisualizations = () => {
-    axios.get("http://localhost:3001/visualizations").then((res) => {
+    axios.get(REACT_APP_BASE_API+"visualizations").then((res) => {
       setVisualizations(res.data);
     });
   };
@@ -144,7 +145,7 @@ function Visualizations() {
       <table className="table table-bordered table-hover table-dark table-striped text-md-start">
         <thead>
           <tr>
-            <th scope="col">#</th>
+            {/* <th scope="col">#</th> */}
             <th scope="col">Title</th>
             <th scope="col">CLass</th>
             <th scope="col">Representation</th>
@@ -156,7 +157,7 @@ function Visualizations() {
           {visualizations.map((item) => {
             return (
               <tr key={item.id}>
-                <th scope="row">{item.id}</th>
+                {/* <th scope="row">{item.id}</th> */}
                 <td>{item.title}</td>
                 <td>{item.class}</td>
                 <td>

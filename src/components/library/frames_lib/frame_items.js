@@ -47,7 +47,7 @@ const FrameItem = (props) => {
         >
           <Modal.Header>
             <Modal.Title>
-              {props.isComposite ? "Composite Frame -" : "Simple Frame -"}{" "}
+              {props.isComposite ? "Composite Screen -" : "Simple Screen -"}{" "}
               {currentFrame.title}
             </Modal.Title>
           </Modal.Header>

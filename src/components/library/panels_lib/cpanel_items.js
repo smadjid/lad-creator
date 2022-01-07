@@ -7,6 +7,7 @@ import { CPanelContext } from "../cpanels";
 export const chartContext = React.createContext();
 
 const CPanelItem = (props) => {
+  console.log('HHHH props : ');  console.log(props);
   const [
     currentCPanel,
     setCurrentCPanel,
@@ -99,7 +100,7 @@ const CPanelItem = (props) => {
                       name="panel"
                       onChange={(e) => getPanElement(e.target.value)}
                     >
-                      {panels.filter((i)=>i.sample===props.sample).map((item) => {
+                      {panels.filter((i)=>i.ws_id===props.ws_id).map((item) => {
                         return <option value={item.id}>{item.title}</option>;
                       })}
                     </select>
